@@ -191,7 +191,7 @@
         <span class="file-type-badge">TXT</span>
       </div>
     </div>
-    <input type="file" id="file-input" accept=".txt,.pdf,.doc,.docx" style="display:none" onchange="handleFile(this.files[0])"/>
+    <input type="file" id="file-input" accept=".txt,.pdf,.doc,.docx" onchange="handleFile(this.files[0])" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"/>
     <div class="selected-file" id="selected-file">
       <div class="file-icon-sm">📄</div>
       <div class="file-info">
