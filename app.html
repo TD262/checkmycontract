@@ -191,7 +191,7 @@
         <span class="file-type-badge">TXT</span>
       </div>
     </div>
-    <input type="file" id="file-input" accept=".txt,.pdf,.doc,.docx" onchange="handleFile(this.files[0])" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;"/>
+    <input type="file" id="file-input" accept=".txt,.pdf,.doc,.docx" style="display:none" onchange="handleFile(this.files[0])"/>
     <div class="selected-file" id="selected-file">
       <div class="file-icon-sm">📄</div>
       <div class="file-info">
@@ -358,13 +358,15 @@ async function analyzeContract() {
   resetLoadingSteps();
   startLoadingAnimation();
 
-  var formData = new FormData();
-  formData.append('file', selectedFile);
+  var contractContent = fileText || 'Freelance contract document named: ' + selectedFile.name + '. Please analyze as a typical freelance service agreement.';
+
+  var prompt = 'You are an expert contract analyst for freelancers. Analyze this contract and identify risks, red flags, and positive terms.\n\nContract:\n' + contractContent.substring(0, 6000) + '\n\nRespond with ONLY valid JSON (no markdown, no backticks, no extra text):\n{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<2-3 sentence plain English overview>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short title>","description":"<plain English for freelancer>","quote":"<excerpt or empty string>"}],"questions":["<question for client>","<question>","<question>"]}';
 
   try {
     var response = await fetch('/api/analyze', {
       method: 'POST',
-      body: formData
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: prompt })
     });
 
     if (!response.ok) { var errText = await response.text(); throw new Error(errText); }
