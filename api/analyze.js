@@ -69,6 +69,25 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+
+    // Increment the check count in Supabase for this email
+    const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
+    if (email) {
+      await fetch(
+        `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'apikey': process.env.SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ checks_used: 1 })
+        }
+      );
+    }
+
     return res.status(200).json(data);
 
   } catch (err) {

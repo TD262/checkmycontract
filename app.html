@@ -45,6 +45,70 @@
   .page { display:none; padding-top:76px; min-height:100vh; }
   .page.active { display:block; }
 
+  /* ── EMAIL GATE PAGE ── */
+  .email-gate-wrap {
+    max-width:480px; margin:0 auto; padding:80px 24px 60px;
+    display:flex; flex-direction:column; align-items:center; text-align:center;
+  }
+  .gate-icon { font-size:48px; margin-bottom:20px; }
+  .email-gate-wrap h1 {
+    font-family:'Instrument Serif',serif; font-size:36px; color:var(--navy);
+    letter-spacing:-0.5px; margin-bottom:12px; line-height:1.1;
+  }
+  .email-gate-wrap h1 em { font-style:italic; color:var(--teal); }
+  .email-gate-wrap > p {
+    font-size:16px; color:var(--text-muted); font-weight:300;
+    line-height:1.7; margin-bottom:36px; max-width:380px;
+  }
+  .email-form-box {
+    width:100%; background:var(--white); border:1px solid var(--border);
+    border-radius:20px; padding:32px 28px;
+  }
+  .free-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2);
+    color:var(--green); padding:5px 14px; border-radius:100px;
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    margin-bottom:20px;
+  }
+  .email-form-box h2 { font-size:18px; font-weight:600; color:var(--navy); margin-bottom:6px; }
+  .email-form-box p { font-size:13px; color:var(--text-muted); margin-bottom:20px; line-height:1.5; }
+  .email-input {
+    width:100%; padding:14px 16px; border:1.5px solid var(--border);
+    border-radius:10px; font-size:15px; font-family:'DM Sans',sans-serif;
+    color:var(--text); background:var(--cream); outline:none; transition:border-color 0.2s;
+    margin-bottom:12px;
+  }
+  .email-input:focus { border-color:var(--teal); background:var(--white); }
+  .email-submit-btn {
+    width:100%; padding:15px; background:var(--navy); color:var(--white);
+    border:none; border-radius:10px; font-size:15px; font-weight:600;
+    cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .email-submit-btn:hover { background:var(--teal); transform:translateY(-1px); }
+  .email-submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+  .gate-note { font-size:12px; color:var(--text-muted); margin-top:14px; line-height:1.5; }
+  .gate-trust { display:flex; justify-content:center; gap:20px; margin-top:28px; flex-wrap:wrap; }
+  .gate-trust-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); font-weight:500; }
+  .trust-check-sm { width:16px; height:16px; background:rgba(13,158,142,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:8px; color:var(--teal); }
+
+  /* limit-hit state */
+  .limit-box {
+    width:100%; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2);
+    border-radius:16px; padding:28px; text-align:center; display:none;
+  }
+  .limit-box.show { display:block; }
+  .limit-box h3 { font-size:18px; font-weight:600; color:#b91c1c; margin-bottom:8px; }
+  .limit-box p { font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:20px; }
+  .upgrade-btn {
+    display:inline-block; padding:13px 28px; background:var(--navy); color:var(--white);
+    border-radius:10px; font-size:14px; font-weight:600; text-decoration:none;
+    transition:all 0.2s; cursor:pointer; border:none; font-family:'DM Sans',sans-serif;
+  }
+  .upgrade-btn:hover { background:var(--teal); transform:translateY(-1px); }
+
+  /* ── UPLOAD PAGE (same as before) ── */
   .upload-hero { padding:60px 48px 40px; max-width:860px; margin:0 auto; text-align:center; }
   .hero-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(13,158,142,0.1); border:1px solid rgba(13,158,142,0.2); color:var(--teal); padding:6px 16px; border-radius:100px; font-size:13px; font-weight:600; margin-bottom:24px; }
   .upload-hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(38px,5vw,60px); color:var(--navy); letter-spacing:-1.5px; line-height:1.05; margin-bottom:18px; }
@@ -82,6 +146,7 @@
   .error-box { display:none; margin-top:16px; background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:16px 20px; font-size:13px; color:#b91c1c; line-height:1.5; }
   .error-box.show { display:block; }
 
+  /* ── LOADING PAGE ── */
   .loading-page { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:calc(100vh - 76px); padding:40px; text-align:center; }
   .loading-spinner { width:72px; height:72px; border:3px solid rgba(13,158,142,0.15); border-top-color:var(--teal); border-radius:50%; animation:spin 0.9s linear infinite; margin-bottom:28px; }
   @keyframes spin { to { transform:rotate(360deg); } }
@@ -92,6 +157,7 @@
   .loading-step.done { color:var(--navy); border-color:rgba(13,158,142,0.2); background:rgba(13,158,142,0.04); }
   .loading-step.active { color:var(--teal); border-color:rgba(13,158,142,0.3); }
 
+  /* ── RESULTS PAGE ── */
   .results-wrap { max-width:860px; margin:0 auto; padding:40px 48px 80px; }
   .results-header { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:32px; flex-wrap:wrap; }
   .results-header h1 { font-family:'Instrument Serif',serif; font-size:36px; color:var(--navy); letter-spacing:-0.5px; }
@@ -159,25 +225,72 @@
     .upload-hero { padding:40px 20px 20px; }
     .results-wrap { padding:24px 20px 60px; }
     .risk-card { flex-direction:column; }
+    .email-gate-wrap { padding:40px 16px 40px; }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo" onclick="showPage('upload')">Check<span>My</span>Contract</div>
+  <div class="logo" onclick="showPage('email-gate')">Check<span>My</span>Contract</div>
   <div class="nav-right">
-    <div class="credits-badge"><div class="pulse-dot"></div><span>1 free check remaining</span></div>
+    <div class="credits-badge"><div class="pulse-dot"></div><span id="nav-credits-text">1 free check / month</span></div>
     <button class="btn btn-primary">Go Pro — $19/mo</button>
   </div>
 </nav>
 
-<!-- UPLOAD PAGE -->
-<div class="page active" id="page-upload">
+<!-- ══════════════════════════════════════════
+     EMAIL GATE PAGE
+══════════════════════════════════════════ -->
+<div class="page active" id="page-email-gate">
+  <div class="email-gate-wrap">
+    <div class="gate-icon">📄</div>
+    <h1>Know what you're<br/><em>signing.</em></h1>
+    <p>Enter your email to get your free contract review. We'll flag every red flag, risky clause, and unfair term — in plain English.</p>
+
+    <!-- Email form -->
+    <div class="email-form-box" id="email-form-box">
+      <div class="free-badge">✓ 1 Free Check Per Month</div>
+      <h2>Enter your email to start</h2>
+      <p>No password needed. We'll remember you for next time.</p>
+      <input
+        type="email"
+        class="email-input"
+        id="email-input"
+        placeholder="you@example.com"
+        onkeydown="if(event.key==='Enter')submitEmail()"
+      />
+      <div class="error-box" id="gate-error-box" style="margin-bottom:12px;margin-top:0;"></div>
+      <button class="email-submit-btn" id="email-submit-btn" onclick="submitEmail()">
+        <span id="email-btn-text">Continue →</span>
+      </button>
+      <p class="gate-note">No spam. We only email you your results. Unsubscribe any time.</p>
+    </div>
+
+    <!-- Limit hit message (hidden until needed) -->
+    <div class="limit-box" id="limit-box">
+      <h3>Monthly limit reached</h3>
+      <p>You've used your 1 free check for this month. Upgrade to Pro for unlimited contract reviews — cancel any time.</p>
+      <button class="upgrade-btn">Upgrade to Pro — $19/mo</button>
+      <p style="margin-top:16px;font-size:12px;color:var(--text-muted);">Your free check resets on the 1st of next month.</p>
+    </div>
+
+    <div class="gate-trust">
+      <div class="gate-trust-item"><div class="trust-check-sm">✓</div> Results in 60 seconds</div>
+      <div class="gate-trust-item"><div class="trust-check-sm">✓</div> Your docs stay private</div>
+      <div class="gate-trust-item"><div class="trust-check-sm">✓</div> No legal jargon</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UPLOAD PAGE
+══════════════════════════════════════════ -->
+<div class="page" id="page-upload">
   <div class="upload-hero">
     <div class="hero-badge"><div class="pulse-dot"></div> AI-Powered Contract Review</div>
-    <h1>Know what you're<br/><em>signing.</em></h1>
-    <p>Upload your freelance contract and get a plain-English breakdown of every red flag, risky clause, and unfair term — in under 60 seconds.</p>
+    <h1>Upload your<br/><em>contract.</em></h1>
+    <p>Drop your freelance contract below and get a plain-English breakdown of every red flag, risky clause, and unfair term — in under 60 seconds.</p>
   </div>
   <div class="upload-area">
     <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
@@ -213,7 +326,9 @@
   </div>
 </div>
 
-<!-- LOADING PAGE -->
+<!-- ══════════════════════════════════════════
+     LOADING PAGE
+══════════════════════════════════════════ -->
 <div class="page" id="page-loading">
   <div class="loading-page">
     <div class="loading-spinner"></div>
@@ -229,7 +344,9 @@
   </div>
 </div>
 
-<!-- RESULTS PAGE -->
+<!-- ══════════════════════════════════════════
+     RESULTS PAGE
+══════════════════════════════════════════ -->
 <div class="page" id="page-results">
   <div class="results-wrap">
     <div class="results-header">
@@ -276,20 +393,87 @@
       <span style="font-size:16px;flex-shrink:0;">ℹ️</span>
       <p><strong>Not legal advice.</strong> CheckMyContract is an AI-powered informational tool. This analysis is for informational purposes only and does not constitute legal advice or create an attorney-client relationship. For important legal decisions, please consult a licensed attorney in your jurisdiction.</p>
     </div>
-    <button class="new-analysis-btn" onclick="showPage('upload');resetApp();">← Analyze Another Contract</button>
+    <button class="new-analysis-btn" onclick="showPage('email-gate');resetApp();">← Analyze Another Contract</button>
   </div>
 </div>
 
 <script>
+// ── State ──────────────────────────────────────────────
 var selectedFile = null;
-var fileText = '';
+var userEmail = '';
 
+// ── Page navigation ────────────────────────────────────
 function showPage(name) {
   document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   document.getElementById('page-' + name).classList.add('active');
   window.scrollTo(0, 0);
 }
 
+// ── Email gate ─────────────────────────────────────────
+async function submitEmail() {
+  var input = document.getElementById('email-input');
+  var email = input.value.trim();
+  var btn = document.getElementById('email-submit-btn');
+  var btnText = document.getElementById('email-btn-text');
+  var errorBox = document.getElementById('gate-error-box');
+
+  // Basic validation
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    errorBox.textContent = 'Please enter a valid email address.';
+    errorBox.classList.add('show');
+    return;
+  }
+  errorBox.classList.remove('show');
+
+  // Show loading state on button
+  btn.disabled = true;
+  btnText.textContent = 'Checking…';
+
+  try {
+    var res = await fetch('/api/check-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+
+    var data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || 'Something went wrong.');
+    }
+
+    if (data.allowed) {
+      // ✅ Email is good — move to upload page
+      userEmail = email;
+      // Remember them in localStorage so we can skip gate on return visits this session
+      sessionStorage.setItem('cmc_email', email);
+      showPage('upload');
+    } else {
+      // ❌ Limit hit — show upgrade message
+      document.getElementById('email-form-box').style.display = 'none';
+      document.getElementById('limit-box').classList.add('show');
+    }
+
+  } catch (err) {
+    errorBox.textContent = err.message;
+    errorBox.classList.add('show');
+  } finally {
+    btn.disabled = false;
+    btnText.textContent = 'Continue →';
+  }
+}
+
+// If the user already submitted their email this session, skip the gate
+(function checkSession() {
+  var saved = sessionStorage.getItem('cmc_email');
+  if (saved) {
+    userEmail = saved;
+    // Don't auto-skip — let them land on gate page, but pre-fill email
+    document.getElementById('email-input').value = saved;
+  }
+})();
+
+// ── File handling ──────────────────────────────────────
 var dropZone = document.getElementById('drop-zone');
 dropZone.addEventListener('dragover', function(e) { e.preventDefault(); e.stopPropagation(); dropZone.classList.add('drag-over'); });
 dropZone.addEventListener('dragleave', function(e) { e.preventDefault(); dropZone.classList.remove('drag-over'); });
@@ -309,15 +493,10 @@ function handleFile(file) {
   document.getElementById('file-size').textContent = formatBytes(file.size) + ' · Ready to analyze';
   document.getElementById('selected-file').classList.add('show');
   document.getElementById('analyze-wrap').style.display = 'block';
-  if (ext === 'txt') {
-    var r = new FileReader();
-    r.onload = function(e) { fileText = e.target.result; };
-    r.readAsText(file);
-  } else { fileText = ''; }
 }
 
 function removeFile() {
-  selectedFile = null; fileText = '';
+  selectedFile = null;
   document.getElementById('selected-file').classList.remove('show');
   document.getElementById('analyze-wrap').style.display = 'none';
   document.getElementById('file-input').value = '';
@@ -333,6 +512,7 @@ function formatBytes(b) {
 function showError(msg) { var el = document.getElementById('error-box'); el.textContent = msg; el.classList.add('show'); }
 function hideError() { document.getElementById('error-box').classList.remove('show'); }
 
+// ── Analysis ───────────────────────────────────────────
 var loadingInterval;
 function startLoadingAnimation() {
   var steps = ['lstep-1','lstep-2','lstep-3','lstep-4','lstep-5'];
@@ -358,15 +538,15 @@ async function analyzeContract() {
   resetLoadingSteps();
   startLoadingAnimation();
 
-  var contractContent = fileText || 'Freelance contract document named: ' + selectedFile.name + '. Please analyze as a typical freelance service agreement.';
-
-  var prompt = 'You are an expert contract analyst for freelancers. Analyze this contract and identify risks, red flags, and positive terms.\n\nContract:\n' + contractContent.substring(0, 6000) + '\n\nRespond with ONLY valid JSON (no markdown, no backticks, no extra text):\n{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<2-3 sentence plain English overview>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short title>","description":"<plain English for freelancer>","quote":"<excerpt or empty string>"}],"questions":["<question for client>","<question>","<question>"]}';
+  // Send the file AND the user's email to the backend
+  var formData = new FormData();
+  formData.append('file', selectedFile);
+  formData.append('email', userEmail);
 
   try {
     var response = await fetch('/api/analyze', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: prompt })
+      body: formData   // No Content-Type header — browser sets multipart automatically
     });
 
     if (!response.ok) { var errText = await response.text(); throw new Error(errText); }
@@ -389,6 +569,7 @@ async function analyzeContract() {
   }
 }
 
+// ── Render results ─────────────────────────────────────
 function renderResults(data) {
   document.getElementById('results-filename').textContent = (selectedFile ? selectedFile.name : 'contract') + ' · Analyzed just now';
   var score = data.riskScore || 50;
