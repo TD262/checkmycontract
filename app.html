@@ -701,13 +701,14 @@ function downloadPDF() {
 
     var summaryText = document.getElementById('summary-text').textContent || '';
     var summaryLines = doc.splitTextToSize(summaryText, col - 48);
+    var summaryBoxH = summaryLines.length * 14 + 48;
     doc.setFillColor(250, 248, 244);
-    doc.roundedRect(margin, y, col, summaryLines.length * 14 + 24, 4, 4, 'F');
+    doc.roundedRect(margin, y, col, summaryBoxH, 4, 4, 'F');
     doc.setFontSize(10);
     doc.setTextColor(...navy);
     doc.setFont('helvetica', 'normal');
-    doc.text(summaryLines, margin + 12, y + 18);
-    y += summaryLines.length * 18 + 40;
+    doc.text(summaryLines, margin + 16, y + 24);
+    y += summaryBoxH + 16;
 
     // ── Findings ─────────────────────────────────────────
     checkPage(40);
@@ -722,9 +723,11 @@ function downloadPDF() {
     var typeColors = { critical: red, warning: yellow, positive: green, info: teal };
 
     findings.forEach(function(f) {
-      var descLines  = doc.splitTextToSize(f.description || '', col - 88);
-      var quoteLines = f.quote ? doc.splitTextToSize('"' + f.quote + '"', col - 92) : [];
-      var blockH     = 18 + descLines.length * 13 + (quoteLines.length ? quoteLines.length * 12 + 12 : 0) + 14;
+      var descLines  = doc.splitTextToSize(f.description || '', col - 96);
+      var quoteLines = f.quote ? doc.splitTextToSize('"' + f.quote + '"', col - 96) : [];
+      var descH      = descLines.length * 14;
+      var quoteH     = quoteLines.length ? quoteLines.length * 13 + 16 : 0;
+      var blockH     = 48 + descH + quoteH;
 
       checkPage(blockH + 8);
 
