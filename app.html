@@ -783,7 +783,7 @@ function downloadPDF() {
 
     var questions = window._lastQuestions || [];
     questions.forEach(function(q, i) {
-      var qLines = doc.splitTextToSize(q, col - 32);
+      var qLines = doc.splitTextToSize(q, col - 80);
       checkPage(qLines.length * 13 + 16);
       doc.setFillColor(250, 248, 244);
       doc.roundedRect(margin, y, col, qLines.length * 13 + 16, 4, 4, 'F');
@@ -796,8 +796,8 @@ function downloadPDF() {
       doc.setFontSize(9);
       doc.setTextColor(...navy);
       doc.setFont('helvetica', 'normal');
-      doc.text(qLines, margin + 28, y + 12);
-      y += qLines.length * 13 + 22;
+      doc.text(qLines, margin + 28, y + 14);
+      y += qLines.length * 14 + 22;
     });
 
     // ── Footer on every page ─────────────────────────────
