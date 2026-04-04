@@ -73,6 +73,7 @@ export default async function handler(req, res) {
     // Increment the check count in Supabase for this email
     const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
     if (email) {
+      // Increment check count in Supabase
       await fetch(
         `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`,
         {
@@ -86,6 +87,103 @@ export default async function handler(req, res) {
           body: JSON.stringify({ checks_used: 1 })
         }
       );
+
+      // Parse the analysis result so we can use it in the email
+      const analysisText = data.content.map(b => b.text || '').join('');
+      const cleanJson = analysisText.replace(/```json|```/g, '').trim();
+      const result = JSON.parse(cleanJson);
+
+      // Build findings HTML
+      const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
+      const findingsHtml = (result.findings || []).map(f => `
+        <div style="margin-bottom:16px;padding:16px 20px;background:#f9f9f9;border-radius:8px;border-left:4px solid ${typeColors[f.type] || '#0d9e8e'};">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:${typeColors[f.type] || '#0d9e8e'};margin-bottom:4px;">${f.type}</div>
+          <div style="font-size:15px;font-weight:600;color:#0f1f3d;margin-bottom:6px;">${f.title}</div>
+          <div style="font-size:13px;color:#5a6a8a;line-height:1.6;">${f.description}</div>
+          ${f.quote ? `<div style="margin-top:10px;padding:8px 12px;background:#f0ece4;border-radius:6px;font-size:12px;color:#5a6a8a;font-style:italic;">"${f.quote}"</div>` : ''}
+        </div>
+      `).join('');
+
+      // Build questions HTML
+      const questionsHtml = (result.questions || []).map((q, i) => `
+        <div style="display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f0ece4;align-items:flex-start;">
+          <div style="min-width:24px;height:24px;background:#0f1f3d;color:#fff;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">${i + 1}</div>
+          <div style="font-size:13px;color:#1a1a2e;line-height:1.5;">${q}</div>
+        </div>
+      `).join('');
+
+      // Score color
+      const scoreColor = result.riskColor || '#ef4444';
+
+      // Send email via Resend
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'CheckMyContract <hello@checkmycontract.co>',
+          to: email,
+          subject: `Your Contract Report — ${result.riskLevel || 'Medium'} Risk`,
+          html: `
+            <div style="font-family:sans-serif;max-width:600px;margin:0 auto;color:#1a1a2e;">
+
+              <!-- Header -->
+              <div style="background:#0f1f3d;padding:28px 32px;border-radius:12px 12px 0 0;">
+                <div style="font-size:20px;font-weight:700;color:#fff;">CheckMyContract</div>
+                <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">AI-Powered Contract Review · Not legal advice</div>
+              </div>
+
+              <!-- Risk score -->
+              <div style="background:#f0ece4;padding:24px 32px;display:flex;align-items:center;gap:20px;">
+                <div style="width:64px;height:64px;border-radius:50%;border:4px solid ${scoreColor};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#0f1f3d;flex-shrink:0;">${result.riskScore}</div>
+                <div>
+                  <div style="font-size:18px;font-weight:700;color:#0f1f3d;">${result.riskLevel} Risk Contract</div>
+                  <div style="font-size:13px;color:#5a6a8a;margin-top:4px;">
+                    <span style="color:#ef4444;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='critical').length} Critical</span> &nbsp;
+                    <span style="color:#f59e0b;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='warning').length} Warnings</span> &nbsp;
+                    <span style="color:#10b981;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='positive').length} Positive</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="padding:28px 32px;">
+
+                <!-- Summary -->
+                <div style="margin-bottom:28px;">
+                  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#5a6a8a;margin-bottom:10px;">Plain English Summary</div>
+                  <div style="font-size:14px;color:#1a1a2e;line-height:1.7;padding:16px;background:#faf8f4;border-radius:8px;">${result.summary}</div>
+                </div>
+
+                <!-- Findings -->
+                <div style="margin-bottom:28px;">
+                  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#5a6a8a;margin-bottom:10px;">Detailed Findings</div>
+                  ${findingsHtml}
+                </div>
+
+                <!-- Questions -->
+                <div style="margin-bottom:28px;">
+                  <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#5a6a8a;margin-bottom:10px;">Questions to Ask Your Client</div>
+                  ${questionsHtml}
+                </div>
+
+                <!-- Disclaimer -->
+                <div style="padding:14px 18px;background:#fffbeb;border:1px solid rgba(245,166,35,0.3);border-radius:8px;font-size:12px;color:#5a6a8a;line-height:1.6;">
+                  <strong>Not legal advice.</strong> This analysis is for informational purposes only and does not constitute legal advice. For important legal decisions, please consult a licensed attorney.
+                </div>
+
+              </div>
+
+              <!-- Footer -->
+              <div style="background:#f0ece4;padding:20px 32px;border-radius:0 0 12px 12px;text-align:center;">
+                <div style="font-size:12px;color:#5a6a8a;">CheckMyContract.co · <a href="https://checkmycontract.co" style="color:#0d9e8e;">Visit site</a></div>
+              </div>
+
+            </div>
+          `
+        })
+      });
     }
 
     return res.status(200).json(data);
