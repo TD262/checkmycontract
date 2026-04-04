@@ -700,7 +700,7 @@ function downloadPDF() {
     y += 22;
 
     var summaryText = document.getElementById('summary-text').textContent || '';
-    var summaryLines = doc.splitTextToSize(summaryText, col - 24);
+    var summaryLines = doc.splitTextToSize(summaryText, col - 36);
     doc.setFillColor(250, 248, 244);
     doc.roundedRect(margin, y, col, summaryLines.length * 14 + 24, 4, 4, 'F');
     doc.setFontSize(10);
