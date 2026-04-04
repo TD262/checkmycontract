@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CheckMyContract — AI Contract Review for Freelancers</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root {
     --navy: #0f1f3d;
@@ -354,7 +355,10 @@
         <h1>Your Contract Report</h1>
         <p id="results-filename">contract.txt · Analyzed just now</p>
       </div>
-      <button class="btn btn-outline" onclick="showPage('upload');resetApp();">← New Analysis</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-primary" id="download-pdf-btn" onclick="downloadPDF()">⬇ Download PDF</button>
+        <button class="btn btn-outline" onclick="showPage('upload');resetApp();">← New Analysis</button>
+      </div>
     </div>
     <div class="risk-card">
       <div class="risk-dial">
@@ -580,6 +584,8 @@ function renderResults(data) {
   circle.style.stroke = data.riskColor || '#ef4444';
   circle.style.strokeDashoffset = 251 - (score / 100) * 251;
   var findings = data.findings || [];
+  window._lastFindings = findings;
+  window._lastQuestions = data.questions || [];
   document.getElementById('stat-critical').textContent = '🚨 ' + findings.filter(function(f){return f.type==='critical';}).length + ' Critical';
   document.getElementById('stat-warning').textContent = '⚠️ ' + findings.filter(function(f){return f.type==='warning';}).length + ' Warnings';
   document.getElementById('stat-positive').textContent = '✅ ' + findings.filter(function(f){return f.type==='positive';}).length + ' Positive';
@@ -592,7 +598,231 @@ function renderResults(data) {
   }).join('');
   showPage('results');
 }
+function downloadPDF() {
+  var btn = document.getElementById('download-pdf-btn');
+  btn.textContent = '⏳ Generating…';
+  btn.disabled = true;
 
+  try {
+    var { jsPDF } = window.jspdf;
+    var doc = new jsPDF({ unit: 'pt', format: 'a4' });
+
+    var navy   = [15, 31, 61];
+    var teal   = [13, 158, 142];
+    var red    = [239, 68, 68];
+    var yellow = [245, 158, 11];
+    var green  = [16, 185, 129];
+    var grey   = [90, 106, 138];
+    var light  = [240, 236, 228];
+
+    var pageW  = doc.internal.pageSize.getWidth();
+    var pageH  = doc.internal.pageSize.getHeight();
+    var margin = 48;
+    var col    = pageW - margin * 2;
+    var y      = 0;
+
+    function checkPage(needed) {
+      if (y + needed > pageH - 48) { doc.addPage(); y = 48; }
+    }
+
+    // ── Header bar ──────────────────────────────────────
+    doc.setFillColor(...navy);
+    doc.rect(0, 0, pageW, 64, 'F');
+    doc.setFontSize(20);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('CheckMyContract', margin, 40);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(180, 200, 220);
+    doc.text('AI-Powered Contract Review  ·  Not legal advice', margin, 54);
+
+    y = 88;
+
+    // ── File name + date ────────────────────────────────
+    var fileName = selectedFile ? selectedFile.name : 'Contract';
+    var dateStr  = new Date().toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+    doc.setFontSize(11);
+    doc.setTextColor(...grey);
+    doc.setFont('helvetica', 'normal');
+    doc.text(fileName + '   ·   Analyzed ' + dateStr, margin, y);
+    y += 28;
+
+    // ── Risk score block ────────────────────────────────
+    var score     = parseInt(document.getElementById('risk-num').textContent) || 0;
+    var riskTitle = document.getElementById('risk-title').textContent;
+    var circleEl  = document.getElementById('risk-circle');
+    var strokeHex = circleEl ? circleEl.style.stroke : '#ef4444';
+    function hexToRgb(h) {
+      var r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);
+      return r ? [parseInt(r[1],16), parseInt(r[2],16), parseInt(r[3],16)] : red;
+    }
+    var riskRgb = hexToRgb(strokeHex);
+
+    doc.setFillColor(...light);
+    doc.roundedRect(margin, y, col, 72, 6, 6, 'F');
+
+    // Circle
+    doc.setFillColor(...riskRgb);
+    doc.circle(margin + 44, y + 36, 28, 'F');
+    doc.setFillColor(255,255,255);
+    doc.circle(margin + 44, y + 36, 20, 'F');
+    doc.setFontSize(16);
+    doc.setTextColor(...navy);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(score), margin + 44, y + 41, { align: 'center' });
+
+    // Risk label
+    doc.setFontSize(14);
+    doc.setTextColor(...navy);
+    doc.setFont('helvetica', 'bold');
+    doc.text(riskTitle, margin + 86, y + 28);
+
+    // Finding counts
+    var findings  = window._lastFindings || [];
+    var nCritical = findings.filter(function(f){return f.type==='critical';}).length;
+    var nWarning  = findings.filter(function(f){return f.type==='warning';}).length;
+    var nPositive = findings.filter(function(f){return f.type==='positive';}).length;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(...red);    doc.text('🚨 ' + nCritical + ' Critical', margin + 86, y + 48);
+    doc.setTextColor(...yellow); doc.text('⚠ '  + nWarning  + ' Warnings', margin + 86 + 90, y + 48);
+    doc.setTextColor(...green);  doc.text('✓ '  + nPositive + ' Positive', margin + 86 + 180, y + 48);
+    y += 88;
+
+    // ── Summary ─────────────────────────────────────────
+    doc.setFillColor(...navy);
+    doc.roundedRect(margin, y, col, 14, 3, 3, 'F');
+    doc.setFontSize(8);
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PLAIN ENGLISH SUMMARY', margin + 10, y + 10);
+    y += 22;
+
+    var summaryText = document.getElementById('summary-text').textContent || '';
+    var summaryLines = doc.splitTextToSize(summaryText, col);
+    doc.setFillColor(250, 248, 244);
+    doc.roundedRect(margin, y, col, summaryLines.length * 15 + 20, 4, 4, 'F');
+    doc.setFontSize(10);
+    doc.setTextColor(...navy);
+    doc.setFont('helvetica', 'normal');
+    doc.text(summaryLines, margin + 12, y + 16);
+    y += summaryLines.length * 15 + 32;
+
+    // ── Findings ─────────────────────────────────────────
+    checkPage(40);
+    doc.setFillColor(...navy);
+    doc.roundedRect(margin, y, col, 14, 3, 3, 'F');
+    doc.setFontSize(8);
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('DETAILED FINDINGS', margin + 10, y + 10);
+    y += 20;
+
+    var typeColors = { critical: red, warning: yellow, positive: green, info: teal };
+
+    findings.forEach(function(f) {
+      var descLines  = doc.splitTextToSize(f.description || '', col - 80);
+      var quoteLines = f.quote ? doc.splitTextToSize('"' + f.quote + '"', col - 92) : [];
+      var blockH     = 18 + descLines.length * 13 + (quoteLines.length ? quoteLines.length * 12 + 12 : 0) + 14;
+
+      checkPage(blockH + 8);
+
+      var color = typeColors[f.type] || teal;
+      doc.setFillColor(248, 248, 252);
+      doc.roundedRect(margin, y, col, blockH, 4, 4, 'F');
+      doc.setFillColor(...color);
+      doc.roundedRect(margin, y, 4, blockH, 2, 2, 'F');
+
+      // Icon + title
+      var ix = margin + 16;
+      doc.setFontSize(14);
+      doc.text(f.icon || '📋', ix, y + 18);
+      doc.setFontSize(11);
+      doc.setTextColor(...navy);
+      doc.setFont('helvetica', 'bold');
+      doc.text(f.title || '', ix + 22, y + 18);
+
+      // Severity pill
+      doc.setFontSize(7);
+      doc.setTextColor(...color);
+      doc.setFont('helvetica', 'bold');
+      doc.text((f.type || '').toUpperCase(), pageW - margin - 8, y + 12, { align: 'right' });
+
+      // Description
+      doc.setFontSize(9);
+      doc.setTextColor(...grey);
+      doc.setFont('helvetica', 'normal');
+      doc.text(descLines, ix + 22, y + 32);
+
+      // Quote
+      if (quoteLines.length) {
+        var qy = y + 32 + descLines.length * 13 + 6;
+        doc.setFillColor(240, 236, 228);
+        doc.roundedRect(ix + 22, qy - 8, col - ix - 22 + margin - 8, quoteLines.length * 12 + 10, 3, 3, 'F');
+        doc.setFontSize(8);
+        doc.setTextColor(...grey);
+        doc.setFont('helvetica', 'italic');
+        doc.text(quoteLines, ix + 28, qy);
+      }
+
+      y += blockH + 10;
+    });
+
+    // ── Questions ────────────────────────────────────────
+    checkPage(40);
+    y += 8;
+    doc.setFillColor(...navy);
+    doc.roundedRect(margin, y, col, 14, 3, 3, 'F');
+    doc.setFontSize(8);
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica', 'bold');
+    doc.text('QUESTIONS TO ASK YOUR CLIENT', margin + 10, y + 10);
+    y += 20;
+
+    var questions = window._lastQuestions || [];
+    questions.forEach(function(q, i) {
+      var qLines = doc.splitTextToSize(q, col - 32);
+      checkPage(qLines.length * 13 + 16);
+      doc.setFillColor(250, 248, 244);
+      doc.roundedRect(margin, y, col, qLines.length * 13 + 16, 4, 4, 'F');
+      doc.setFillColor(...navy);
+      doc.circle(margin + 14, y + (qLines.length * 13 + 16) / 2, 8, 'F');
+      doc.setFontSize(8);
+      doc.setTextColor(255,255,255);
+      doc.setFont('helvetica', 'bold');
+      doc.text(String(i + 1), margin + 14, y + (qLines.length * 13 + 16) / 2 + 3, { align: 'center' });
+      doc.setFontSize(9);
+      doc.setTextColor(...navy);
+      doc.setFont('helvetica', 'normal');
+      doc.text(qLines, margin + 28, y + 12);
+      y += qLines.length * 13 + 22;
+    });
+
+    // ── Footer on every page ─────────────────────────────
+    var totalPages = doc.internal.getNumberOfPages();
+    for (var p = 1; p <= totalPages; p++) {
+      doc.setPage(p);
+      doc.setFillColor(...light);
+      doc.rect(0, pageH - 36, pageW, 36, 'F');
+      doc.setFontSize(8);
+      doc.setTextColor(...grey);
+      doc.setFont('helvetica', 'normal');
+      doc.text('CheckMyContract.co  ·  Not legal advice. For informational purposes only.', margin, pageH - 16);
+      doc.text('Page ' + p + ' of ' + totalPages, pageW - margin, pageH - 16, { align: 'right' });
+    }
+
+    // ── Save ─────────────────────────────────────────────
+    var safeName = (selectedFile ? selectedFile.name.replace(/\.[^.]+$/, '') : 'contract') + '-review.pdf';
+    doc.save(safeName);
+
+  } catch(err) {
+    alert('PDF generation failed: ' + err.message);
+  } finally {
+    btn.textContent = '⬇ Download PDF';
+    btn.disabled = false;
+  }
+}
 function resetApp() { removeFile(); resetLoadingSteps(); }
 </script>
 </body>
