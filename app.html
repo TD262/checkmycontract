@@ -685,9 +685,9 @@ function downloadPDF() {
     var nPositive = findings.filter(function(f){return f.type==='positive';}).length;
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(...red);    doc.text('🚨 ' + nCritical + ' Critical', margin + 86, y + 48);
-    doc.setTextColor(...yellow); doc.text('⚠ '  + nWarning  + ' Warnings', margin + 86 + 90, y + 48);
-    doc.setTextColor(...green);  doc.text('✓ '  + nPositive + ' Positive', margin + 86 + 180, y + 48);
+    doc.setTextColor(...red);    doc.text(nCritical + ' Critical', margin + 86, y + 48);
+    doc.setTextColor(...yellow); doc.text(nWarning  + ' Warnings', margin + 86 + 90, y + 48);
+    doc.setTextColor(...green);  doc.text(nPositive + ' Positive', margin + 86 + 180, y + 48);
     y += 88;
 
     // ── Summary ─────────────────────────────────────────
@@ -700,9 +700,9 @@ function downloadPDF() {
     y += 22;
 
     var summaryText = document.getElementById('summary-text').textContent || '';
-    var summaryLines = doc.splitTextToSize(summaryText, col);
+    var summaryLines = doc.splitTextToSize(summaryText, col - 24);
     doc.setFillColor(250, 248, 244);
-    doc.roundedRect(margin, y, col, summaryLines.length * 15 + 20, 4, 4, 'F');
+    doc.roundedRect(margin, y, col, summaryLines.length * 14 + 24, 4, 4, 'F');
     doc.setFontSize(10);
     doc.setTextColor(...navy);
     doc.setFont('helvetica', 'normal');
@@ -736,12 +736,10 @@ function downloadPDF() {
 
       // Icon + title
       var ix = margin + 16;
-      doc.setFontSize(14);
-      doc.text(f.icon || '📋', ix, y + 18);
       doc.setFontSize(11);
       doc.setTextColor(...navy);
       doc.setFont('helvetica', 'bold');
-      doc.text(f.title || '', ix + 22, y + 18);
+      doc.text(f.title || '', ix, y + 18);
 
       // Severity pill
       doc.setFontSize(7);
