@@ -4,6 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>CheckMyContract — AI Contract Review for Freelancers</title>
+<meta name="description" content="Upload your freelance contract and get a plain-English breakdown of red flags, risky clauses, and unfair terms in under 60 seconds. Free AI contract review for freelancers."/>
+<meta name="keywords" content="freelance contract review, AI contract analysis, contract red flags, freelancer legal tool"/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
@@ -207,6 +209,7 @@
   .finding-body h4 { font-size:15px; font-weight:600; color:var(--navy); margin-bottom:6px; }
   .finding-body p { font-size:13px; color:var(--text-muted); line-height:1.6; font-weight:300; }
   .clause-quote { margin-top:10px; padding:10px 14px; background:var(--cream); border-radius:8px; font-size:12px; color:var(--text-muted); font-style:italic; line-height:1.5; border-left:2px solid var(--border); }
+  .negotiate-box { margin-top:10px; padding:10px 14px; background:rgba(13,158,142,0.06); border-radius:8px; font-size:12px; color:var(--teal); line-height:1.5; border-left:2px solid var(--teal); }
 
   .questions-section { background:var(--white); border-radius:16px; padding:28px 32px; border:1px solid var(--border); margin-bottom:24px; }
   .questions-section h2 { font-family:'Instrument Serif',serif; font-size:22px; color:var(--navy); margin-bottom:16px; }
@@ -323,6 +326,7 @@
       <div class="trust-item"><div class="trust-check">✓</div> Your docs stay private</div>
       <div class="trust-item"><div class="trust-check">✓</div> No legal jargon</div>
       <div class="trust-item"><div class="trust-check">✓</div> Plain English always</div>
+      <div class="trust-item"><div class="trust-check">✓</div> Encrypted & never stored</div>
     </div>
   </div>
 </div>
@@ -387,6 +391,9 @@
     </div>
     <div class="findings-section">
       <h2>Detailed Findings</h2>
+      <div style="background:rgba(13,158,142,0.06);border:1px solid rgba(13,158,142,0.15);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--teal);line-height:1.6;">
+        💡 <strong>How to use this report:</strong> Share it with your client and use the "Ask for" suggestions to negotiate better terms before signing.
+      </div>
       <div class="findings-list" id="findings-list"></div>
     </div>
     <div class="questions-section">
@@ -575,11 +582,14 @@ async function analyzeContract() {
 
 // ── Render results ─────────────────────────────────────
 function renderResults(data) {
-  document.getElementById('results-filename').textContent = (selectedFile ? selectedFile.name : 'contract') + ' · Analyzed just now';
+  var now = new Date();
+  var dateStr = now.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+  document.getElementById('results-filename').textContent = (selectedFile ? selectedFile.name : 'contract') + ' · Analyzed ' + dateStr;
   var score = data.riskScore || 50;
   document.getElementById('risk-num').textContent = score;
-  document.getElementById('risk-title').textContent = (data.riskLevel || 'Medium') + ' Risk Contract';
-  document.getElementById('risk-desc').textContent = data.summary || '';
+  var grade = data.riskScore <= 20 ? 'A' : data.riskScore <= 40 ? 'B' : data.riskScore <= 60 ? 'C' : data.riskScore <= 80 ? 'D' : 'F';
+  document.getElementById('risk-title').textContent = (data.riskLevel || 'Medium') + ' Risk Contract · Grade ' + grade;
+  document.getElementById('results-filename').textContent += ' · ' + findings.length + ' findings';
   var circle = document.getElementById('risk-circle');
   circle.style.stroke = data.riskColor || '#ef4444';
   circle.style.strokeDashoffset = 251 - (score / 100) * 251;
@@ -591,7 +601,7 @@ function renderResults(data) {
   document.getElementById('stat-positive').textContent = '✅ ' + findings.filter(function(f){return f.type==='positive';}).length + ' Positive';
   document.getElementById('summary-text').textContent = data.summary || '';
   document.getElementById('findings-list').innerHTML = findings.map(function(f,i) {
-    return '<div class="finding-card '+f.type+'" style="animation-delay:'+(i*0.08)+'s"><div class="finding-icon-wrap">'+(f.icon||'📋')+'</div><div class="finding-body"><div class="finding-severity">'+f.type.toUpperCase()+'</div><h4>'+f.title+'</h4><p>'+f.description+'</p>'+(f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'')+'</div></div>';
+    return '<div class="finding-card '+f.type+'" style="animation-delay:'+(i*0.08)+'s"><div class="finding-icon-wrap">'+(f.icon||'📋')+'</div><div class="finding-body"><div class="finding-severity">'+f.type.toUpperCase()+'</div><h4>'+f.title+'</h4><p>'+f.description+'</p>'+(f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'')+(f.negotiate?'<div class="negotiate-box">💬 <strong>Ask for:</strong> '+f.negotiate+'</div>':'')+'</div></div>';
   }).join('');
   document.getElementById('questions-list').innerHTML = (data.questions||[]).map(function(q,i) {
     return '<div class="question-item"><div class="q-num">'+(i+1)+'</div><p>'+q+'</p></div>';
@@ -676,7 +686,8 @@ function downloadPDF() {
     doc.setFontSize(14);
     doc.setTextColor(...navy);
     doc.setFont('helvetica', 'bold');
-    doc.text(riskTitle, margin + 86, y + 28);
+    var pdfGrade = score <= 20 ? 'A' : score <= 40 ? 'B' : score <= 60 ? 'C' : score <= 80 ? 'D' : 'F';
+    doc.text(riskTitle + '  ·  Grade ' + pdfGrade, margin + 86, y + 28);
 
     // Finding counts
     var findings  = window._lastFindings || [];
@@ -725,9 +736,11 @@ function downloadPDF() {
     findings.forEach(function(f) {
       var descLines  = doc.splitTextToSize(f.description || '', col - 120);
       var quoteLines = f.quote ? doc.splitTextToSize('"' + f.quote + '"', col - 120) : [];
+      var negotiateLines = f.negotiate ? doc.splitTextToSize('Ask for: ' + f.negotiate, col - 120) : [];
       var descH      = descLines.length * 14;
       var quoteH     = quoteLines.length ? quoteLines.length * 13 + 16 : 0;
-      var blockH     = 48 + descH + quoteH;
+      var negotiateH = negotiateLines.length ? negotiateLines.length * 13 + 16 : 0;
+      var blockH     = 48 + descH + quoteH + negotiateH;
 
       checkPage(blockH + 8);
 
@@ -765,6 +778,19 @@ function downloadPDF() {
         doc.setTextColor(...grey);
         doc.setFont('helvetica', 'italic');
         doc.text(quoteLines, ix + 28, qy);
+      }
+
+      // Negotiate
+      if (negotiateLines.length) {
+        var ny = y + 32 + descLines.length * 13 + (quoteLines.length ? quoteLines.length * 13 + 16 : 0) + 6;
+        doc.setFillColor(232, 247, 245);
+        doc.roundedRect(ix + 22, ny - 8, col - ix - 22 + margin - 8, negotiateLines.length * 12 + 10, 3, 3, 'F');
+        doc.setFontSize(8);
+        doc.setTextColor(...teal);
+        doc.setFont('helvetica', 'bold');
+        doc.text('Ask for:', ix + 28, ny);
+        doc.setFont('helvetica', 'normal');
+        doc.text(negotiateLines, ix + 28, ny + 12);
       }
 
       y += blockH + 10;
