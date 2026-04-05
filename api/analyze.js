@@ -52,7 +52,41 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Could not extract text from this file. Please try a different file or paste the text directly.' });
     }
 
-    const prompt = 'You are an expert contract analyst for freelancers. Analyze this contract and identify risks, red flags, and positive terms.\n\nContract:\n' + contractText.substring(0, 6000) + '\n\nRespond with ONLY valid JSON (no markdown, no backticks, no extra text):\n{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<2-3 sentence plain English overview>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short title>","description":"<plain English for freelancer>","quote":"<excerpt or empty string>"}],"questions":["<question for client>","<question>","<question>"]}';
+    const isProUser = false; // will be true when Stripe is set up
+const charLimit = isProUser ? 15000 : 6000;
+
+const prompt = `You are an expert contract analyst specializing in freelance agreements. Your job is to protect freelancers from unfair, exploitative, and dangerous contract terms.
+
+Analyze this contract thoroughly and identify ALL risks, red flags, positive terms, and negotiation opportunities. Be specific, direct, and speak plainly to a freelancer who has no legal background.
+
+Contract:
+${contractText.substring(0, charLimit)}
+
+You MUST check every single one of these areas and report on each one you find:
+- Payment terms (amount, schedule, late fees, kill fees, deposit)
+- Revision policy (number of revisions, what counts as a revision, scope creep risk)
+- Intellectual property ownership (who owns the work, when ownership transfers)
+- Non-compete clause (restrictions on future work, duration, scope)
+- Non-solicitation clause (restrictions on working with client's contacts)
+- Confidentiality (what you can't share, for how long)
+- Termination rights (who can cancel, how much notice, what happens to payment)
+- Liability and indemnification (who is responsible if something goes wrong)
+- Dispute resolution (how disagreements are handled, which state's laws apply)
+- Governing law and jurisdiction (where legal action must take place)
+- Payment on completion vs milestones (risk of non-payment)
+- Unlimited revisions or vague scope (risk of endless unpaid work)
+- Exclusivity clauses (restrictions on working with other clients)
+
+For each finding:
+- Explain exactly how it affects the freelancer's money, career, or freedom
+- Quantify the risk where possible (e.g. "this could cost you the entire project fee")
+- Give a specific negotiation suggestion — the exact change they should ask for
+- Quote the exact clause from the contract where possible
+
+You MUST return a minimum of 8 findings. If the contract is short, dig deeper. If a clause is missing entirely, flag that as a risk too.
+
+Respond with ONLY valid JSON (no markdown, no backticks, no extra text):
+{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<3-4 sentence plain English overview that tells the freelancer exactly what kind of contract this is and what their biggest risks are>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short title>","description":"<2-3 sentence plain English explanation of the risk and exactly how it affects the freelancer>","quote":"<exact clause from contract or empty string>","negotiate":"<exact wording the freelancer should ask for instead>"}],"questions":["<specific question to ask client>","<specific question>","<specific question>","<specific question>","<specific question>"]}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -63,7 +97,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
+        max_tokens: 4000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
