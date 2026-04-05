@@ -565,6 +565,12 @@ async function analyzeContract() {
     var data = await response.json();
     var text = data.content.map(function(b) { return b.text || ''; }).join('');
     var clean = text.replace(/```json|```/g, '').trim();
+    // Find the JSON object in the response
+    var jsonStart = clean.indexOf('{');
+    var jsonEnd = clean.lastIndexOf('}');
+    if (jsonStart !== -1 && jsonEnd !== -1) {
+      clean = clean.substring(jsonStart, jsonEnd + 1);
+    }
     var result = JSON.parse(clean);
 
     clearInterval(loadingInterval);
