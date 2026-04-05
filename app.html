@@ -592,7 +592,6 @@ function renderResults(data) {
   document.getElementById('risk-num').textContent = score;
   var grade = data.riskScore <= 20 ? 'A' : data.riskScore <= 40 ? 'B' : data.riskScore <= 60 ? 'C' : data.riskScore <= 80 ? 'D' : 'F';
   document.getElementById('risk-title').textContent = (data.riskLevel || 'Medium') + ' Risk Contract · Grade ' + grade;
-  document.getElementById('results-filename').textContent += ' · ' + findings.length + ' findings';
   var circle = document.getElementById('risk-circle');
   circle.style.stroke = data.riskColor || '#ef4444';
   circle.style.strokeDashoffset = 251 - (score / 100) * 251;
