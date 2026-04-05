@@ -568,6 +568,7 @@ async function analyzeContract() {
     var jsonEnd = text.lastIndexOf('}');
     var clean = text.substring(jsonStart, jsonEnd + 1);
     var result = JSON.parse(clean);
+    console.log('Parsed result:', result);
 
     clearInterval(loadingInterval);
     ['lstep-1','lstep-2','lstep-3','lstep-4','lstep-5'].forEach(function(id) {
