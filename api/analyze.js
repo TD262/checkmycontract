@@ -97,7 +97,7 @@ Respond with ONLY valid JSON (no markdown, no backticks, no extra text):
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
+        max_tokens: 2000,
         messages: [{ role: 'user', content: prompt }]
       })
     });
