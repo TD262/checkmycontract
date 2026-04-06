@@ -688,8 +688,7 @@ function downloadPDF() {
     doc.setFontSize(14);
     doc.setTextColor(...navy);
     doc.setFont('helvetica', 'bold');
-    var pdfGrade = score <= 20 ? 'A' : score <= 40 ? 'B' : score <= 60 ? 'C' : score <= 80 ? 'D' : 'F';
-    doc.text(riskTitle + '  ·  Grade ' + pdfGrade, margin + 86, y + 28);
+    doc.text(riskTitle, margin + 86, y + 28);
 
     // Finding counts
     var findings  = window._lastFindings || [];
@@ -789,10 +788,8 @@ function downloadPDF() {
         doc.roundedRect(ix + 22, ny - 8, col - ix - 22 + margin - 8, negotiateLines.length * 12 + 10, 3, 3, 'F');
         doc.setFontSize(8);
         doc.setTextColor(...teal);
-        doc.setFont('helvetica', 'bold');
-        doc.text('Ask for:', ix + 28, ny);
         doc.setFont('helvetica', 'normal');
-        doc.text(negotiateLines, ix + 28, ny + 12);
+        doc.text(negotiateLines, ix + 28, ny);
       }
 
       y += blockH + 10;
