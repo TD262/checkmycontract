@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Freelance Contract Tips & Guides | CheckMyContract Blog</title>
+<meta name="description" content="Plain-English guides for freelancers on contracts, red flags, negotiation, and protecting yourself — so you never get burned by a bad deal again."/>
+<meta name="keywords" content="freelance contract tips, freelance contract guide, freelancer legal advice, contract negotiation for freelancers"/>
+<link rel="canonical" href="https://checkmycontract.co/blog"/>
+
+<meta property="og:title" content="Freelance Contract Tips & Guides | CheckMyContract Blog"/>
+<meta property="og:description" content="Plain-English guides for freelancers on contracts, red flags, negotiation, and protecting yourself."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://checkmycontract.co/blog"/>
+<meta property="og:site_name" content="CheckMyContract"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --teal: #0d9e8e;
+    --teal-light: #12c4b0;
+    --red: #ef4444;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --cream: #faf8f4;
+    --cream-dark: #f0ece4;
+    --text: #1a1a2e;
+    --text-muted: #5a6a8a;
+    --white: #ffffff;
+    --border: rgba(15,31,61,0.08);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
+
+  /* ── NAV ── */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:18px 48px; display:flex; align-items:center; justify-content:space-between;
+    background:rgba(250,248,244,0.95); backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo { font-family:'Instrument Serif',serif; font-size:20px; color:var(--navy); text-decoration:none; }
+  .logo span { color:var(--teal); }
+  .nav-right { display:flex; align-items:center; gap:16px; }
+  .nav-link { font-size:14px; font-weight:500; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--navy); }
+  .nav-link.active { color:var(--navy); font-weight:600; }
+  .nav-cta {
+    padding:10px 22px; background:var(--navy); color:var(--white);
+    border-radius:8px; font-size:14px; font-weight:600; text-decoration:none;
+    transition:all 0.2s;
+  }
+  .nav-cta:hover { background:var(--teal); transform:translateY(-1px); }
+
+  /* ── HERO ── */
+  .blog-hero {
+    padding:120px 24px 64px;
+    max-width:860px; margin:0 auto; text-align:center;
+  }
+  .blog-hero .eyebrow {
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(13,158,142,0.1); border:1px solid rgba(13,158,142,0.2);
+    color:var(--teal); padding:5px 16px; border-radius:100px;
+    font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    margin-bottom:24px;
+  }
+  .blog-hero h1 {
+    font-family:'Instrument Serif',serif;
+    font-size:clamp(40px,5vw,64px);
+    color:var(--navy); letter-spacing:-2px; line-height:1.05;
+    margin-bottom:20px;
+  }
+  .blog-hero h1 em { font-style:italic; color:var(--teal); }
+  .blog-hero p {
+    font-size:18px; color:var(--text-muted); font-weight:300;
+    line-height:1.7; max-width:520px; margin:0 auto;
+  }
+
+  /* ── FEATURED POST ── */
+  .featured-wrap {
+    max-width:1100px; margin:0 auto; padding:0 24px 48px;
+  }
+  .section-label {
+    font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:1px; color:var(--text-muted); margin-bottom:16px;
+  }
+  .featured-card {
+    background:var(--navy); border-radius:20px; padding:48px 52px;
+    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+    text-decoration:none; transition:transform 0.2s, box-shadow 0.2s;
+    position:relative; overflow:hidden;
+  }
+  .featured-card::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 60% 80% at 90% 50%, rgba(13,158,142,0.18) 0%, transparent 70%);
+  }
+  .featured-card:hover { transform:translateY(-4px); box-shadow:0 24px 64px rgba(15,31,61,0.2); }
+  .featured-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(239,68,68,0.2); color:#fca5a5;
+    padding:4px 12px; border-radius:100px;
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;
+    margin-bottom:16px; position:relative;
+  }
+  .featured-card h2 {
+    font-family:'Instrument Serif',serif; font-size:clamp(26px,3vw,36px);
+    color:var(--white); letter-spacing:-0.5px; line-height:1.15;
+    margin-bottom:14px; position:relative;
+  }
+  .featured-card h2 em { font-style:italic; color:var(--teal-light); }
+  .featured-card p {
+    font-size:15px; color:rgba(255,255,255,0.65);
+    font-weight:300; line-height:1.7; margin-bottom:24px; position:relative;
+  }
+  .featured-meta {
+    display:flex; align-items:center; gap:16px;
+    font-size:12px; color:rgba(255,255,255,0.4); position:relative;
+  }
+  .read-more {
+    display:inline-flex; align-items:center; gap:8px;
+    padding:12px 24px; background:var(--teal); color:var(--white);
+    border-radius:8px; font-size:13px; font-weight:600;
+    text-decoration:none; transition:all 0.2s; position:relative;
+    width:fit-content;
+  }
+  .read-more:hover { background:var(--teal-light); }
+  .featured-visual {
+    position:relative; display:flex; align-items:center; justify-content:center;
+  }
+  .featured-icon-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; max-width:240px;
+  }
+  .icon-tile {
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+    border-radius:12px; padding:16px; text-align:center;
+    font-size:24px; aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  }
+  .icon-tile.highlight {
+    background:rgba(13,158,142,0.2); border-color:rgba(13,158,142,0.3);
+  }
+
+  /* ── ARTICLES GRID ── */
+  .articles-wrap {
+    max-width:1100px; margin:0 auto; padding:0 24px 80px;
+  }
+  .articles-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:24px; flex-wrap:wrap; gap:12px;
+  }
+  .filter-tabs { display:flex; gap:8px; flex-wrap:wrap; }
+  .filter-tab {
+    padding:7px 16px; border-radius:100px; font-size:13px; font-weight:600;
+    border:1.5px solid var(--border); background:var(--white);
+    color:var(--text-muted); cursor:pointer; transition:all 0.2s;
+  }
+  .filter-tab.active, .filter-tab:hover {
+    background:var(--navy); color:var(--white); border-color:var(--navy);
+  }
+
+  .articles-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+    gap:24px;
+  }
+  .article-card {
+    background:var(--white); border:1px solid var(--border);
+    border-radius:16px; padding:28px; text-decoration:none;
+    transition:all 0.2s; display:flex; flex-direction:column;
+  }
+  .article-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(15,31,61,0.08); border-color:rgba(13,158,142,0.2); }
+  .article-tag {
+    display:inline-flex; align-items:center; gap:5px;
+    font-size:11px; font-weight:700; text-transform:uppercase;
+    letter-spacing:0.5px; margin-bottom:14px; padding:3px 10px;
+    border-radius:100px; width:fit-content;
+  }
+  .tag-redflag { background:rgba(239,68,68,0.08); color:var(--red); }
+  .tag-negotiation { background:rgba(13,158,142,0.08); color:var(--teal); }
+  .tag-education { background:rgba(15,31,61,0.07); color:var(--navy); }
+  .tag-templates { background:rgba(245,158,11,0.1); color:#b45309; }
+  .tag-protection { background:rgba(16,185,129,0.08); color:#047857; }
+
+  .article-card h3 {
+    font-size:18px; font-weight:700; color:var(--navy);
+    line-height:1.35; margin-bottom:10px; letter-spacing:-0.2px;
+  }
+  .article-card p {
+    font-size:13px; color:var(--text-muted); line-height:1.65;
+    font-weight:300; flex:1; margin-bottom:20px;
+  }
+  .article-footer {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; border-top:1px solid var(--cream-dark);
+  }
+  .article-meta { font-size:12px; color:var(--text-muted); }
+  .article-arrow {
+    width:32px; height:32px; border-radius:50%;
+    background:var(--cream-dark); display:flex; align-items:center; justify-content:center;
+    font-size:14px; transition:all 0.2s;
+  }
+  .article-card:hover .article-arrow { background:var(--navy); color:var(--white); }
+
+  /* ── COMING SOON CARD ── */
+  .coming-soon {
+    background:var(--cream-dark); border:1.5px dashed rgba(15,31,61,0.15);
+    border-radius:16px; padding:28px; opacity:0.6;
+    pointer-events:none;
+  }
+  .coming-soon .article-tag { background:rgba(15,31,61,0.05); color:var(--text-muted); }
+  .coming-soon h3 { color:var(--text-muted); }
+  .coming-badge {
+    display:inline-block; padding:3px 10px; background:var(--cream);
+    border:1px solid var(--border); border-radius:100px;
+    font-size:11px; font-weight:600; color:var(--text-muted);
+    margin-top:auto;
+  }
+
+  /* ── NEWSLETTER / CTA ── */
+  .cta-strip {
+    max-width:1100px; margin:0 auto; padding:0 24px 80px;
+  }
+  .cta-inner {
+    background:var(--navy); border-radius:20px; padding:48px 52px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:32px; flex-wrap:wrap; position:relative; overflow:hidden;
+  }
+  .cta-inner::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 50% 100% at 100% 50%, rgba(13,158,142,0.15) 0%, transparent 70%);
+  }
+  .cta-text { position:relative; }
+  .cta-text h2 {
+    font-family:'Instrument Serif',serif; font-size:30px;
+    color:var(--white); letter-spacing:-0.5px; margin-bottom:8px;
+  }
+  .cta-text h2 em { font-style:italic; color:var(--teal-light); }
+  .cta-text p { font-size:15px; color:rgba(255,255,255,0.6); font-weight:300; line-height:1.6; }
+  .cta-action { position:relative; flex-shrink:0; text-align:center; }
+  .cta-btn {
+    display:inline-block; padding:16px 36px;
+    background:var(--teal); color:var(--white);
+    border-radius:10px; font-size:15px; font-weight:600;
+    text-decoration:none; transition:all 0.2s; white-space:nowrap;
+  }
+  .cta-btn:hover { background:var(--teal-light); transform:translateY(-2px); box-shadow:0 8px 28px rgba(13,158,142,0.4); }
+  .cta-note { font-size:12px; color:rgba(255,255,255,0.35); margin-top:10px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background:var(--navy); padding:48px;
+    text-align:center;
+  }
+  .footer-logo { font-family:'Instrument Serif',serif; font-size:22px; color:var(--white); margin-bottom:8px; }
+  .footer-logo span { color:var(--teal); }
+  footer p { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; }
+  footer a { color:rgba(255,255,255,0.5); text-decoration:none; transition:color 0.2s; }
+  footer a:hover { color:var(--teal); }
+
+  @media(max-width:860px) {
+    nav { padding:16px 20px; }
+    .featured-card { grid-template-columns:1fr; padding:32px 28px; }
+    .featured-visual { display:none; }
+    .blog-hero { padding:100px 20px 48px; }
+    .cta-inner { padding:32px 28px; flex-direction:column; }
+    footer { padding:40px 20px; }
+  }
+  @media(max-width:480px) {
+    .articles-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="logo">Check<span>My</span>Contract</a>
+  <div class="nav-right">
+    <a href="/blog" class="nav-link active">Blog</a>
+    <a href="/app" class="nav-cta">Check My Contract Free →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="blog-hero">
+  <div class="eyebrow">📚 Freelancer Resource Hub</div>
+  <h1>Know what you're<br/><em>agreeing to.</em></h1>
+  <p>Plain-English guides on contracts, red flags, and negotiation — so you never get burned by a bad deal again.</p>
+</div>
+
+<!-- FEATURED POST -->
+<div class="featured-wrap">
+  <div class="section-label">Featured Article</div>
+  <a href="/blog/freelance-contract-red-flags" class="featured-card">
+    <div>
+      <div class="featured-tag">🚨 Red Flags</div>
+      <h2>10 Freelance Contract<br/><em>Red Flags</em> You Should Never Ignore</h2>
+      <p>Most freelancers sign bad contracts because they don't know what to look for. Here are the 10 warning signs — and exactly what to do about each one before you sign.</p>
+      <div class="featured-meta">
+        <span>⏱ 8 min read</span>
+        <span>· 2025</span>
+      </div>
+      <div style="margin-top:20px;">
+        <div class="read-more">Read Article →</div>
+      </div>
+    </div>
+    <div class="featured-visual">
+      <div class="featured-icon-grid">
+        <div class="icon-tile highlight">💰</div>
+        <div class="icon-tile">📝</div>
+        <div class="icon-tile">⚠️</div>
+        <div class="icon-tile highlight">🔒</div>
+      </div>
+    </div>
+  </a>
+</div>
+
+<!-- ARTICLES GRID -->
+<div class="articles-wrap">
+  <div class="articles-header">
+    <div class="section-label" style="margin-bottom:0;">All Articles</div>
+  </div>
+
+  <div class="articles-grid">
+
+    <!-- Article 1 — LIVE -->
+    <a href="/blog/freelance-contract-red-flags" class="article-card">
+      <div class="article-tag tag-redflag">🚨 Red Flags</div>
+      <h3>10 Freelance Contract Red Flags You Should Never Ignore</h3>
+      <p>Vague payment terms, unlimited revisions, immediate IP transfer — the 10 most dangerous clauses and what to do about each one.</p>
+      <div class="article-footer">
+        <div class="article-meta">8 min read</div>
+        <div class="article-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- Article 2 — Coming soon -->
+    <div class="article-card coming-soon">
+      <div class="article-tag">💬 Negotiation</div>
+      <h3>How to Negotiate a Freelance Contract Without Losing the Client</h3>
+      <p>Scripts, strategies, and the exact language to use when pushing back on unfair terms — professionally and confidently.</p>
+      <div class="coming-badge">Coming soon</div>
+    </div>
+
+    <!-- Article 3 — Coming soon -->
+    <div class="article-card coming-soon">
+      <div class="article-tag">📖 Education</div>
+      <h3>Every Freelance Contract Clause Explained in Plain English</h3>
+      <p>From indemnification to governing law — what every clause actually means for you and your business.</p>
+      <div class="coming-badge">Coming soon</div>
+    </div>
+
+    <!-- Article 4 — Coming soon -->
+    <div class="article-card coming-soon">
+      <div class="article-tag">✅ Templates</div>
+      <h3>What Every Freelance Contract Should Include</h3>
+      <p>The essential clauses that protect you — and what happens if any of them are missing from your agreement.</p>
+      <div class="coming-badge">Coming soon</div>
+    </div>
+
+    <!-- Article 5 — Coming soon -->
+    <div class="article-card coming-soon">
+      <div class="article-tag">🛡 Protection</div>
+      <h3>How to Protect Your Intellectual Property as a Freelancer</h3>
+      <p>Who owns your work, when ownership transfers, and how to make sure you never accidentally give away your creative output.</p>
+      <div class="coming-badge">Coming soon</div>
+    </div>
+
+    <!-- Article 6 — Coming soon -->
+    <div class="article-card coming-soon">
+      <div class="article-tag">💰 Getting Paid</div>
+      <h3>How to Make Sure You Always Get Paid as a Freelancer</h3>
+      <p>Deposits, payment schedules, kill fees, and the contract language that protects your income when clients go silent.</p>
+      <div class="coming-badge">Coming soon</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <h2>Have a contract<br/><em>right now?</em></h2>
+      <p>Don't read another word before you check it. Upload your contract and get a full AI analysis — risk score, every red flag flagged, and specific negotiation suggestions — in under 60 seconds.</p>
+    </div>
+    <div class="cta-action">
+      <a href="/app" class="cta-btn">Analyze My Contract Free →</a>
+      <div class="cta-note">Free · PDF, DOC, DOCX, TXT · No account needed</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Check<span>My</span>Contract</div>
+  <p style="margin-top:8px;">AI-powered contract review for freelancers.</p>
+  <p style="margin-top:16px;">
+    <a href="/">Home</a> &nbsp;·&nbsp;
+    <a href="/app">App</a> &nbsp;·&nbsp;
+    <a href="/blog">Blog</a> &nbsp;·&nbsp;
+    <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
+    <a href="/terms">Terms</a>
+  </p>
+  <p style="margin-top:16px;">Not legal advice. For informational purposes only.</p>
+</footer>
+
+</body>
+</html>
