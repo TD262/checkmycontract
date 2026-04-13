@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Every Freelance Contract Clause Explained in Plain English | CheckMyContract</title>
+<meta name="description" content="A complete plain-English guide to every clause in a freelance contract — from indemnification to governing law — so you know exactly what you're agreeing to before you sign."/>
+<meta name="keywords" content="freelance contract clauses explained, what does indemnification mean, freelance contract terms, contract clause guide"/>
+<link rel="canonical" href="https://checkmycontract.co/blog/freelance-contract-clauses-explained"/>
+
+<meta property="og:title" content="Every Freelance Contract Clause Explained in Plain English"/>
+<meta property="og:description" content="A complete plain-English guide to every clause in a freelance contract — so you know exactly what you're agreeing to before you sign."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://checkmycontract.co/blog/freelance-contract-clauses-explained"/>
+<meta property="og:site_name" content="CheckMyContract"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Every Freelance Contract Clause Explained in Plain English",
+  "description": "A complete plain-English guide to every clause in a freelance contract — so you know exactly what you're agreeing to before you sign.",
+  "author": { "@type": "Organization", "name": "CheckMyContract" },
+  "publisher": { "@type": "Organization", "name": "CheckMyContract", "url": "https://checkmycontract.co" },
+  "mainEntityOfPage": "https://checkmycontract.co/blog/freelance-contract-clauses-explained"
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --teal: #0d9e8e;
+    --teal-light: #12c4b0;
+    --red: #ef4444;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --cream: #faf8f4;
+    --cream-dark: #f0ece4;
+    --text: #1a1a2e;
+    --text-muted: #5a6a8a;
+    --white: #ffffff;
+    --border: rgba(15,31,61,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:18px 48px; display:flex; align-items:center; justify-content:space-between;
+    background:rgba(250,248,244,0.95); backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo { font-family:'Instrument Serif',serif; font-size:20px; color:var(--navy); text-decoration:none; }
+  .logo span { color:var(--teal); }
+  .nav-right { display:flex; align-items:center; gap:16px; }
+  .nav-link { font-size:14px; font-weight:500; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--navy); }
+  .nav-cta { padding:10px 22px; background:var(--navy); color:var(--white); border-radius:8px; font-size:14px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+  .nav-cta:hover { background:var(--teal); transform:translateY(-1px); }
+
+  .post-hero { padding:120px 24px 60px; max-width:760px; margin:0 auto; text-align:center; }
+  .post-category { display:inline-flex; align-items:center; gap:8px; background:rgba(15,31,61,0.07); border:1px solid rgba(15,31,61,0.12); color:var(--navy); padding:5px 14px; border-radius:100px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:24px; }
+  .post-hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(36px,5vw,56px); color:var(--navy); letter-spacing:-1.5px; line-height:1.08; margin-bottom:20px; }
+  .post-hero h1 em { font-style:italic; color:var(--teal); }
+  .post-hero .subtitle { font-size:18px; color:var(--text-muted); font-weight:300; line-height:1.7; max-width:560px; margin:0 auto 32px; }
+  .post-meta { display:flex; align-items:center; justify-content:center; gap:20px; font-size:13px; color:var(--text-muted); flex-wrap:wrap; }
+
+  .post-layout { max-width:1100px; margin:0 auto; padding:0 24px 100px; display:grid; grid-template-columns:1fr 300px; gap:60px; align-items:start; }
+
+  .post-body { min-width:0; }
+  .post-body p { font-size:16px; line-height:1.8; color:var(--text); font-weight:300; margin-bottom:20px; }
+  .post-body strong { font-weight:600; color:var(--navy); }
+  .post-body h2 { font-family:'Instrument Serif',serif; font-size:30px; color:var(--navy); letter-spacing:-0.5px; margin:48px 0 16px; line-height:1.15; }
+  .post-body h3 { font-size:18px; font-weight:700; color:var(--navy); margin:32px 0 12px; }
+
+  /* CLAUSE CARDS */
+  .clause-card {
+    background:var(--white); border:1px solid var(--border);
+    border-radius:16px; padding:28px 32px; margin:24px 0;
+  }
+  .clause-header { display:flex; align-items:flex-start; gap:16px; margin-bottom:16px; }
+  .clause-icon { font-size:28px; flex-shrink:0; margin-top:2px; }
+  .clause-title-wrap { flex:1; }
+  .clause-name { font-size:18px; font-weight:700; color:var(--navy); margin-bottom:4px; }
+  .clause-aka { font-size:12px; color:var(--text-muted); font-style:italic; }
+  .danger-pill {
+    display:inline-flex; align-items:center; padding:3px 10px;
+    border-radius:100px; font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.3px; white-space:nowrap; flex-shrink:0;
+  }
+  .danger-high { background:rgba(239,68,68,0.1); color:var(--red); }
+  .danger-medium { background:rgba(245,158,11,0.1); color:#92400e; }
+  .danger-low { background:rgba(16,185,129,0.1); color:#047857; }
+
+  .clause-what { margin-bottom:14px; }
+  .clause-what h4 { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.8px; color:var(--text-muted); margin-bottom:6px; }
+  .clause-what p { font-size:14px; color:var(--text); line-height:1.7; font-weight:300; margin:0; }
+
+  .clause-watchout {
+    background:rgba(239,68,68,0.04); border:1px solid rgba(239,68,68,0.12);
+    border-radius:8px; padding:12px 16px; margin-top:12px;
+    font-size:13px; color:#7f1d1d; line-height:1.6;
+  }
+  .clause-watchout strong { color:var(--red); }
+
+  .clause-good {
+    background:rgba(16,185,129,0.04); border:1px solid rgba(16,185,129,0.15);
+    border-radius:8px; padding:12px 16px; margin-top:12px;
+    font-size:13px; color:#064e3b; line-height:1.6;
+  }
+  .clause-good strong { color:var(--green); }
+
+  .clause-example {
+    margin-top:12px; padding:10px 14px;
+    background:var(--cream); border-radius:8px;
+    font-size:12px; color:var(--text-muted); font-style:italic; line-height:1.6;
+    border-left:2px solid var(--cream-dark);
+  }
+
+  /* CALLOUT */
+  .callout { background:var(--navy); border-radius:16px; padding:28px 32px; margin:36px 0; position:relative; overflow:hidden; }
+  .callout::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(13,158,142,0.2) 0%,transparent 70%); }
+  .callout h3 { font-size:16px; font-weight:700; color:var(--white); margin-bottom:10px; position:relative; }
+  .callout p { font-size:14px; color:rgba(255,255,255,0.75); line-height:1.7; font-weight:300; position:relative; }
+
+  .tip-box { background:rgba(13,158,142,0.06); border:1px solid rgba(13,158,142,0.2); border-radius:12px; padding:20px 24px; margin:28px 0; font-size:14px; color:var(--text); line-height:1.7; }
+  .tip-box strong { color:var(--teal); }
+
+  /* CTA */
+  .cta-box { background:var(--navy); border-radius:20px; padding:36px 40px; margin:48px 0; text-align:center; position:relative; overflow:hidden; }
+  .cta-box::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 90% at 50% 50%,rgba(13,158,142,0.2) 0%,transparent 70%); }
+  .cta-box h3 { font-family:'Instrument Serif',serif; font-size:28px; color:var(--white); margin-bottom:12px; position:relative; }
+  .cta-box h3 em { font-style:italic; color:var(--teal-light); }
+  .cta-box p { font-size:15px; color:rgba(255,255,255,0.7); font-weight:300; line-height:1.6; margin-bottom:24px; position:relative; }
+  .cta-btn { display:inline-block; padding:16px 36px; background:var(--teal); color:var(--white); border-radius:10px; font-size:15px; font-weight:600; text-decoration:none; transition:all 0.2s; position:relative; }
+  .cta-btn:hover { background:var(--teal-light); transform:translateY(-2px); box-shadow:0 8px 28px rgba(13,158,142,0.4); }
+  .cta-note { font-size:12px; color:rgba(255,255,255,0.4); margin-top:14px; position:relative; }
+
+  /* SIDEBAR */
+  .sidebar { position:sticky; top:96px; }
+  .sidebar-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px; }
+  .sidebar-card h4 { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:16px; }
+  .toc-list { list-style:none; }
+  .toc-list li { margin-bottom:8px; }
+  .toc-list a { font-size:13px; color:var(--text-muted); text-decoration:none; font-weight:500; transition:color 0.2s; line-height:1.4; display:block; }
+  .toc-list a:hover { color:var(--teal); }
+  .sidebar-cta { background:var(--navy); border-radius:16px; padding:24px; text-align:center; }
+  .sidebar-cta h4 { font-size:15px; font-weight:700; color:var(--white); margin-bottom:8px; }
+  .sidebar-cta p { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.6; margin-bottom:16px; }
+  .sidebar-cta a { display:block; padding:12px; background:var(--teal); color:var(--white); border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+  .sidebar-cta a:hover { background:var(--teal-light); }
+  .sidebar-cta .free-note { font-size:11px; color:rgba(255,255,255,0.4); margin-top:8px; }
+
+  /* RELATED */
+  .related-section { max-width:1100px; margin:0 auto; padding:0 24px 80px; }
+  .related-section h2 { font-family:'Instrument Serif',serif; font-size:28px; color:var(--navy); margin-bottom:24px; }
+  .related-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  .related-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; text-decoration:none; transition:all 0.2s; display:block; }
+  .related-card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(15,31,61,0.08); }
+  .related-tag { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--teal); margin-bottom:10px; }
+  .related-card h3 { font-size:16px; font-weight:600; color:var(--navy); line-height:1.4; margin-bottom:8px; }
+  .related-card p { font-size:13px; color:var(--text-muted); line-height:1.5; font-weight:300; }
+
+  footer { background:var(--navy); padding:48px; text-align:center; }
+  .footer-logo { font-family:'Instrument Serif',serif; font-size:22px; color:var(--white); margin-bottom:8px; }
+  .footer-logo span { color:var(--teal); }
+  footer p { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; }
+  footer a { color:rgba(255,255,255,0.5); text-decoration:none; }
+  footer a:hover { color:var(--teal); }
+
+  @media(max-width:860px) {
+    nav { padding:16px 20px; }
+    .post-layout { grid-template-columns:1fr; }
+    .sidebar { display:none; }
+    .post-hero { padding:100px 20px 40px; }
+    footer { padding:40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Check<span>My</span>Contract</a>
+  <div class="nav-right">
+    <a href="/blog" class="nav-link">← Blog</a>
+    <a href="/app" class="nav-cta">Check My Contract Free →</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-category">📖 Education</div>
+  <h1>Every Freelance Contract Clause<br/><em>Explained in Plain English</em></h1>
+  <p class="subtitle">Indemnification. Governing law. Work for hire. These terms sound intimidating — but they're not complicated once someone explains them clearly. Here's every clause you'll encounter, and exactly what it means for you.</p>
+  <div class="post-meta">
+    <span>📅 2025</span>
+    <span>⏱ 11 min read</span>
+    <span>✍️ CheckMyContract</span>
+  </div>
+</div>
+
+<div class="post-layout">
+  <article class="post-body">
+
+    <p>You've received a freelance contract. It's full of words like "indemnification," "intellectual property assignment," and "governing law." You're not sure if any of it is a problem — or what half of it even means.</p>
+
+    <p>You're not alone. Most freelancers feel this way. Legal language is deliberately precise, which often makes it feel more complicated than it actually is.</p>
+
+    <p>This guide breaks down every major clause you'll find in a freelance contract — what it means in plain English, what to watch out for, and what a fair version looks like.</p>
+
+    <div class="callout">
+      <h3>Want this done automatically?</h3>
+      <p>CheckMyContract reads your contract and explains every clause in plain English — plus flags the risky ones and tells you what to ask for instead. Upload yours free in under 60 seconds.</p>
+    </div>
+
+    <h2>The Clauses You'll Find in Almost Every Freelance Contract</h2>
+
+    <!-- 1. SCOPE OF WORK -->
+    <div class="clause-card" id="scope">
+      <div class="clause-header">
+        <div class="clause-icon">📋</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Scope of Work</div>
+          <div class="clause-aka">Also called: Statement of Work, Deliverables, Services</div>
+        </div>
+        <div class="danger-pill danger-high">High risk if vague</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This defines exactly what you're being hired to do. It should list every deliverable — what you'll create, in what format, by when, and to what standard. This is the single most important clause in the contract.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Vague language like "complete the project as discussed" or "ongoing support as needed." If it's not written down, the client can claim it was always part of the deal.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> A detailed list of specific deliverables — page counts, file formats, features, word counts — plus an explicit statement that anything not listed requires a separate agreement.</div>
+    </div>
+
+    <!-- 2. PAYMENT TERMS -->
+    <div class="clause-card" id="payment">
+      <div class="clause-header">
+        <div class="clause-icon">💰</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Payment Terms</div>
+          <div class="clause-aka">Also called: Compensation, Fees, Invoicing</div>
+        </div>
+        <div class="danger-pill danger-high">High risk if vague</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This covers how much you'll be paid, when you'll be paid, and how. It should include the total fee or rate, payment schedule (upfront deposit, milestones, or on completion), invoice payment window (e.g. Net-14 means they have 14 days to pay after you invoice), and late payment penalties.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> "Payment upon satisfactory completion" — this gives the client unlimited power to delay payment by claiming they're not satisfied. Also watch for no deposit required, which means you carry all the financial risk.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> 50% deposit before work begins, 50% due within 14 days of delivery. Late payments incur a 1.5% monthly fee.</div>
+    </div>
+
+    <!-- 3. REVISIONS -->
+    <div class="clause-card" id="revisions">
+      <div class="clause-header">
+        <div class="clause-icon">✏️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Revision Policy</div>
+          <div class="clause-aka">Also called: Revisions, Amendments, Change Requests</div>
+        </div>
+        <div class="danger-pill danger-high">High risk if unlimited</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This defines how many rounds of changes are included in your fee, what counts as a revision versus a new request, and what happens if the client wants more changes than the contract allows.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> "Revisions until client satisfaction" or no revision clause at all. Both mean unlimited unpaid revisions.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Two rounds of consolidated revisions included. Additional revisions billed at $X/hour. New creative directions constitute a new project.</div>
+    </div>
+
+    <!-- 4. IP OWNERSHIP -->
+    <div class="clause-card" id="ip">
+      <div class="clause-header">
+        <div class="clause-icon">©️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Intellectual Property (IP) Ownership</div>
+          <div class="clause-aka">Also called: Work for Hire, Copyright Assignment, IP Transfer</div>
+        </div>
+        <div class="danger-pill danger-high">Critical — read carefully</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>By default, you own everything you create. This clause determines when — and if — ownership transfers to the client. "Work for hire" means the client owns it from the moment it's created. "IP assignment upon payment" means you own it until they pay you in full. The timing matters enormously.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> IP transferring upon delivery rather than upon payment. If the client receives your work and then refuses to pay, you've lost both the payment and your ownership rights.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> All intellectual property transfers to Client upon receipt of full and final payment. Until payment is received, Freelancer retains all rights.</div>
+      <div class="clause-example">"Work for hire" is a specific legal term in US copyright law. If the contract says "this is a work for hire," the client owns the copyright automatically — even your right to be credited as the creator.</div>
+    </div>
+
+    <!-- 5. CONFIDENTIALITY -->
+    <div class="clause-card" id="confidentiality">
+      <div class="clause-header">
+        <div class="clause-icon">🔒</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Confidentiality / NDA</div>
+          <div class="clause-aka">Also called: Non-Disclosure Agreement, Confidentiality Agreement</div>
+        </div>
+        <div class="danger-pill danger-medium">Medium risk</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>You agree to keep certain information about the client or project private. This is reasonable — clients have legitimate business secrets. The question is how broad the clause is, how long it lasts, and whether it prevents you from showing the work in your portfolio.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Clauses that prevent you from even mentioning the client's name or showing finished work in your portfolio. Your portfolio is your livelihood — losing the right to display your work can directly hurt your future income.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Confidentiality applies to business information, trade secrets, and client data — not to the existence of the project or the finished deliverables. Portfolio usage is explicitly permitted.</div>
+    </div>
+
+    <!-- 6. NON-COMPETE -->
+    <div class="clause-card" id="noncompete">
+      <div class="clause-header">
+        <div class="clause-icon">🚫</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Non-Compete Clause</div>
+          <div class="clause-aka">Also called: Non-Competition, Competitive Restriction</div>
+        </div>
+        <div class="danger-pill danger-high">High risk — often unenforceable</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>You agree not to work with competitors of the client for a set period of time after the project ends. For employees, this is common. For freelancers, it can be devastating — especially if the restricted industry is your primary market.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Broad industry definitions, long durations (anything over 6 months is unusual for freelancers), and geographic scope. A clause saying you can't work with any "digital marketing company" for 2 years could effectively shut down your business.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Either no non-compete at all, or a narrow version: "Freelancer agrees not to directly solicit Client's existing customers for 6 months following project completion."</div>
+    </div>
+
+    <!-- 7. NON-SOLICITATION -->
+    <div class="clause-card" id="nonsolicitation">
+      <div class="clause-header">
+        <div class="clause-icon">🤝</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Non-Solicitation Clause</div>
+          <div class="clause-aka">Also called: Non-Solicitation Agreement</div>
+        </div>
+        <div class="danger-pill danger-medium">Medium risk</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>You agree not to approach the client's employees, contractors, or customers to offer them your services directly. This is different from a non-compete — it's narrower and generally more reasonable. You can still work in the same industry; you just can't poach their people or clients.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Clauses that are so broad they prevent you from working with anyone who has ever interacted with the client's business, or that last longer than 12 months.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Narrow, time-limited (6–12 months), and limited to existing clients and employees — not every company in the same market.</div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Don't want to decode<br/><em>your contract yourself?</em></h3>
+      <p>Upload it to CheckMyContract and we'll explain every clause in plain English, flag the risky ones, and tell you exactly what to ask for. Free.</p>
+      <a href="/app" class="cta-btn">Analyze My Contract Free →</a>
+      <div class="cta-note">Free · No account needed · Results in 60 seconds</div>
+    </div>
+
+    <!-- 8. TERMINATION -->
+    <div class="clause-card" id="termination">
+      <div class="clause-header">
+        <div class="clause-icon">🚪</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Termination Clause</div>
+          <div class="clause-aka">Also called: Cancellation, Early Termination</div>
+        </div>
+        <div class="danger-pill danger-high">High risk if one-sided</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This defines who can end the contract, how much notice they have to give, and what happens to payment when they do. A good termination clause protects you if the client cancels mid-project — through a kill fee (a percentage of the remaining contract value you're owed even if they cancel).</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Contracts where the client can cancel any time for any reason with no financial obligation, but you're required to give 30 days notice or finish the project first. This asymmetry leaves you completely exposed.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Either party may terminate with 14 days written notice. If Client terminates after work has begun, Client owes Freelancer for all work completed to date plus a kill fee of 25% of the remaining contract value.</div>
+    </div>
+
+    <!-- 9. INDEMNIFICATION -->
+    <div class="clause-card" id="indemnification">
+      <div class="clause-header">
+        <div class="clause-icon">⚖️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Indemnification Clause</div>
+          <div class="clause-aka">Also called: Hold Harmless, Indemnity</div>
+        </div>
+        <div class="danger-pill danger-high">High risk — often overlooked</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>Plain English: if something goes wrong and someone gets sued, this clause determines who pays. An indemnification clause typically says you agree to cover the client's legal costs if a third party sues them over your work. The danger is how broadly it's written — some clauses make you liable for things that are entirely outside your control.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> One-sided indemnification (you cover them but they don't cover you), and clauses with no dollar cap on your liability. If the clause has no ceiling, you could theoretically be on the hook for millions.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Mutual indemnification (each party covers their own mistakes) plus a liability cap: "In no event shall either party's liability exceed the total fees paid under this agreement."</div>
+    </div>
+
+    <!-- 10. DISPUTE RESOLUTION -->
+    <div class="clause-card" id="dispute">
+      <div class="clause-header">
+        <div class="clause-icon">🏛️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Dispute Resolution</div>
+          <div class="clause-aka">Also called: Arbitration Clause, Mediation</div>
+        </div>
+        <div class="danger-pill danger-medium">Medium risk</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This defines how disagreements are handled if they can't be resolved informally. Options include going to court, mediation (a neutral third party helps you reach a deal), or arbitration (a neutral third party makes a binding decision). Many contracts require arbitration instead of court — this is generally fine for freelancers, but read the details.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Arbitration clauses that require you to use a specific (expensive) arbitration service, waive your right to a class action, or require you to travel to a distant location for proceedings.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Disputes first go to mediation. If unresolved, binding arbitration through a neutral service like JAMS or AAA, conducted remotely.</div>
+    </div>
+
+    <!-- 11. GOVERNING LAW -->
+    <div class="clause-card" id="governing">
+      <div class="clause-header">
+        <div class="clause-icon">🗺️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Governing Law & Jurisdiction</div>
+          <div class="clause-aka">Also called: Choice of Law, Venue</div>
+        </div>
+        <div class="danger-pill danger-medium">Medium risk</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This determines which state's (or country's) laws apply to the contract, and where any legal proceedings would take place. If you're in California and the contract says disputes must be resolved in New York courts, you'd have to file legal action in New York — which is expensive and often impractical.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Jurisdiction being set in the client's location when you're in a different state or country. This is often used as a deterrent — making it too expensive for you to pursue a legitimate claim.</div>
+      <div class="clause-good"><strong>✓ What good looks like:</strong> Your own state, or a mutual agreement on remote arbitration so location doesn't matter.</div>
+    </div>
+
+    <!-- 12. FORCE MAJEURE -->
+    <div class="clause-card" id="forcemajeure">
+      <div class="clause-header">
+        <div class="clause-icon">🌪️</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Force Majeure</div>
+          <div class="clause-aka">Also called: Act of God clause</div>
+        </div>
+        <div class="danger-pill danger-low">Low risk — standard</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>If something completely outside either party's control — a natural disaster, pandemic, war — prevents the contract from being fulfilled, neither party is held liable for the failure. This is standard in most contracts and generally not a concern for freelancers.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Overly broad definitions that allow the client to invoke force majeure for things that aren't truly unforeseeable — like a change in their budget or priorities.</div>
+    </div>
+
+    <!-- 13. ENTIRE AGREEMENT -->
+    <div class="clause-card" id="entireagreement">
+      <div class="clause-header">
+        <div class="clause-icon">📌</div>
+        <div class="clause-title-wrap">
+          <div class="clause-name">Entire Agreement Clause</div>
+          <div class="clause-aka">Also called: Integration Clause, Merger Clause</div>
+        </div>
+        <div class="danger-pill danger-medium">Important to understand</div>
+      </div>
+      <div class="clause-what">
+        <h4>What it means</h4>
+        <p>This clause says the written contract is the complete and final agreement between you and the client — and that anything discussed or promised before signing (emails, calls, verbal agreements) is no longer binding. Only what's written in the contract counts.</p>
+      </div>
+      <div class="clause-watchout"><strong>⚠️ Watch out for:</strong> Signing a contract with an entire agreement clause when the client has made verbal promises that aren't in the document. Once you sign, those promises are legally gone.</div>
+      <div class="clause-good"><strong>✓ What to do:</strong> Make sure everything the client promised you is actually written into the contract before you sign. Don't rely on "we'll sort that out later."</div>
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Bottom line:</strong> You don't need to be a lawyer to understand your contract. You just need to know what each clause does and what a fair version looks like. If something feels off — or you're just not sure — that's exactly what CheckMyContract is for.
+    </div>
+
+    <h2>The Bottom Line</h2>
+
+    <p>Legal language exists to be precise, not to confuse you. Once you know what each clause does, reading a contract gets much faster and much less stressful.</p>
+
+    <p>The clauses that matter most for freelancers are payment terms, IP ownership, revision policy, termination rights, and indemnification. Get those right and you've protected the vast majority of what could go wrong.</p>
+
+    <p>If you want a shortcut — upload your contract to CheckMyContract. We'll read every clause, explain each one in plain English, flag the risky ones, and tell you exactly what to ask for. Free, in under 60 seconds.</p>
+
+    <div class="cta-box">
+      <h3>Let us read your<br/><em>contract for you.</em></h3>
+      <p>Upload any freelance contract and get a full plain-English breakdown — every clause explained, every risk flagged, specific negotiation suggestions included.</p>
+      <a href="/app" class="cta-btn">Analyze My Contract Free →</a>
+      <div class="cta-note">Free · PDF, DOC, DOCX, TXT · Results in under 60 seconds</div>
+    </div>
+
+  </article>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h4>Jump to a Clause</h4>
+      <ul class="toc-list">
+        <li><a href="#scope">Scope of Work</a></li>
+        <li><a href="#payment">Payment Terms</a></li>
+        <li><a href="#revisions">Revision Policy</a></li>
+        <li><a href="#ip">IP Ownership</a></li>
+        <li><a href="#confidentiality">Confidentiality / NDA</a></li>
+        <li><a href="#noncompete">Non-Compete</a></li>
+        <li><a href="#nonsolicitation">Non-Solicitation</a></li>
+        <li><a href="#termination">Termination</a></li>
+        <li><a href="#indemnification">Indemnification</a></li>
+        <li><a href="#dispute">Dispute Resolution</a></li>
+        <li><a href="#governing">Governing Law</a></li>
+        <li><a href="#forcemajeure">Force Majeure</a></li>
+        <li><a href="#entireagreement">Entire Agreement</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-cta">
+      <h4>Check Your Contract Now</h4>
+      <p>Get every clause explained and every red flag flagged — in 60 seconds.</p>
+      <a href="/app">Analyze Free →</a>
+      <div class="free-note">Free · No account needed</div>
+    </div>
+  </aside>
+</div>
+
+<div class="related-section">
+  <h2>Keep Reading</h2>
+  <div class="related-grid">
+    <a href="/blog/freelance-contract-red-flags" class="related-card">
+      <div class="related-tag">🚨 Red Flags</div>
+      <h3>10 Freelance Contract Red Flags You Should Never Ignore</h3>
+      <p>The warning signs that should make you pause before you sign.</p>
+    </a>
+    <a href="/blog/how-to-negotiate-freelance-contract" class="related-card">
+      <div class="related-tag">💬 Negotiation</div>
+      <h3>How to Negotiate a Freelance Contract Without Losing the Client</h3>
+      <p>Word-for-word scripts for every negotiation scenario.</p>
+    </a>
+    <a href="/blog/what-to-include-in-freelance-contract" class="related-card">
+      <div class="related-tag">✅ Templates</div>
+      <h3>What Every Freelance Contract Should Include</h3>
+      <p>The essential clauses that protect you — and what happens if they're missing.</p>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Check<span>My</span>Contract</div>
+  <p style="margin-top:8px;">AI-powered contract review for freelancers.</p>
+  <p style="margin-top:16px;">
+    <a href="/">Home</a> &nbsp;·&nbsp;
+    <a href="/app">App</a> &nbsp;·&nbsp;
+    <a href="/blog">Blog</a> &nbsp;·&nbsp;
+    <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
+    <a href="/terms">Terms</a>
+  </p>
+  <p style="margin-top:16px;">Not legal advice. For informational purposes only.</p>
+</footer>
+
+</body>
+</html>

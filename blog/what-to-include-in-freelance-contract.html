@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>What Every Freelance Contract Should Include | CheckMyContract</title>
+<meta name="description" content="The essential clauses every freelance contract needs to protect you — and what happens if any of them are missing. A practical checklist for freelancers."/>
+<meta name="keywords" content="what to include in freelance contract, freelance contract checklist, freelance contract essentials, freelance contract template"/>
+<link rel="canonical" href="https://checkmycontract.co/blog/what-to-include-in-freelance-contract"/>
+
+<meta property="og:title" content="What Every Freelance Contract Should Include"/>
+<meta property="og:description" content="The essential clauses every freelance contract needs to protect you — and what happens if any of them are missing."/>
+<meta property="og:type" content="article"/>
+<meta property="og:url" content="https://checkmycontract.co/blog/what-to-include-in-freelance-contract"/>
+<meta property="og:site_name" content="CheckMyContract"/>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "What Every Freelance Contract Should Include",
+  "description": "The essential clauses every freelance contract needs to protect you — and what happens if any of them are missing.",
+  "author": { "@type": "Organization", "name": "CheckMyContract" },
+  "publisher": { "@type": "Organization", "name": "CheckMyContract", "url": "https://checkmycontract.co" },
+  "mainEntityOfPage": "https://checkmycontract.co/blog/what-to-include-in-freelance-contract"
+}
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --teal: #0d9e8e;
+    --teal-light: #12c4b0;
+    --red: #ef4444;
+    --green: #10b981;
+    --yellow: #f59e0b;
+    --cream: #faf8f4;
+    --cream-dark: #f0ece4;
+    --text: #1a1a2e;
+    --text-muted: #5a6a8a;
+    --white: #ffffff;
+    --border: rgba(15,31,61,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--text); min-height:100vh; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:18px 48px; display:flex; align-items:center; justify-content:space-between;
+    background:rgba(250,248,244,0.95); backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+  }
+  .logo { font-family:'Instrument Serif',serif; font-size:20px; color:var(--navy); text-decoration:none; }
+  .logo span { color:var(--teal); }
+  .nav-right { display:flex; align-items:center; gap:16px; }
+  .nav-link { font-size:14px; font-weight:500; color:var(--text-muted); text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--navy); }
+  .nav-cta { padding:10px 22px; background:var(--navy); color:var(--white); border-radius:8px; font-size:14px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+  .nav-cta:hover { background:var(--teal); transform:translateY(-1px); }
+
+  .post-hero { padding:120px 24px 60px; max-width:760px; margin:0 auto; text-align:center; }
+  .post-category { display:inline-flex; align-items:center; gap:8px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); color:#92400e; padding:5px 14px; border-radius:100px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:24px; }
+  .post-hero h1 { font-family:'Instrument Serif',serif; font-size:clamp(36px,5vw,56px); color:var(--navy); letter-spacing:-1.5px; line-height:1.08; margin-bottom:20px; }
+  .post-hero h1 em { font-style:italic; color:var(--teal); }
+  .post-hero .subtitle { font-size:18px; color:var(--text-muted); font-weight:300; line-height:1.7; max-width:560px; margin:0 auto 32px; }
+  .post-meta { display:flex; align-items:center; justify-content:center; gap:20px; font-size:13px; color:var(--text-muted); flex-wrap:wrap; }
+
+  .post-layout { max-width:1100px; margin:0 auto; padding:0 24px 100px; display:grid; grid-template-columns:1fr 300px; gap:60px; align-items:start; }
+
+  .post-body { min-width:0; }
+  .post-body p { font-size:16px; line-height:1.8; color:var(--text); font-weight:300; margin-bottom:20px; }
+  .post-body strong { font-weight:600; color:var(--navy); }
+  .post-body h2 { font-family:'Instrument Serif',serif; font-size:30px; color:var(--navy); letter-spacing:-0.5px; margin:48px 0 16px; line-height:1.15; }
+  .post-body h3 { font-size:18px; font-weight:700; color:var(--navy); margin:32px 0 12px; }
+
+  /* CHECKLIST ITEMS */
+  .checklist { display:flex; flex-direction:column; gap:16px; margin:28px 0; }
+  .check-item {
+    background:var(--white); border:1px solid var(--border);
+    border-radius:14px; padding:22px 24px;
+    display:flex; gap:16px; align-items:flex-start;
+    transition:box-shadow 0.2s;
+  }
+  .check-item:hover { box-shadow:0 8px 24px rgba(15,31,61,0.06); }
+  .check-item.essential { border-left:3px solid var(--green); }
+  .check-item.important { border-left:3px solid var(--yellow); }
+  .check-item.optional { border-left:3px solid var(--teal); }
+  .check-box {
+    width:28px; height:28px; border-radius:6px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:14px; margin-top:2px;
+  }
+  .check-item.essential .check-box { background:rgba(16,185,129,0.1); }
+  .check-item.important .check-box { background:rgba(245,158,11,0.1); }
+  .check-item.optional .check-box { background:rgba(13,158,142,0.1); }
+  .check-content h4 { font-size:15px; font-weight:700; color:var(--navy); margin-bottom:5px; }
+  .check-content p { font-size:13px; color:var(--text-muted); line-height:1.6; font-weight:300; margin:0; }
+  .check-content .missing-risk {
+    margin-top:8px; font-size:12px; color:#7f1d1d;
+    background:rgba(239,68,68,0.05); border-radius:6px;
+    padding:6px 10px; line-height:1.5;
+  }
+  .check-content .missing-risk strong { color:var(--red); }
+
+  /* EXAMPLE LANGUAGE */
+  .example-language {
+    background:var(--cream); border-radius:10px; padding:16px 20px; margin-top:10px;
+    font-size:12px; color:var(--text-muted); font-style:italic; line-height:1.7;
+    border-left:2px solid var(--teal);
+  }
+  .example-language strong { font-style:normal; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--teal); display:block; margin-bottom:6px; }
+
+  /* LEGEND */
+  .legend { display:flex; gap:20px; margin-bottom:24px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted); font-weight:500; }
+  .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .legend-dot.green { background:var(--green); }
+  .legend-dot.yellow { background:var(--yellow); }
+  .legend-dot.teal { background:var(--teal); }
+
+  /* CALLOUT */
+  .callout { background:var(--navy); border-radius:16px; padding:28px 32px; margin:36px 0; position:relative; overflow:hidden; }
+  .callout::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 80% at 90% 50%,rgba(13,158,142,0.2) 0%,transparent 70%); }
+  .callout h3 { font-size:16px; font-weight:700; color:var(--white); margin-bottom:10px; position:relative; }
+  .callout p { font-size:14px; color:rgba(255,255,255,0.75); line-height:1.7; font-weight:300; position:relative; }
+
+  .tip-box { background:rgba(13,158,142,0.06); border:1px solid rgba(13,158,142,0.2); border-radius:12px; padding:20px 24px; margin:28px 0; font-size:14px; color:var(--text); line-height:1.7; }
+  .tip-box strong { color:var(--teal); }
+
+  .warning-box { background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.15); border-radius:12px; padding:20px 24px; margin:28px 0; font-size:14px; color:var(--text); line-height:1.7; }
+  .warning-box strong { color:var(--red); }
+
+  /* CTA */
+  .cta-box { background:var(--navy); border-radius:20px; padding:36px 40px; margin:48px 0; text-align:center; position:relative; overflow:hidden; }
+  .cta-box::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 70% 90% at 50% 50%,rgba(13,158,142,0.2) 0%,transparent 70%); }
+  .cta-box h3 { font-family:'Instrument Serif',serif; font-size:28px; color:var(--white); margin-bottom:12px; position:relative; }
+  .cta-box h3 em { font-style:italic; color:var(--teal-light); }
+  .cta-box p { font-size:15px; color:rgba(255,255,255,0.7); font-weight:300; line-height:1.6; margin-bottom:24px; position:relative; }
+  .cta-btn { display:inline-block; padding:16px 36px; background:var(--teal); color:var(--white); border-radius:10px; font-size:15px; font-weight:600; text-decoration:none; transition:all 0.2s; position:relative; }
+  .cta-btn:hover { background:var(--teal-light); transform:translateY(-2px); box-shadow:0 8px 28px rgba(13,158,142,0.4); }
+  .cta-note { font-size:12px; color:rgba(255,255,255,0.4); margin-top:14px; position:relative; }
+
+  /* SIDEBAR */
+  .sidebar { position:sticky; top:96px; }
+  .sidebar-card { background:var(--white); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px; }
+  .sidebar-card h4 { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); margin-bottom:16px; }
+  .toc-list { list-style:none; }
+  .toc-list li { margin-bottom:8px; }
+  .toc-list a { font-size:13px; color:var(--text-muted); text-decoration:none; font-weight:500; transition:color 0.2s; line-height:1.4; display:block; }
+  .toc-list a:hover { color:var(--teal); }
+  .sidebar-cta { background:var(--navy); border-radius:16px; padding:24px; text-align:center; }
+  .sidebar-cta h4 { font-size:15px; font-weight:700; color:var(--white); margin-bottom:8px; }
+  .sidebar-cta p { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.6; margin-bottom:16px; }
+  .sidebar-cta a { display:block; padding:12px; background:var(--teal); color:var(--white); border-radius:8px; font-size:13px; font-weight:600; text-decoration:none; transition:all 0.2s; }
+  .sidebar-cta a:hover { background:var(--teal-light); }
+  .sidebar-cta .free-note { font-size:11px; color:rgba(255,255,255,0.4); margin-top:8px; }
+
+  /* RELATED */
+  .related-section { max-width:1100px; margin:0 auto; padding:0 24px 80px; }
+  .related-section h2 { font-family:'Instrument Serif',serif; font-size:28px; color:var(--navy); margin-bottom:24px; }
+  .related-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+  .related-card { background:var(--white); border:1px solid var(--border); border-radius:14px; padding:24px; text-decoration:none; transition:all 0.2s; display:block; }
+  .related-card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(15,31,61,0.08); }
+  .related-tag { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:var(--teal); margin-bottom:10px; }
+  .related-card h3 { font-size:16px; font-weight:600; color:var(--navy); line-height:1.4; margin-bottom:8px; }
+  .related-card p { font-size:13px; color:var(--text-muted); line-height:1.5; font-weight:300; }
+
+  footer { background:var(--navy); padding:48px; text-align:center; }
+  .footer-logo { font-family:'Instrument Serif',serif; font-size:22px; color:var(--white); margin-bottom:8px; }
+  .footer-logo span { color:var(--teal); }
+  footer p { font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6; }
+  footer a { color:rgba(255,255,255,0.5); text-decoration:none; }
+  footer a:hover { color:var(--teal); }
+
+  @media(max-width:860px) {
+    nav { padding:16px 20px; }
+    .post-layout { grid-template-columns:1fr; }
+    .sidebar { display:none; }
+    .post-hero { padding:100px 20px 40px; }
+    footer { padding:40px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">Check<span>My</span>Contract</a>
+  <div class="nav-right">
+    <a href="/blog" class="nav-link">← Blog</a>
+    <a href="/app" class="nav-cta">Check My Contract Free →</a>
+  </div>
+</nav>
+
+<div class="post-hero">
+  <div class="post-category">✅ Contract Essentials</div>
+  <h1>What Every Freelance Contract<br/><em>Should Include</em></h1>
+  <p class="subtitle">A missing clause isn't just an oversight — it's a gap in your protection. Here's the complete checklist of what every freelance contract needs, with example language you can use right now.</p>
+  <div class="post-meta">
+    <span>📅 2025</span>
+    <span>⏱ 8 min read</span>
+    <span>✍️ CheckMyContract</span>
+  </div>
+</div>
+
+<div class="post-layout">
+  <article class="post-body">
+
+    <p>Most freelancers focus on spotting bad clauses in a contract. That's important — but there's an equally dangerous problem: clauses that are missing entirely.</p>
+
+    <p>A contract without a revision limit leaves you open to unlimited unpaid changes. A contract without a kill fee means the client can cancel after you've done half the work and owe you nothing. A contract without a payment window means "I'll pay you eventually" is a legally acceptable answer.</p>
+
+    <p><strong>What's not in the contract can hurt you just as much as what is.</strong></p>
+
+    <p>This is the complete checklist of what every freelance contract should include — organized by priority, with example language you can reference or use directly.</p>
+
+    <div class="callout">
+      <h3>Receiving a contract from a client?</h3>
+      <p>Upload it to CheckMyContract and we'll automatically check for missing clauses, explain every term in plain English, and flag anything that needs attention — in under 60 seconds.</p>
+    </div>
+
+    <h2 id="essential">Essential Clauses — Non-Negotiable</h2>
+    <p>These are the clauses every single freelance contract must have. If any of these are missing, ask for them before you sign.</p>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot green"></div> Essential — must have</div>
+      <div class="legend-item"><div class="legend-dot yellow"></div> Important — strongly recommended</div>
+      <div class="legend-item"><div class="legend-dot teal"></div> Situational — depends on project</div>
+    </div>
+
+    <div class="checklist">
+
+      <div class="check-item essential" id="parties">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>1. Names and Details of Both Parties</h4>
+          <p>Full legal names, business names if applicable, and contact details for both you and the client. This sounds obvious but is often missing from informal contracts.</p>
+          <div class="missing-risk"><strong>If missing:</strong> The contract may not be enforceable — it needs to clearly identify who made the agreement.</div>
+          <div class="example-language"><strong>Example language</strong>"This Agreement is entered into between [Your Full Name / Business Name] ("Freelancer") and [Client Full Name / Company Name] ("Client"), effective [Date]."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="scope">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>2. Detailed Scope of Work</h4>
+          <p>An explicit list of exactly what you will deliver — formats, quantities, features, pages, word counts, or whatever is relevant to your work. Plus a clear statement that anything not listed is out of scope.</p>
+          <div class="missing-risk"><strong>If missing:</strong> The client can claim anything they want was "always part of the project." This is the number one cause of scope creep.</div>
+          <div class="example-language"><strong>Example language</strong>"Freelancer will deliver: [specific list of deliverables]. Any work not listed above constitutes a change in scope and requires a written change order and additional compensation."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="payment">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>3. Payment Amount and Schedule</h4>
+          <p>The exact fee, when each payment is due, how to invoice, and what payment methods are accepted. No vague language about "upon completion."</p>
+          <div class="missing-risk"><strong>If missing:</strong> You have no legal basis to demand payment by a specific date. "Completion" can be delayed indefinitely.</div>
+          <div class="example-language"><strong>Example language</strong>"Total fee: $[amount]. Payment schedule: 50% ($[amount]) due upon signing; 50% ($[amount]) due within 14 days of final delivery. Invoices unpaid after 14 days accrue interest at 1.5% per month."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="timeline">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>4. Project Timeline and Deadlines</h4>
+          <p>Start date, key milestones, and final delivery date. Also include what happens if the client is late providing feedback or materials — delays caused by them should not penalize you.</p>
+          <div class="missing-risk"><strong>If missing:</strong> The client can claim you missed a deadline you never agreed to, or hold you to an unreasonable timeline set verbally.</div>
+          <div class="example-language"><strong>Example language</strong>"Project begins [date]. Final delivery by [date], contingent on Client providing all required materials and feedback within 3 business days of each request. Client delays extend all deadlines proportionally."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="revisions">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>5. Revision Policy</h4>
+          <p>How many rounds of revisions are included, what counts as a revision, and what happens when the client wants more than what's included.</p>
+          <div class="missing-risk"><strong>If missing:</strong> Revisions are unlimited. The client can request changes forever and you have no contractual basis to charge for them.</div>
+          <div class="example-language"><strong>Example language</strong>"Two rounds of consolidated revisions are included in the project fee. Additional revisions will be billed at $[hourly rate]/hour. Requests for new creative directions or significant scope changes are not revisions and will be quoted separately."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="ip">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>6. Intellectual Property Ownership</h4>
+          <p>Who owns the work, and exactly when ownership transfers. This should always be tied to payment — not delivery.</p>
+          <div class="missing-risk"><strong>If missing:</strong> Ownership defaults to you under copyright law — but if the contract is silent, it creates ambiguity that can lead to disputes.</div>
+          <div class="example-language"><strong>Example language</strong>"Upon receipt of full and final payment, Freelancer assigns all intellectual property rights in the deliverables to Client. Until full payment is received, Freelancer retains all rights and Client may not use the work."</div>
+        </div>
+      </div>
+
+      <div class="check-item essential" id="termination">
+        <div class="check-box">✓</div>
+        <div class="check-content">
+          <h4>7. Termination and Kill Fee</h4>
+          <p>How either party can end the contract, how much notice is required, and what the client owes if they cancel after work has begun.</p>
+          <div class="missing-risk"><strong>If missing:</strong> The client can cancel at any time with no financial obligation, even after you've completed significant work.</div>
+          <div class="example-language"><strong>Example language</strong>"Either party may terminate this agreement with 14 days written notice. If Client terminates after work has commenced, Client shall pay for all work completed to date plus a kill fee equal to 25% of the remaining unpaid contract value."</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="cta-box">
+      <h3>Does your contract have<br/><em>all of these clauses?</em></h3>
+      <p>Upload it to CheckMyContract and we'll check automatically — flagging anything missing or risky in under 60 seconds. Free.</p>
+      <a href="/app" class="cta-btn">Check My Contract Free →</a>
+      <div class="cta-note">Free · No account needed · Results in 60 seconds</div>
+    </div>
+
+    <h2 id="important">Important Clauses — Strongly Recommended</h2>
+    <p>These clauses aren't always present in basic contracts but can save you significantly when things go wrong.</p>
+
+    <div class="checklist">
+
+      <div class="check-item important" id="confidentiality">
+        <div class="check-box">★</div>
+        <div class="check-content">
+          <h4>8. Confidentiality (with Portfolio Carve-Out)</h4>
+          <p>Agree to keep the client's business information private — but make sure the clause explicitly allows you to show the finished work in your portfolio and list them as a past client.</p>
+          <div class="missing-risk"><strong>If missing or too broad:</strong> You may be prohibited from ever mentioning the client or showing the work, which directly hurts your future earnings.</div>
+          <div class="example-language"><strong>Example language</strong>"Freelancer agrees to keep Client's confidential business information private. Notwithstanding the above, Freelancer may display completed deliverables in their portfolio and reference Client as a past client, unless Client requests otherwise in writing within 30 days of project completion."</div>
+        </div>
+      </div>
+
+      <div class="check-item important" id="liability">
+        <div class="check-box">★</div>
+        <div class="check-content">
+          <h4>9. Liability Cap</h4>
+          <p>A clause that limits your total financial exposure to the amount the client actually paid you. Without this, your liability is theoretically unlimited.</p>
+          <div class="missing-risk"><strong>If missing:</strong> If your work causes downstream harm — even indirectly — you could be liable for damages far exceeding your project fee.</div>
+          <div class="example-language"><strong>Example language</strong>"In no event shall Freelancer's total liability to Client exceed the total fees paid by Client under this agreement."</div>
+        </div>
+      </div>
+
+      <div class="check-item important" id="independent">
+        <div class="check-box">★</div>
+        <div class="check-content">
+          <h4>10. Independent Contractor Status</h4>
+          <p>A statement that you are an independent contractor, not an employee. This protects both parties from tax and labor law complications.</p>
+          <div class="missing-risk"><strong>If missing:</strong> Ambiguity around your status can create tax liability issues for both you and the client.</div>
+          <div class="example-language"><strong>Example language</strong>"Freelancer is an independent contractor and not an employee of Client. Freelancer is responsible for all taxes, insurance, and other obligations arising from this engagement."</div>
+        </div>
+      </div>
+
+      <div class="check-item important" id="expenses">
+        <div class="check-box">★</div>
+        <div class="check-content">
+          <h4>11. Expense Reimbursement</h4>
+          <p>If the project requires you to purchase stock images, software, fonts, or other assets — this clause specifies whether those costs are included in your fee or reimbursed separately.</p>
+          <div class="missing-risk"><strong>If missing:</strong> You may end up personally absorbing project costs the client expected you to cover, or vice versa.</div>
+          <div class="example-language"><strong>Example language</strong>"Any third-party costs (stock assets, software licenses, printing, etc.) exceeding $50 will be pre-approved by Client and reimbursed within 14 days of invoice."</div>
+        </div>
+      </div>
+
+      <div class="check-item important" id="warranty">
+        <div class="check-box">★</div>
+        <div class="check-content">
+          <h4>12. Warranties and Representations</h4>
+          <p>You warrant that your work is original, doesn't infringe on anyone else's rights, and that you have the right to enter into this agreement. The client warrants the same about any materials they provide you.</p>
+          <div class="missing-risk"><strong>If missing:</strong> Unclear responsibility if a third party claims your work infringes their copyright.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <h2 id="situational">Situational Clauses — Include When Relevant</h2>
+    <p>These don't belong in every contract but are important in specific situations.</p>
+
+    <div class="checklist">
+
+      <div class="check-item optional" id="subcontractors">
+        <div class="check-box">+</div>
+        <div class="check-content">
+          <h4>13. Subcontracting Rights</h4>
+          <p>If you might need to bring in other freelancers to help with the project, this clause gives you the right to do so. Important for larger projects or if you run a small studio.</p>
+        </div>
+      </div>
+
+      <div class="check-item optional" id="approval">
+        <div class="check-box">+</div>
+        <div class="check-content">
+          <h4>14. Approval Process</h4>
+          <p>Defines how deliverables are "accepted" — what the client needs to do to formally approve work, and what happens if they don't respond within a set timeframe (deemed approval).</p>
+          <div class="example-language"><strong>Example language</strong>"Client has 5 business days to review and approve each deliverable. If no written feedback is received within 5 business days, the deliverable is deemed approved."</div>
+        </div>
+      </div>
+
+      <div class="check-item optional" id="credit">
+        <div class="check-box">+</div>
+        <div class="check-content">
+          <h4>15. Credit and Attribution</h4>
+          <p>For creative work — design, writing, photography — this specifies whether you receive a byline or design credit on the published work. Especially valuable for portfolio-building.</p>
+        </div>
+      </div>
+
+      <div class="check-item optional" id="rush">
+        <div class="check-box">+</div>
+        <div class="check-content">
+          <h4>16. Rush Fee Policy</h4>
+          <p>If the client requests faster turnaround than the agreed timeline, this clause gives you the right to charge a rush premium — typically 25–50% above your standard rate.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 Practical tip:</strong> You don't need all 16 of these in every contract. Focus on the 7 essential clauses first — those cover the vast majority of situations where freelancers get hurt. Add the others as your projects get larger and more complex.
+    </div>
+
+    <h2>What to Do if a Contract Is Missing Key Clauses</h2>
+
+    <p>If a client sends you a contract that's missing essential clauses, don't just sign and hope for the best. Here's what to do:</p>
+
+    <p><strong>For short contracts or simple agreements:</strong> Ask the client to add the missing clauses before you sign. Frame it as making sure you're both protected: "I'd like to add a couple of standard clauses to make sure we're both covered — happy to send the suggested language."</p>
+
+    <p><strong>For very simple projects with trusted clients:</strong> You can supplement a thin contract with a detailed email that outlines payment terms, scope, and revisions — then get the client to reply confirming they agree. This creates a paper trail even if the contract itself is sparse.</p>
+
+    <p><strong>For larger or higher-stakes projects:</strong> Consider sending your own contract rather than working from theirs. Many experienced freelancers have their own standard contract that includes all the protections they need — and send it first.</p>
+
+    <div class="warning-box">
+      <strong>⚠️ Never start work without a signed agreement.</strong> A handshake deal or email exchange is better than nothing, but a signed contract is the only thing that truly protects you. Even the most trusted clients can have payment issues, go out of business, or dispute what was agreed.
+    </div>
+
+    <h2>The Bottom Line</h2>
+
+    <p>A good freelance contract isn't about distrust — it's about clarity. When both parties know exactly what's expected, what's included, and what happens if things go sideways, the project runs more smoothly for everyone.</p>
+
+    <p>Use this checklist every time you receive or send a contract. The 7 essential clauses should be non-negotiable. The rest you can add as your situation requires.</p>
+
+    <p>And if you want to check a contract you've already received — upload it to CheckMyContract. We'll tell you exactly what's there, what's missing, and what to ask for. Free, in under 60 seconds.</p>
+
+    <div class="cta-box">
+      <h3>Check your contract against<br/><em>this entire list automatically.</em></h3>
+      <p>Upload any freelance contract and get a full analysis — missing clauses flagged, risky terms explained, and specific suggestions for what to add or change.</p>
+      <a href="/app" class="cta-btn">Analyze My Contract Free →</a>
+      <div class="cta-note">Free · PDF, DOC, DOCX, TXT · Results in under 60 seconds</div>
+    </div>
+
+  </article>
+
+  <aside class="sidebar">
+    <div class="sidebar-card">
+      <h4>Jump To</h4>
+      <ul class="toc-list">
+        <li><a href="#essential">✓ Essential Clauses</a></li>
+        <li><a href="#parties">1. Party Details</a></li>
+        <li><a href="#scope">2. Scope of Work</a></li>
+        <li><a href="#payment">3. Payment Terms</a></li>
+        <li><a href="#timeline">4. Timeline</a></li>
+        <li><a href="#revisions">5. Revision Policy</a></li>
+        <li><a href="#ip">6. IP Ownership</a></li>
+        <li><a href="#termination">7. Termination & Kill Fee</a></li>
+        <li><a href="#important">★ Important Clauses</a></li>
+        <li><a href="#confidentiality">8. Confidentiality</a></li>
+        <li><a href="#liability">9. Liability Cap</a></li>
+        <li><a href="#independent">10. Contractor Status</a></li>
+        <li><a href="#situational">+ Situational Clauses</a></li>
+      </ul>
+    </div>
+    <div class="sidebar-cta">
+      <h4>Check Your Contract Now</h4>
+      <p>We'll flag missing clauses and risky terms automatically — in 60 seconds.</p>
+      <a href="/app">Analyze Free →</a>
+      <div class="free-note">Free · No account needed</div>
+    </div>
+  </aside>
+</div>
+
+<div class="related-section">
+  <h2>Keep Reading</h2>
+  <div class="related-grid">
+    <a href="/blog/freelance-contract-red-flags" class="related-card">
+      <div class="related-tag">🚨 Red Flags</div>
+      <h3>10 Freelance Contract Red Flags You Should Never Ignore</h3>
+      <p>The warning signs that should make you pause before you sign.</p>
+    </a>
+    <a href="/blog/how-to-negotiate-freelance-contract" class="related-card">
+      <div class="related-tag">💬 Negotiation</div>
+      <h3>How to Negotiate a Freelance Contract Without Losing the Client</h3>
+      <p>Word-for-word scripts for every negotiation scenario.</p>
+    </a>
+    <a href="/blog/freelance-contract-clauses-explained" class="related-card">
+      <div class="related-tag">📖 Education</div>
+      <h3>Every Freelance Contract Clause Explained in Plain English</h3>
+      <p>What every clause actually means for you and your business.</p>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Check<span>My</span>Contract</div>
+  <p style="margin-top:8px;">AI-powered contract review for freelancers.</p>
+  <p style="margin-top:16px;">
+    <a href="/">Home</a> &nbsp;·&nbsp;
+    <a href="/app">App</a> &nbsp;·&nbsp;
+    <a href="/blog">Blog</a> &nbsp;·&nbsp;
+    <a href="/privacy">Privacy</a> &nbsp;·&nbsp;
+    <a href="/terms">Terms</a>
+  </p>
+  <p style="margin-top:16px;">Not legal advice. For informational purposes only.</p>
+</footer>
+
+</body>
+</html>
