@@ -12,6 +12,11 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
   }
 
+  const ALLOWED_EMAIL = 'tdd26294@gmail.com';
+  if (email && email.toLowerCase() !== ALLOWED_EMAIL) {
+    return res.status(401).json({ error: 'Access not authorized.' });
+  }
+  
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY;
   const RESEND_KEY = process.env.RESEND_API_KEY;

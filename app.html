@@ -279,6 +279,11 @@
       <p style="margin-top:16px;font-size:12px;color:var(--text-muted);">Your free check resets on the 1st of next month.</p>
     </div>
 
+    <div id="blocked-box" style="display:none; width:100%; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:28px; text-align:center;">
+      <h3 style="font-size:18px; font-weight:600; color:#b91c1c; margin-bottom:8px;">Access not authorized.</h3>
+      <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">This tool is currently in private beta. If you think this is a mistake, please contact us.</p>
+    </div>
+
     <div class="gate-trust">
       <div class="gate-trust-item"><div class="trust-check-sm">✓</div> Results in 60 seconds</div>
       <div class="gate-trust-item"><div class="trust-check-sm">✓</div> Your docs stay private</div>
@@ -449,18 +454,22 @@ async function submitEmail() {
 
     var data = await res.json();
 
+    if (res.status === 401) {
+      document.getElementById('email-form-box').style.display = 'none';
+      document.getElementById('limit-box').style.display = 'none';
+      document.getElementById('blocked-box').style.display = 'block';
+      return;
+    }
+
     if (!res.ok) {
       throw new Error(data.error || 'Something went wrong.');
     }
 
     if (data.allowed) {
-      // ✅ Email is good — move to upload page
       userEmail = email;
-      // Remember them in localStorage so we can skip gate on return visits this session
       sessionStorage.setItem('cmc_email', email);
       showPage('upload');
     } else {
-      // ❌ Limit hit — show upgrade message
       document.getElementById('email-form-box').style.display = 'none';
       document.getElementById('limit-box').classList.add('show');
     }

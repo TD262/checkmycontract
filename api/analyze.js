@@ -25,6 +25,12 @@ export default async function handler(req, res) {
       });
     });
 
+    const ALLOWED_EMAIL = 'tdd26294@gmail.com';
+    const submittedEmail = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
+    if (!submittedEmail || submittedEmail.toLowerCase() !== ALLOWED_EMAIL) {
+      return res.status(401).json({ error: 'Access not authorized.' });
+    }
+
     let contractText = '';
 
     const uploadedFile = files.file ? files.file[0] : null;
