@@ -61,38 +61,54 @@ export default async function handler(req, res) {
     const isProUser = false; // will be true when Stripe is set up
 const charLimit = isProUser ? 15000 : 6000;
 
-const prompt = `You are an expert contract analyst specializing in freelance agreements. Your job is to protect freelancers from unfair, exploitative, and dangerous contract terms.
+const prompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
 
-Analyze this contract thoroughly and identify ALL risks, red flags, positive terms, and negotiation opportunities. Be specific, direct, and speak plainly to a freelancer who has no legal background.
+Analyze the contract below and return a structured JSON report. Base your analysis strictly on the text provided. Do not invent clauses, assume intent, or flag things that are not present.
 
 Contract:
 ${contractText.substring(0, charLimit)}
 
-You MUST check every single one of these areas and report on each one you find:
-- Payment terms (amount, schedule, late fees, kill fees, deposit)
-- Revision policy (number of revisions, what counts as a revision, scope creep risk)
-- Intellectual property ownership (who owns the work, when ownership transfers)
-- Non-compete clause (restrictions on future work, duration, scope)
-- Non-solicitation clause (restrictions on working with client's contacts)
-- Confidentiality (what you can't share, for how long)
-- Termination rights (who can cancel, how much notice, what happens to payment)
-- Liability and indemnification (who is responsible if something goes wrong)
-- Dispute resolution (how disagreements are handled, which state's laws apply)
-- Governing law and jurisdiction (where legal action must take place)
-- Payment on completion vs milestones (risk of non-payment)
-- Unlimited revisions or vague scope (risk of endless unpaid work)
-- Exclusivity clauses (restrictions on working with other clients)
+ANALYSIS RULES — follow these exactly:
 
-For each finding:
-- Explain exactly how it affects the freelancer's money, career, or freedom
-- Quantify the risk where possible (e.g. "this could cost you the entire project fee")
-- Give a specific negotiation suggestion — the exact change they should ask for
-- Quote the exact clause from the contract where possible
+1. GROUNDING RULE
+Only report on clauses that are explicitly present in the contract text. If a clause is missing entirely, note it as "Not specified in this contract" and flag it only if its absence creates a genuine practical risk for the freelancer.
 
-You MUST return a minimum of 8 findings. If the contract is short, dig deeper. If a clause is missing entirely, flag that as a risk too.
+2. CONFIDENCE LEVELS
+Every finding must reflect one of:
+- high confidence: clause is explicitly stated
+- medium confidence: strongly implied but not explicit
+- low confidence: absent or ambiguous
+Adjust the severity of the finding based on confidence. A missing clause is rarely "critical."
 
-Respond with ONLY valid JSON (no markdown, no backticks, no extra text):
-{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<3-4 sentence plain English overview that tells the freelancer exactly what kind of contract this is and what their biggest risks are>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short title>","description":"<2-3 sentence plain English explanation of the risk and exactly how it affects the freelancer>","quote":"<exact clause from contract or empty string>","negotiate":"<exact wording the freelancer should ask for instead>"}],"questions":["<specific question to ask client>","<specific question>","<specific question>","<specific question>","<specific question>"]}`;
+3. RISK PRIORITY ORDER
+Evaluate and prioritize findings in this order:
+1. Payment risk (most important)
+2. Scope creep risk
+3. IP ownership risk
+4. Liability risk
+5. Legal restrictions (non-compete, non-solicitation, confidentiality)
+
+4. CALIBRATED RISK SCORING
+- Critical: clause that directly threatens payment or creates severe legal exposure
+- Warning: clause that is unfavorable but negotiable and common in the industry
+- Info: clause worth understanding but not immediately harmful
+- Positive: clause that clearly benefits the freelancer
+Non-competes, liability caps, and revision policies are warnings unless the specific language is extreme. Do not default to critical.
+
+5. FINDINGS COUNT
+Report between 5 and 10 findings. Do not pad findings to reach a minimum. Only report what is genuinely present or meaningfully absent.
+
+6. QUOTE ACCURACY
+Only include a quote field if the text appears verbatim in the contract. If you are paraphrasing or unsure, set quote to an empty string "".
+
+7. TONE
+Use plain, calm, factual language. Describe practical impact (e.g. "this means you may not get paid if the client cancels"). Do not use dramatic language. Do not make legal conclusions ("this is illegal", "this violates the law").
+
+8. NEGOTIATE FIELD
+For each warning or critical finding, suggest a specific, realistic alternative the freelancer could propose. Keep it practical, not legal-sounding.
+
+OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
+{"riskScore":<0-100>,"riskLevel":"<Low|Medium|High|Critical>","riskColor":"<#10b981|#f59e0b|#ef4444|#dc2626>","summary":"<3-4 sentence plain English overview — neutral tone, focused on what matters most for this freelancer on this specific contract>","findings":[{"type":"<critical|warning|positive|info>","icon":"<emoji>","title":"<short clear title>","description":"<2-3 sentences explaining what the clause means and its practical impact on the freelancer>","confidence":"<high|medium|low>","quote":"<exact verbatim quote from contract or empty string>","negotiate":"<specific realistic alternative to propose, or empty string for positive/info>"}],"questions":["<specific question the freelancer should ask their client before signing>","<question>","<question>","<question>","<question>"]}`;
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -103,7 +119,7 @@ Respond with ONLY valid JSON (no markdown, no backticks, no extra text):
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
-        max_tokens: 2000,
+        max_tokens: 2500,
         messages: [{ role: 'user', content: prompt }]
       })
     });
