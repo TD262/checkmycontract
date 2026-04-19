@@ -93,6 +93,7 @@ Evaluate and prioritize findings in this order:
 - Warning: clause that is unfavorable but negotiable and common in the industry
 - Info: clause worth understanding but not immediately harmful
 - Positive: clause that clearly benefits the freelancer
+When multiple moderate-risk issues exist in the same contract (e.g. payment on completion, vague scope, no deposit, flexible timeline), the combined effect should elevate the overall risk level even if no single clause is individually critical. Evaluate cumulative risk, not only clause-by-clause severity.
 Non-competes, liability caps, and revision policies are warnings unless the specific language is extreme. Do not default to critical.
 
 5. INDUSTRY NORM CALIBRATION
