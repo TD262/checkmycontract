@@ -60,10 +60,14 @@ export default async function handler(req, res) {
 
     const isProUser = false; // will be true when Stripe is set up
 const charLimit = isProUser ? 15000 : 6000;
+const maxFindings = isProUser ? 10 : 5;
+const isTruncated = contractText.length > charLimit;
 
 const prompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
 
 Analyze the contract below and return a structured JSON report. Base your analysis strictly on the text provided. Do not invent clauses, assume intent, or flag things that are not present.
+
+User plan: ${isProUser ? 'Pro' : 'Free'}
 
 Contract:
 ${contractText.substring(0, charLimit)}
@@ -104,7 +108,7 @@ Before assigning a risk type, check whether the clause reflects standard freelan
 Do not flag normal freelance contract terms as risks simply because they are imperfect.
 
 6. FINDINGS COUNT
-Report between 5 and 10 findings. Do not pad findings to reach a minimum. Only report what is genuinely present or meaningfully absent.
+Report up to ${maxFindings} findings based on importance. Do not pad. Only report what is genuinely present or meaningfully absent.
 
 7. QUOTE ACCURACY
 Only include a quote field if the text appears verbatim in the contract. If you are paraphrasing or unsure, set quote to an empty string "".
@@ -155,7 +159,22 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
       // Parse the analysis result so we can use it in the email
       const analysisText = data.content.map(b => b.text || '').join('');
       const cleanJson = analysisText.replace(/```json|```/g, '').trim();
-      const result = JSON.parse(cleanJson);
+      let result;
+      try {
+        result = JSON.parse(cleanJson);
+      } catch (parseErr) {
+        return res.status(200).json({
+          isTruncated,
+          maxFindings,
+          isProUser,
+          riskScore: 50,
+          riskLevel: 'Unknown',
+          riskColor: '#f59e0b',
+          summary: 'We were unable to fully parse the analysis for this contract. Please try again or upload a different file.',
+          findings: [],
+          questions: []
+        });
+      }
 
       // Build findings HTML
       const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
@@ -250,7 +269,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
       });
     }
 
-    return res.status(200).json(data);
+    return res.status(200).json({ ...result, isTruncated, maxFindings, isProUser });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
