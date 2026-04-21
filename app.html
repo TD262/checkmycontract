@@ -571,12 +571,7 @@ async function analyzeContract() {
 
     if (!response.ok) { var errText = await response.text(); throw new Error(errText); }
 
-    var data = await response.json();
-    var text = data.content.map(function(b) { return b.text || ''; }).join('');
-    var jsonStart = text.indexOf('{');
-    var jsonEnd = text.lastIndexOf('}');
-    var clean = text.substring(jsonStart, jsonEnd + 1);
-    var result = JSON.parse(clean);
+    var result = await response.json();
     console.log('Parsed result:', result);
 
     clearInterval(loadingInterval);
