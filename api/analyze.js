@@ -62,6 +62,8 @@ export default async function handler(req, res) {
 const charLimit = isProUser ? 15000 : 6000;
 const maxFindings = isProUser ? 10 : 5;
 const isTruncated = contractText.length > charLimit;
+const totalCharacters = contractText.length;
+const analyzedCharacters = Math.min(contractText.length, charLimit);
 
 const prompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
 
@@ -269,7 +271,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
       });
     }
 
-    return res.status(200).json({ ...result, isTruncated, maxFindings, isProUser });
+    return res.status(200).json({ ...result, isTruncated, maxFindings, isProUser, totalCharacters, analyzedCharacters });
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
