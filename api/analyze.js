@@ -154,18 +154,37 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
 
     // Overwrite only if parsing succeeds
     try {
-      const analysisText = data.content.map(b => b.text || '').join('');
+      let analysisText = '';
+      if (Array.isArray(data.content)) {
+        analysisText = data.content.map(b => b.text || '').join('');
+      } else if (typeof data.content === 'string') {
+        analysisText = data.content;
+      } else {
+        console.log('UNEXPECTED AI RESPONSE SHAPE:', JSON.stringify(data));
+      }
+
       console.log('RAW MODEL OUTPUT:', analysisText);
-      const cleanJson = analysisText.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(cleanJson);
-      result = {
-        riskScore: parsed.riskScore ?? 50,
-        riskLevel: parsed.riskLevel ?? 'Unknown',
-        riskColor: parsed.riskColor ?? '#f59e0b',
-        summary: parsed.summary ?? 'No summary provided.',
-        findings: Array.isArray(parsed.findings) ? parsed.findings : [],
-        questions: Array.isArray(parsed.questions) ? parsed.questions : []
-      };
+
+      if (!analysisText) {
+        console.log('EMPTY AI RESPONSE');
+      } else {
+        const jsonMatch = analysisText.match(/\{[\s\S]*\}/);
+
+        if (!jsonMatch) {
+          console.log('NO JSON FOUND IN MODEL OUTPUT');
+        } else {
+          const parsed = JSON.parse(jsonMatch[0]);
+
+          result = {
+            riskScore: typeof parsed.riskScore === 'number' ? parsed.riskScore : result.riskScore,
+            riskLevel: parsed.riskLevel || result.riskLevel,
+            riskColor: parsed.riskColor || result.riskColor,
+            summary: parsed.summary || result.summary,
+            findings: Array.isArray(parsed.findings) ? parsed.findings : result.findings,
+            questions: Array.isArray(parsed.questions) ? parsed.questions : result.questions
+          };
+        }
+      }
     } catch (parseErr) {
       console.log('PARSE FAILED:', parseErr);
     }
