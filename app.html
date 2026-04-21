@@ -365,7 +365,7 @@
         <p id="results-filename">contract.txt · Analyzed just now</p>
       </div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <button class="btn btn-primary" id="download-pdf-btn" onclick="downloadPDF()">⬇ Download PDF</button>
+        <button class="btn btn-primary" id="download-pdf-btn">⬇ Export Full Report (Pro)</button>
         <button class="btn btn-outline" onclick="showPage('upload');resetApp();">← New Analysis</button>
       </div>
     </div>
@@ -390,6 +390,10 @@
         </div>
       </div>
     </div>
+    <div id="upsell-box" style="display:none;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:#b91c1c;line-height:1.6;"></div>
+
+    <div id="char-count-box" style="display:none;margin-bottom:16px;font-size:12px;color:var(--text-muted);text-align:right;"></div>
+
     <div class="summary-section">
       <h3>Plain English Summary</h3>
       <p id="summary-text">Loading...</p>
@@ -573,6 +577,29 @@ async function analyzeContract() {
 
     var result = await response.json();
     console.log('Parsed result:', result);
+    // PDF button — lock behind Pro
+    var pdfBtn = document.getElementById('download-pdf-btn');
+    if (result.isProUser) {
+      pdfBtn.onclick = function() { downloadPDF(); };
+    } else {
+      pdfBtn.onclick = function() {
+        showError('PDF export is a Pro feature. Upgrade to generate and download your full contract report.');
+      };
+    }
+
+    // Character count display
+    if (result.analyzedCharacters !== undefined) {
+      var charBox = document.getElementById('char-count-box');
+      charBox.style.display = 'block';
+      charBox.textContent = 'Analyzed ' + result.analyzedCharacters.toLocaleString() + ' of ' + result.totalCharacters.toLocaleString() + ' characters';
+    }
+
+    // Upsell message if truncated
+    if (result.isTruncated && !result.isProUser) {
+      var upsellBox = document.getElementById('upsell-box');
+      upsellBox.style.display = 'block';
+      upsellBox.innerHTML = '⚠️ <strong>This contract exceeds the Free limit (6,000 characters).</strong> We only analyzed the first 6,000 characters — important clauses may be missing. Upgrade to Pro to review the full document and catch additional risks.';
+    }
 
     clearInterval(loadingInterval);
     ['lstep-1','lstep-2','lstep-3','lstep-4','lstep-5'].forEach(function(id) {
