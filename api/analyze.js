@@ -140,8 +140,36 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
 
     const data = await response.json();
 
-    // Increment the check count in Supabase for this email
     const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
+
+    // Always start with a safe default result
+    let result = {
+      riskScore: 50,
+      riskLevel: 'Unknown',
+      riskColor: '#f59e0b',
+      summary: 'We were unable to fully parse the analysis for this contract. Please try again or upload a different file.',
+      findings: [],
+      questions: []
+    };
+
+    // Overwrite only if parsing succeeds
+    try {
+      const analysisText = data.content.map(b => b.text || '').join('');
+      console.log('RAW MODEL OUTPUT:', analysisText);
+      const cleanJson = analysisText.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleanJson);
+      result = {
+        riskScore: parsed.riskScore ?? 50,
+        riskLevel: parsed.riskLevel ?? 'Unknown',
+        riskColor: parsed.riskColor ?? '#f59e0b',
+        summary: parsed.summary ?? 'No summary provided.',
+        findings: Array.isArray(parsed.findings) ? parsed.findings : [],
+        questions: Array.isArray(parsed.questions) ? parsed.questions : []
+      };
+    } catch (parseErr) {
+      console.log('PARSE FAILED:', parseErr);
+    }
+
     if (email) {
       // Increment check count in Supabase
       await fetch(
@@ -157,26 +185,6 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
           body: JSON.stringify({ checks_used: 1 })
         }
       );
-
-      // Parse the analysis result so we can use it in the email
-      const analysisText = data.content.map(b => b.text || '').join('');
-      const cleanJson = analysisText.replace(/```json|```/g, '').trim();
-      let result;
-      try {
-        result = JSON.parse(cleanJson);
-      } catch (parseErr) {
-        return res.status(200).json({
-          isTruncated,
-          maxFindings,
-          isProUser,
-          riskScore: 50,
-          riskLevel: 'Unknown',
-          riskColor: '#f59e0b',
-          summary: 'We were unable to fully parse the analysis for this contract. Please try again or upload a different file.',
-          findings: [],
-          questions: []
-        });
-      }
 
       // Build findings HTML
       const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
@@ -272,6 +280,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     }
 
     return res.status(200).json({ ...result, isTruncated, maxFindings, isProUser, totalCharacters, analyzedCharacters });
+    
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
