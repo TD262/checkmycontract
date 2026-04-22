@@ -511,6 +511,7 @@ function handleFile(file) {
   if (!file) return;
   var ext = file.name.split('.').pop().toLowerCase();
   if (['pdf','doc','docx','txt'].indexOf(ext) === -1) { showError('Please upload a PDF, DOC, DOCX, or TXT file.'); return; }
+  if (file.size === 0) { showError('This file is empty. Please upload a contract with content.'); return; }
   hideError();
   selectedFile = file;
   document.getElementById('file-name').textContent = file.name;
