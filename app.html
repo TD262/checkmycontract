@@ -626,17 +626,34 @@ function renderResults(data) {
   var circle = document.getElementById('risk-circle');
   circle.style.stroke = data.riskColor || '#ef4444';
   circle.style.strokeDashoffset = 251 - (score / 100) * 251;
+  data = data || {};
+
   var findings = data.findings || [];
   window._lastFindings = findings;
-  window._lastQuestions = data.questions || [];
-  document.getElementById('stat-critical').textContent = '🚨 ' + findings.filter(function(f){return f.type==='critical';}).length + ' Critical';
-  document.getElementById('stat-warning').textContent = '⚠️ ' + findings.filter(function(f){return f.type==='warning';}).length + ' Warnings';
-  document.getElementById('stat-positive').textContent = '✅ ' + findings.filter(function(f){return f.type==='positive';}).length + ' Positive';
-  document.getElementById('summary-text').textContent = data.summary || '';
+
+  document.getElementById('stat-critical').textContent = '🚨 ' + findings.filter(function(f){ return f && f.type === 'critical'; }).length + ' Critical';
+  document.getElementById('stat-warning').textContent = '⚠️ ' + findings.filter(function(f){ return f && f.type === 'warning'; }).length + ' Warnings';
+  document.getElementById('stat-positive').textContent = '✅ ' + findings.filter(function(f){ return f && f.type === 'positive'; }).length + ' Positive';
+
+  document.getElementById('summary-text').textContent = data.summary || 'No summary available.';
+
   document.getElementById('findings-list').innerHTML = findings.map(function(f,i) {
-    return '<div class="finding-card '+f.type+'" style="animation-delay:'+(i*0.08)+'s"><div class="finding-icon-wrap">'+(f.icon||'📋')+'</div><div class="finding-body"><div class="finding-severity">'+f.type.toUpperCase()+'</div><h4>'+f.title+'</h4><p>'+f.description+'</p>'+(f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'')+(f.negotiate?'<div class="negotiate-box">💬 <strong>Ask for:</strong> '+f.negotiate+'</div>':'')+'</div></div>';
+    f = f || {};
+    return '<div class="finding-card '+(f.type||'info')+'" style="animation-delay:'+(i*0.08)+'s">' +
+      '<div class="finding-icon-wrap">'+(f.icon||'📋')+'</div>' +
+      '<div class="finding-body">' +
+      '<div class="finding-severity">'+(f.type||'info').toUpperCase()+'</div>' +
+      '<h4>'+(f.title||'Untitled finding')+'</h4>' +
+      '<p>'+(f.description||'No description provided.')+'</p>' +
+      (f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'') +
+      (f.negotiate?'<div class="negotiate-box">💬 <strong>Ask for:</strong> '+f.negotiate+'</div>':'') +
+      '</div></div>';
   }).join('');
-  document.getElementById('questions-list').innerHTML = (data.questions||[]).map(function(q,i) {
+
+  var questions = data.questions || [];
+  window._lastQuestions = questions;
+
+  document.getElementById('questions-list').innerHTML = questions.map(function(q,i) {
     return '<div class="question-item"><div class="q-num">'+(i+1)+'</div><p>'+q+'</p></div>';
   }).join('');
   showPage('results');
