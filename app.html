@@ -635,7 +635,12 @@ function renderResults(data) {
   document.getElementById('stat-warning').textContent = '⚠️ ' + findings.filter(function(f){ return f && f.type === 'warning'; }).length + ' Warnings';
   document.getElementById('stat-positive').textContent = '✅ ' + findings.filter(function(f){ return f && f.type === 'positive'; }).length + ' Positive';
 
+  var isParseFailed = data.riskLevel === 'Unknown';
   document.getElementById('summary-text').textContent = data.summary || 'No summary available.';
+  document.getElementById('risk-num').textContent = isParseFailed ? '—' : score;
+  document.querySelector('.risk-breakdown').style.display = isParseFailed ? 'none' : 'flex';
+  document.querySelector('.findings-section').style.display = isParseFailed ? 'none' : 'block';
+  document.querySelector('.questions-section').style.display = isParseFailed ? 'none' : 'block';
 
   document.getElementById('findings-list').innerHTML = findings.map(function(f,i) {
     f = f || {};
