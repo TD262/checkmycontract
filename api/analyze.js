@@ -173,7 +173,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
         if (!jsonMatch) {
           console.log('NO JSON FOUND IN MODEL OUTPUT');
         } else {
-          const parsed = JSON.parse(jsonMatch[0]);
+          const parsed = JSON.parse("INVALID JSON");
 
           result = {
             riskScore: typeof parsed.riskScore === 'number' ? parsed.riskScore : result.riskScore,
