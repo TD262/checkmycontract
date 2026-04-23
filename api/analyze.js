@@ -248,17 +248,27 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
               </div>
 
               <!-- Risk score -->
-              <div style="background:#f0ece4;padding:24px 32px;display:flex;align-items:center;gap:20px;">
-                <div style="width:64px;height:64px;border-radius:50%;border:4px solid ${scoreColor};display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#0f1f3d;flex-shrink:0;">${result.riskScore}</div>
-                <div>
-                  <div style="font-size:18px;font-weight:700;color:#0f1f3d;">${result.riskLevel} Risk Contract</div>
-                  <div style="font-size:13px;color:#5a6a8a;margin-top:4px;">
-                    <span style="color:#ef4444;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='critical').length} Critical</span> &nbsp;
-                    <span style="color:#f59e0b;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='warning').length} Warnings</span> &nbsp;
-                    <span style="color:#10b981;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='positive').length} Positive</span>
-                  </div>
-                </div>
-              </div>
+              <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0ece4;">
+                <tr>
+                  <td style="padding:24px 32px;">
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width:72px;vertical-align:middle;">
+                          <div style="width:64px;height:64px;border-radius:50%;border:4px solid ${scoreColor};text-align:center;line-height:56px;font-size:22px;font-weight:700;color:#0f1f3d;">${result.riskScore}</div>
+                        </td>
+                        <td style="padding-left:20px;vertical-align:middle;">
+                          <div style="font-size:18px;font-weight:700;color:#0f1f3d;">${result.riskLevel} Risk Contract</div>
+                          <div style="font-size:13px;color:#5a6a8a;margin-top:6px;">
+                            <span style="color:#ef4444;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='critical').length} Critical</span> &nbsp;
+                            <span style="color:#f59e0b;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='warning').length} Warnings</span> &nbsp;
+                            <span style="color:#10b981;font-weight:600;">${(result.findings||[]).filter(f=>f.type==='positive').length} Positive</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
 
               <div style="padding:28px 32px;">
 
