@@ -25,11 +25,21 @@ export default async function handler(req, res) {
       });
     });
 
-    const ALLOWED_EMAIL = 'tdd26294@gmail.com';
-    const submittedEmail = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
-    if (!submittedEmail || submittedEmail.toLowerCase() !== ALLOWED_EMAIL) {
-      return res.status(401).json({ error: 'Access not authorized.' });
+    const token = fields.token ? (Array.isArray(fields.token) ? fields.token[0] : fields.token) : null;
+    if (!token) {
+      return res.status(401).json({ error: 'Not authenticated.' });
     }
+    const authRes = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
+      headers: {
+        'apikey': process.env.SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!authRes.ok) {
+      return res.status(401).json({ error: 'Session expired. Please log in again.' });
+    }
+    const authUser = await authRes.json();
+    const email = authUser.email;
 
     let contractText = '';
 
@@ -139,8 +149,6 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     });
 
     const data = await response.json();
-
-    const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
 
     // Always start with a safe default result
     let result = {

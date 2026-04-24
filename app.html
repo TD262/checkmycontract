@@ -8,6 +8,7 @@
 <meta name="keywords" content="freelance contract review, AI contract analysis, contract red flags, freelancer legal tool"/>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
     --navy: #0f1f3d;
@@ -244,44 +245,31 @@
 </nav>
 
 <!-- ══════════════════════════════════════════
-     EMAIL GATE PAGE
+     LOGIN PAGE
 ══════════════════════════════════════════ -->
-<div class="page active" id="page-email-gate">
-  <div class="email-gate-wrap">
+<div class="page active" id="page-login">
+  <div class="login-wrap">
     <div class="gate-icon">📄</div>
     <h1>Know what you're<br/><em>signing.</em></h1>
-    <p>Enter your email to get your free contract review. We'll flag every red flag, risky clause, and unfair term — in plain English.</p>
+    <p>Log in to get your free contract review. We'll flag every red flag, risky clause, and unfair term — in plain English.</p>
 
-    <!-- Email form -->
-    <div class="email-form-box" id="email-form-box">
-      <div class="free-badge">✓ 1 Free Check Per Month</div>
-      <h2>Enter your email to start</h2>
-      <p>No password needed. We'll remember you for next time.</p>
-      <input
-        type="email"
-        class="email-input"
-        id="email-input"
-        placeholder="you@example.com"
-        onkeydown="if(event.key==='Enter')submitEmail()"
-      />
-      <div class="error-box" id="gate-error-box" style="margin-bottom:12px;margin-top:0;"></div>
-      <button class="email-submit-btn" id="email-submit-btn" onclick="submitEmail()">
-        <span id="email-btn-text">Continue →</span>
+    <div class="login-form-box">
+      <h2>Sign in to your account</h2>
+      <p>Enter your email and password to continue.</p>
+
+      <label class="login-label" for="email-input">Email</label>
+      <input type="email" class="email-input" id="email-input" placeholder="you@example.com"
+        onkeydown="if(event.key==='Enter')document.getElementById('password-input').focus()"/>
+
+      <label class="login-label" for="password-input">Password</label>
+      <input type="password" class="email-input" id="password-input" placeholder="••••••••"
+        onkeydown="if(event.key==='Enter')login()"/>
+
+      <div class="error-box" id="gate-error-box" style="margin-bottom:12px;margin-top:0;display:none;"></div>
+
+      <button class="email-submit-btn" id="login-btn" onclick="login()">
+        <span id="login-btn-text">Sign In →</span>
       </button>
-      <p class="gate-note">No spam. We only email you your results. Unsubscribe any time.</p>
-    </div>
-
-    <!-- Limit hit message (hidden until needed) -->
-    <div class="limit-box" id="limit-box">
-      <h3>Monthly limit reached</h3>
-      <p>You've used your 1 free check for this month. Upgrade to Pro for unlimited contract reviews — cancel any time.</p>
-      <button class="upgrade-btn">Upgrade to Pro — $19/mo</button>
-      <p style="margin-top:16px;font-size:12px;color:var(--text-muted);">Your free check resets on the 1st of next month.</p>
-    </div>
-
-    <div id="blocked-box" style="display:none; width:100%; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.2); border-radius:16px; padding:28px; text-align:center;">
-      <h3 style="font-size:18px; font-weight:600; color:#b91c1c; margin-bottom:8px;">Access not authorized.</h3>
-      <p style="font-size:14px; color:var(--text-muted); line-height:1.6;">This tool is currently in private beta. If you think this is a mistake, please contact us.</p>
     </div>
 
     <div class="gate-trust">
@@ -418,9 +406,24 @@
 </div>
 
 <script>
+// ── Supabase setup ─────────────────────────────────────
+var SUPABASE_URL = 'https://wdwfikdgwihfziksrkto.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indkd2Zpa2Rnd2loZnppa3Nya3RvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwMTc1MjQsImV4cCI6MjA5MDU5MzUyNH0.RwzTw9PQDTEGKlYCqwH6ditq8fL51QyJpVpwxP4RESc';
+var supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // ── State ──────────────────────────────────────────────
 var selectedFile = null;
-var userEmail = '';
+var currentSession = null;
+
+// ── On page load: check if already logged in ───────────
+(async function init() {
+  var { data } = await supabase.auth.getSession();
+  if (data.session) {
+    currentSession = data.session;
+    document.getElementById('logout-btn').style.display = 'block';
+    showPage('upload');
+  }
+})();
 
 // ── Page navigation ────────────────────────────────────
 function showPage(name) {
@@ -429,73 +432,61 @@ function showPage(name) {
   window.scrollTo(0, 0);
 }
 
-// ── Email gate ─────────────────────────────────────────
-async function submitEmail() {
-  var input = document.getElementById('email-input');
-  var email = input.value.trim();
-  var btn = document.getElementById('email-submit-btn');
-  var btnText = document.getElementById('email-btn-text');
-  var errorBox = document.getElementById('gate-error-box');
-
-  // Basic validation
-  if (!email || !email.includes('@') || !email.includes('.')) {
-    errorBox.textContent = 'Please enter a valid email address.';
-    errorBox.classList.add('show');
-    return;
-  }
-  errorBox.classList.remove('show');
-
-  // Show loading state on button
-  btn.disabled = true;
-  btnText.textContent = 'Checking…';
-
-  try {
-    var res = await fetch('/api/check-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email })
-    });
-
-    var data = await res.json();
-
-    if (res.status === 401) {
-      document.getElementById('email-form-box').style.display = 'none';
-      document.getElementById('limit-box').style.display = 'none';
-      document.getElementById('blocked-box').style.display = 'block';
-      return;
-    }
-
-    if (!res.ok) {
-      throw new Error(data.error || 'Something went wrong.');
-    }
-
-    if (data.allowed) {
-      userEmail = email;
-      sessionStorage.setItem('cmc_email', email);
-      showPage('upload');
-    } else {
-      document.getElementById('email-form-box').style.display = 'none';
-      document.getElementById('limit-box').classList.add('show');
-    }
-
-  } catch (err) {
-    errorBox.textContent = err.message;
-    errorBox.classList.add('show');
-  } finally {
-    btn.disabled = false;
-    btnText.textContent = 'Continue →';
-  }
+function goHome() {
+  if (currentSession) { showPage('upload'); } else { showPage('login'); }
 }
 
-// If the user already submitted their email this session, skip the gate
-(function checkSession() {
-  var saved = sessionStorage.getItem('cmc_email');
-  if (saved) {
-    userEmail = saved;
-    // Don't auto-skip — let them land on gate page, but pre-fill email
-    document.getElementById('email-input').value = saved;
+// ── Login ──────────────────────────────────────────────
+async function login() {
+  var email = document.getElementById('email-input').value.trim();
+  var password = document.getElementById('password-input').value;
+  var btn = document.getElementById('login-btn');
+  var btnText = document.getElementById('login-btn-text');
+  var errorBox = document.getElementById('gate-error-box');
+
+  errorBox.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errorBox.textContent = 'Please enter a valid email address.';
+    errorBox.style.display = 'block';
+    return;
   }
-})();
+  if (!password) {
+    errorBox.textContent = 'Please enter your password.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btnText.textContent = 'Signing in…';
+
+  var { data, error } = await supabase.auth.signInWithPassword({ email: email, password: password });
+
+  if (error) {
+    errorBox.textContent = 'Incorrect email or password. Please try again.';
+    errorBox.style.display = 'block';
+    btn.disabled = false;
+    btnText.textContent = 'Sign In →';
+    return;
+  }
+
+  currentSession = data.session;
+  document.getElementById('logout-btn').style.display = 'block';
+  showPage('upload');
+  btn.disabled = false;
+  btnText.textContent = 'Sign In →';
+}
+
+// ── Logout ─────────────────────────────────────────────
+async function logout() {
+  await supabase.auth.signOut();
+  currentSession = null;
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('email-input').value = '';
+  document.getElementById('password-input').value = '';
+  removeFile();
+  showPage('login');
+}
 
 // ── File handling ──────────────────────────────────────
 var dropZone = document.getElementById('drop-zone');
@@ -564,9 +555,10 @@ async function analyzeContract() {
   startLoadingAnimation();
 
   // Send the file AND the user's email to the backend
+  if (!currentSession) { showPage('login'); return; }
   var formData = new FormData();
   formData.append('file', selectedFile);
-  formData.append('email', userEmail);
+  formData.append('token', currentSession.access_token);
 
   try {
     var response = await fetch('/api/analyze', {
