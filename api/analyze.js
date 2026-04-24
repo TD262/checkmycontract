@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Not authenticated.' });
     }
     const userCheck = await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=email&limit=1`,
+      `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email&limit=1`,
       {
         headers: {
           'apikey': process.env.SUPABASE_ANON_KEY,
@@ -203,7 +203,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     if (email) {
       // Increment check count in Supabase
       const dbRes = await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/users`,
+        `${process.env.SUPABASE_URL}/rest/v1/user_profiles`,
         {
           method: 'POST',
           headers: {
