@@ -199,7 +199,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     } catch (parseErr) {
       console.log('PARSE FAILED:', parseErr);
     }
-    console.log('ATTEMPTING DB WRITE FOR EMAIL:', email);
+    
     if (email) {
       // Check if user exists then insert or update
       const lookupRes = await fetch(
@@ -238,9 +238,6 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
             body: JSON.stringify({ checks_used: existingUsers[0].checks_used + 1 })
           }
         );
-        console.log('DB PATCH STATUS:', dbRes.status);
-        const dbBody = await dbRes.text();
-        console.log('DB PATCH BODY:', dbBody);
       }
 
       // Build findings HTML
