@@ -29,21 +29,22 @@ export default async function handler(req, res) {
     if (!token) {
       return res.status(401).json({ error: 'Not authenticated.' });
     }
-    const authRes = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
+    const authRes = await fetch(`${process.env.SUPABASE_URL}/rest/v1/users?select=email&limit=1`, {
       headers: {
         'apikey': process.env.SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${token}`
       }
     });
+    console.log('AUTH STATUS:', authRes.status);
     if (!authRes.ok) {
-      const authErr = await authRes.json();
-      console.log('SUPABASE AUTH ERROR:', JSON.stringify(authErr));
       return res.status(401).json({ error: 'Session expired. Please log in again.' });
     }
-    const authUser = await authRes.json();
-    console.log('SUPABASE AUTH USER:', JSON.stringify(authUser));
-    const email = authUser.email;
+    const authRows = await authRes.json();
+    console.log('AUTH ROWS:', JSON.stringify(authRows));
+    if (!authRows || authRows.length === 0) {
+      return res.status(401).json({ error: 'Session expired. Please log in again.' });
+    }
+    const email = authRows[0].email;
 
     let contractText = '';
 
