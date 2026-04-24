@@ -203,21 +203,25 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     if (email) {
       // Increment check count in Supabase
       const dbRes = await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`,
+        `${process.env.SUPABASE_URL}/rest/v1/users`,
         {
-          method: 'PATCH',
+          method: 'POST',
           headers: {
             'apikey': process.env.SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
             'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
+            'Prefer': 'resolution=merge-duplicates,return=minimal'
           },
-          body: JSON.stringify({ checks_used: 1 })
+          body: JSON.stringify({
+            email: email,
+            checks_used: 1,
+            period_start: new Date().toISOString()
+          })
         }
       );
-      console.log('DB PATCH STATUS:', dbRes.status);
+      console.log('DB UPSERT STATUS:', dbRes.status);
       const dbBody = await dbRes.text();
-      console.log('DB PATCH BODY:', dbBody);
+      console.log('DB UPSERT BODY:', dbBody);
 
       // Build findings HTML
       const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
