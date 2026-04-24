@@ -32,7 +32,8 @@ export default async function handler(req, res) {
     const authRes = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
       headers: {
         'apikey': process.env.SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
       }
     });
     if (!authRes.ok) {
@@ -41,6 +42,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Session expired. Please log in again.' });
     }
     const authUser = await authRes.json();
+    console.log('SUPABASE AUTH USER:', JSON.stringify(authUser));
     const email = authUser.email;
 
     let contractText = '';
