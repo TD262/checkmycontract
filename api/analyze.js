@@ -174,8 +174,6 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
         console.log('UNEXPECTED AI RESPONSE SHAPE:', JSON.stringify(data));
       }
 
-      console.log('RAW MODEL OUTPUT:', analysisText);
-
       if (!analysisText) {
         console.log('EMPTY AI RESPONSE');
       } else {

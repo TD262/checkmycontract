@@ -571,7 +571,6 @@ async function analyzeContract() {
     if (!response.ok) { var errText = await response.text(); throw new Error(errText); }
 
     var result = await response.json();
-    console.log('Parsed result:', result);
     // PDF button — lock behind Pro
     var pdfBtn = document.getElementById('download-pdf-btn');
     if (result.isProUser) {
