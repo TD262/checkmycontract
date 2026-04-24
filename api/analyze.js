@@ -202,7 +202,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     console.log('ATTEMPTING DB WRITE FOR EMAIL:', email);
     if (email) {
       // Increment check count in Supabase
-      await fetch(
+      const dbRes = await fetch(
         `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}`,
         {
           method: 'PATCH',
@@ -215,6 +215,9 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
           body: JSON.stringify({ checks_used: 1 })
         }
       );
+      console.log('DB PATCH STATUS:', dbRes.status);
+      const dbBody = await dbRes.text();
+      console.log('DB PATCH BODY:', dbBody);
 
       // Build findings HTML
       const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
