@@ -199,7 +199,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     } catch (parseErr) {
       console.log('PARSE FAILED:', parseErr);
     }
-
+    console.log('ATTEMPTING DB WRITE FOR EMAIL:', email);
     if (email) {
       // Increment check count in Supabase
       await fetch(
