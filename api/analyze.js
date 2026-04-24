@@ -36,6 +36,8 @@ export default async function handler(req, res) {
       }
     });
     if (!authRes.ok) {
+      const authErr = await authRes.json();
+      console.log('SUPABASE AUTH ERROR:', JSON.stringify(authErr));
       return res.status(401).json({ error: 'Session expired. Please log in again.' });
     }
     const authUser = await authRes.json();
