@@ -201,28 +201,47 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
     }
     console.log('ATTEMPTING DB WRITE FOR EMAIL:', email);
     if (email) {
-      // Increment check count in Supabase
-      const dbRes = await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/user_profiles`,
+      // Check if user exists then insert or update
+      const lookupRes = await fetch(
+        `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used`,
         {
+          headers: {
+            'apikey': process.env.SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
+          }
+        }
+      );
+      const existingUsers = await lookupRes.json();
+
+      if (existingUsers.length === 0) {
+        await fetch(`${process.env.SUPABASE_URL}/rest/v1/user_profiles`, {
           method: 'POST',
           headers: {
             'apikey': process.env.SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
             'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates,return=minimal',
-          'on-conflict': 'email'
+            'Prefer': 'return=minimal'
           },
-          body: JSON.stringify({
-            email: email,
-            checks_used: 1,
-            period_start: new Date().toISOString()
-          })
-        }
-      );
-      console.log('DB UPSERT STATUS:', dbRes.status);
-      const dbBody = await dbRes.text();
-      console.log('DB UPSERT BODY:', dbBody);
+          body: JSON.stringify({ email: email, checks_used: 1, period_start: new Date().toISOString() })
+        });
+      } else {
+        const dbRes = await fetch(
+          `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}`,
+          {
+            method: 'PATCH',
+            headers: {
+              'apikey': process.env.SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ checks_used: existingUsers[0].checks_used + 1 })
+          }
+        );
+        console.log('DB PATCH STATUS:', dbRes.status);
+        const dbBody = await dbRes.text();
+        console.log('DB PATCH BODY:', dbBody);
+      }
 
       // Build findings HTML
       const typeColors = { critical: '#ef4444', warning: '#f59e0b', positive: '#10b981', info: '#0d9e8e' };
