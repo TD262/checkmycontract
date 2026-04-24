@@ -26,25 +26,23 @@ export default async function handler(req, res) {
     });
 
     const token = fields.token ? (Array.isArray(fields.token) ? fields.token[0] : fields.token) : null;
-    if (!token) {
+    const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
+    if (!token || !email) {
       return res.status(401).json({ error: 'Not authenticated.' });
     }
-    const authRes = await fetch(`${process.env.SUPABASE_URL}/rest/v1/users?select=email&limit=1`, {
-      headers: {
-        'apikey': process.env.SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${token}`
+    const userCheck = await fetch(
+      `${process.env.SUPABASE_URL}/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=email&limit=1`,
+      {
+        headers: {
+          'apikey': process.env.SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
+        }
       }
-    });
-    console.log('AUTH STATUS:', authRes.status);
-    if (!authRes.ok) {
-      return res.status(401).json({ error: 'Session expired. Please log in again.' });
+    );
+    const userRows = await userCheck.json();
+    if (!userRows || userRows.length === 0) {
+      return res.status(401).json({ error: 'Access not authorized.' });
     }
-    const authRows = await authRes.json();
-    console.log('AUTH ROWS:', JSON.stringify(authRows));
-    if (!authRows || authRows.length === 0) {
-      return res.status(401).json({ error: 'Session expired. Please log in again.' });
-    }
-    const email = authRows[0].email;
 
     let contractText = '';
 

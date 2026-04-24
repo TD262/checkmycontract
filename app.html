@@ -560,6 +560,7 @@ async function analyzeContract() {
   var formData = new FormData();
   formData.append('file', selectedFile);
   formData.append('token', currentSession.access_token);
+  formData.append('email', currentSession.user.email);
 
   try {
     var response = await fetch('/api/analyze', {
