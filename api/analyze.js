@@ -210,7 +210,8 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
             'apikey': process.env.SUPABASE_ANON_KEY,
             'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
             'Content-Type': 'application/json',
-            'Prefer': 'resolution=merge-duplicates,return=minimal'
+            'Prefer': 'resolution=merge-duplicates,return=minimal',
+          'on-conflict': 'email'
           },
           body: JSON.stringify({
             email: email,
