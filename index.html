@@ -810,9 +810,46 @@
     .cta-section { padding: 60px 24px; }
     footer { padding: 32px 24px; flex-direction: column; gap: 20px; text-align: center; }
   }
+
+/* ── WAITLIST MODAL ── */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(15,31,61,0.5); z-index:500; align-items:center; justify-content:center; padding:24px; }
+  .modal-overlay.show { display:flex; }
+  .modal-box { background:var(--white); border-radius:20px; padding:36px 32px; max-width:440px; width:100%; position:relative; }
+  .modal-close { position:absolute; top:16px; right:16px; background:#f0ece4; border:none; border-radius:50%; width:32px; height:32px; font-size:16px; cursor:pointer; color:#5a6a8a; display:flex; align-items:center; justify-content:center; }
+  .modal-close:hover { background:rgba(239,68,68,0.1); color:#ef4444; }
+  .modal-box h2 { font-family:'Instrument Serif',serif; font-size:26px; color:var(--navy); margin-bottom:8px; }
+  .modal-box p { font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:20px; }
+  .modal-input { width:100%; padding:14px 16px; border:1.5px solid rgba(15,31,61,0.08); border-radius:10px; font-size:15px; font-family:'DM Sans',sans-serif; color:var(--text); background:var(--cream); outline:none; transition:border-color 0.2s; margin-bottom:12px; }
+  .modal-input:focus { border-color:var(--teal); background:var(--white); }
+  .modal-submit { width:100%; padding:15px; background:var(--navy); color:var(--white); border:none; border-radius:10px; font-size:15px; font-weight:600; cursor:pointer; transition:all 0.2s; font-family:'DM Sans',sans-serif; }
+  .modal-submit:hover { background:var(--teal); }
+  .modal-submit:disabled { opacity:0.6; cursor:not-allowed; }
+  .modal-error { display:none; margin-bottom:12px; background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:10px; padding:12px 16px; font-size:13px; color:#b91c1c; }
+  .modal-success { display:none; text-align:center; padding:12px 0; }
+  .modal-success h3 { font-size:18px; font-weight:600; color:#10b981; margin-bottom:8px; }
+  .modal-success p { font-size:14px; color:var(--text-muted); }  
 </style>
 </head>
 <body>
+
+<!-- WAITLIST MODAL -->
+<div class="modal-overlay" id="waitlist-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeWaitlist()">✕</button>
+    <h2>Request Early Access</h2>
+    <p>We're in private beta. Enter your email and we'll let you in as soon as a spot opens up.</p>
+    <div id="waitlist-form">
+      <input type="text" class="modal-input" id="waitlist-email" placeholder="you@example.com"
+        onkeydown="if(event.key==='Enter')submitWaitlist()"/>
+      <div class="modal-error" id="waitlist-error"></div>
+      <button class="modal-submit" id="waitlist-btn" onclick="submitWaitlist()">Request Access →</button>
+    </div>
+    <div class="modal-success" id="waitlist-success">
+      <h3>✓ You're on the list!</h3>
+      <p>We'll email you as soon as your spot is ready.</p>
+    </div>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav>
@@ -823,7 +860,7 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#faq">FAQ</a></li>
     <li><a href="/blog">Blog</a></li>
-    <li><a href="app.html" class="nav-cta">Upload Contract Free</a></li>
+    <li><a href="#" class="nav-cta" onclick="openWaitlist();return false;">Upload Contract Free</a></li>
   </ul>
 </nav>
 
@@ -836,7 +873,7 @@
     <h1>Know what you're<br/><em>signing.</em></h1>
     <p>Built for freelancers. Upload any contract and get a plain-English breakdown of key clauses, potential risks, and everything you need to understand before you sign — in under 60 seconds.</p>
     <div class="hero-actions">
-      <a href="app.html" class="btn-primary">
+      <a href="#" class="btn-primary" onclick="openWaitlist();return false;">
         Upload Contract Free →
       </a>
       <a href="#how" class="btn-secondary">
@@ -986,7 +1023,7 @@
         <li><span class="check">✓</span> Basic red flag detection</li>
         <li><span class="check">✓</span> PDF & Word support</li>
       </ul>
-      <button class="plan-btn outline" onclick="window.location.href='app.html'">Upload Contract Free</button>
+      <button class="plan-btn outline" onclick="openWaitlist()">Upload Contract Free</button>
     </div>
     <div class="pricing-card featured">
       <div class="popular-badge">Best for Frequent Users</div>
@@ -1001,7 +1038,7 @@
         <li><span class="check">✓</span> Contract history saved</li>
         <li><span class="check">✓</span> Priority processing</li>
       </ul>
-      <button class="plan-btn solid">Start Pro Free for 7 Days</button>
+      <button class="plan-btn solid" onclick="openWaitlist()">Start Pro Free for 7 Days</button>
     </div>
     <div class="pricing-card">
       <div class="plan-name">Pay Per Contract</div>
@@ -1013,7 +1050,7 @@
         <li><span class="check">✓</span> Best for occasional use</li>
         <li><span class="check">✓</span> Results in 60 seconds</li>
       </ul>
-      <button class="plan-btn outline">Upload Contract Free</button>
+      <button class="plan-btn outline" onclick="openWaitlist()">Upload Contract Free</button>
     </div>
   </div>
 
@@ -1067,8 +1104,8 @@
     <div class="section-label" style="text-align:center;">Get started today</div>
     <h2 class="section-title" style="text-align:center;">Your next contract<br/>deserves a closer look.</h2>
     <p class="section-sub">Join thousands of freelancers who review their contracts before signing. Your first analysis is completely free.</p>
-    <a href="app.html" class="btn-primary" style="font-size:16px; padding:18px 40px;">
-      Upload Contract Free →
+    <a href="#" class="btn-primary" style="font-size:16px; padding:18px 40px;" onclick="openWaitlist();return false;">
+  Upload Contract Free →
     </a>
   </div>
 </section>
@@ -1085,5 +1122,58 @@
   <div class="footer-copy">© 2026 CheckMyContract.co</div>
 </footer>
 
+<script>
+function openWaitlist() {
+  document.getElementById('waitlist-modal').classList.add('show');
+  document.getElementById('waitlist-email').value = '';
+  document.getElementById('waitlist-error').style.display = 'none';
+  document.getElementById('waitlist-form').style.display = 'block';
+  document.getElementById('waitlist-success').style.display = 'none';
+}
+
+function closeWaitlist() {
+  document.getElementById('waitlist-modal').classList.remove('show');
+}
+
+async function submitWaitlist() {
+  var email = document.getElementById('waitlist-email').value.trim();
+  var btn = document.getElementById('waitlist-btn');
+  var errorBox = document.getElementById('waitlist-error');
+
+  errorBox.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errorBox.textContent = 'Please enter a valid email address.';
+    errorBox.style.display = 'block';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch('/api/waitlist', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      throw new Error(data.error || 'Something went wrong.');
+    }
+
+    document.getElementById('waitlist-form').style.display = 'none';
+    document.getElementById('waitlist-success').style.display = 'block';
+
+  } catch(err) {
+    errorBox.textContent = err.message;
+    errorBox.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Request Access →';
+  }
+}
+</script>
 </body>
 </html>
