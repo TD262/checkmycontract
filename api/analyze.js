@@ -31,7 +31,7 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: 'Not authenticated.' });
     }
     const userCheck = await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email&limit=1`,
+      `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
       {
         headers: {
           'apikey': process.env.SUPABASE_ANON_KEY,
@@ -42,6 +42,9 @@ export default async function handler(req, res) {
     const userRows = await userCheck.json();
     if (!userRows || userRows.length === 0) {
       return res.status(401).json({ error: 'Access not authorized.' });
+    }
+    if (!userRows[0].approved) {
+      return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
     }
 
     let contractText = '';
