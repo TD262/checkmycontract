@@ -244,7 +244,7 @@
     position: absolute;
     right: 48px;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-42%);
     width: 420px;
     animation: fadeUp 0.8s 0.3s ease both;
   }
@@ -469,6 +469,29 @@
     justify-content: center;
     font-size: 22px;
     margin-bottom: 20px;
+  }
+  
+  .step-list {
+    margin-top: 14px;
+    padding-left: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .step-list li {
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .step-list li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-size: 12px;
   }
 
   .step h3 {
@@ -958,19 +981,34 @@
       <div class="step-number">01</div>
       <div class="step-icon">📤</div>
       <h3>Upload your contract</h3>
-      <p>Drag and drop any PDF or Word document. We accept all standard contract formats from any client or platform.</p>
+      <p>Drag and drop any PDF, Word, or text file. Works with any contract — client agreements, NDAs, SOWs, service contracts, and more. Results in under 60 seconds.</p>
+      <ul class="step-list">
+        <li>PDF, DOC, DOCX, TXT supported</li>
+        <li>Up to 35 pages</li>
+        <li>Your file is never stored</li>
+      </ul>
     </div>
     <div class="step">
       <div class="step-number">02</div>
       <div class="step-icon">🤖</div>
-      <h3>AI analyzes key clauses</h3>
-      <p>Our AI reviews your entire contract in seconds, identifying risky or unfavorable clauses, unusual terms, and anything that could affect your payment or rights.</p>
+      <h3>AI analyzes every clause</h3>
+      <p>Our AI reads the full contract — not a summary — checking every clause against common freelancer risk patterns. Payment terms, IP ownership, non-competes, revision policies, liability, and more.</p>
+      <ul class="step-list">
+        <li>Full contract analysis, no truncation</li>
+        <li>Ranked by severity and impact</li>
+        <li>Grounded in what's actually written</li>
+      </ul>
     </div>
     <div class="step">
       <div class="step-number">03</div>
       <div class="step-icon">💡</div>
       <h3>Get your plain-English report</h3>
-      <p>Receive a clear breakdown of what the contract means, what to watch out for, and what questions to ask your client.</p>
+      <p>Every finding explained in plain English — what it means, why it matters, and exactly what to ask your client before you sign. No legal jargon, no guesswork.</p>
+      <ul class="step-list">
+        <li>Risk score and letter grade</li>
+        <li>Negotiation suggestions per clause</li>
+        <li>Questions to ask your client</li>
+      </ul>
     </div>
   </div>
 </section>
