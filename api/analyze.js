@@ -75,11 +75,13 @@ export default async function handler(req, res) {
     }
 
     const isProUser = false; // will be true when Stripe is set up
-const charLimit = isProUser ? 15000 : 6000;
-const maxFindings = isProUser ? 10 : 5;
-const isTruncated = contractText.length > charLimit;
+const HARD_LIMIT = 50000;
+if (contractText.length > HARD_LIMIT) {
+  return res.status(400).json({ error: 'This document is too large to analyze. Please upload a contract file, not a full document or book.' });
+}
 const totalCharacters = contractText.length;
-const analyzedCharacters = Math.min(contractText.length, charLimit);
+const analyzedCharacters = totalCharacters;
+const isTruncated = false;
 
 const prompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
 
@@ -88,7 +90,7 @@ Analyze the contract below and return a structured JSON report. Base your analys
 User plan: ${isProUser ? 'Pro' : 'Free'}
 
 Contract:
-${contractText.substring(0, charLimit)}
+${contractText}
 
 ANALYSIS RULES — follow these exactly:
 
@@ -126,7 +128,7 @@ Before assigning a risk type, check whether the clause reflects standard freelan
 Do not flag normal freelance contract terms as risks simply because they are imperfect.
 
 6. FINDINGS COUNT
-Report up to ${maxFindings} findings based on importance. Do not pad. Only report what is genuinely present or meaningfully absent.
+Return all findings that materially affect freelancer decision-making. Rank by severity. Avoid redundancy and merge similar issues into a single finding when they stem from the same clause or risk category. Do not pad with minor or obvious points. Typical output is 5–15 findings — do not cap artificially.
 
 7. QUOTE ACCURACY
 Only include a quote field if the text appears verbatim in the contract. If you are paraphrasing or unsure, set quote to an empty string "".
