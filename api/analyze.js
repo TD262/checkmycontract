@@ -79,9 +79,6 @@ const HARD_LIMIT = 50000;
 if (contractText.length > HARD_LIMIT) {
   return res.status(400).json({ error: 'This document is too large to analyze. Please upload a contract file, not a full document or book.' });
 }
-const totalCharacters = contractText.length;
-const analyzedCharacters = totalCharacters;
-const isTruncated = false;
 
 const prompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
 
@@ -346,7 +343,7 @@ OUTPUT — return ONLY valid JSON, no markdown, no backticks, no extra text:
       });
     }
 
-    return res.status(200).json({ ...result, isTruncated, maxFindings, isProUser, totalCharacters, analyzedCharacters });
+    return res.status(200).json({ ...result, isProUser });
     
 
   } catch (err) {
