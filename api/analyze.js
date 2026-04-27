@@ -51,8 +51,8 @@ export default async function handler(req, res) {
       `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
       {
         headers: {
-          'apikey': process.env.SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
+          'apikey': process.env.SUPABASE_SERVICE_KEY,
+          'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
         }
       }
     );
@@ -230,8 +230,8 @@ ${contractText}
         `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used`,
         {
           headers: {
-            'apikey': process.env.SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`
+            'apikey': process.env.SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
           }
         }
       );
@@ -241,8 +241,8 @@ ${contractText}
         await fetch(`${process.env.SUPABASE_URL}/rest/v1/user_profiles`, {
           method: 'POST',
           headers: {
-            'apikey': process.env.SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+            'apikey': process.env.SUPABASE_SERVICE_KEY,
+            'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
             'Content-Type': 'application/json',
             'Prefer': 'return=minimal'
           },
@@ -254,8 +254,8 @@ ${contractText}
           {
             method: 'PATCH',
             headers: {
-              'apikey': process.env.SUPABASE_ANON_KEY,
-              'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+              'apikey': process.env.SUPABASE_SERVICE_KEY,
+              'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
               'Content-Type': 'application/json',
               'Prefer': 'return=minimal'
             },
