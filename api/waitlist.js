@@ -1,3 +1,10 @@
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://checkmycontract.co');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -5,10 +12,20 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+  
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  const rateLimitKey = `waitlist:${ip}`;
+  const requests = await redis.incr(rateLimitKey);
+  if (requests === 1) {
+    await redis.expire(rateLimitKey, 3600);
+  }
+  if (requests > 5) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' });
+  }
 
   const { email } = req.body;
 
-  if (!email || !email.includes('@')) {
+  if (!email || typeof email !== 'string' || !email.includes('@')) {
     return res.status(400).json({ error: 'Please enter a valid email address.' });
   }
 
