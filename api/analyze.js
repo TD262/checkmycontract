@@ -1,3 +1,10 @@
+import { Redis } from '@upstash/redis';
+
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN,
+});
+
 import formidable from 'formidable';
 import fs from 'fs';
 import pdfParse from 'pdf-parse';
@@ -14,7 +21,17 @@ export default async function handler(req, res) {
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
+  
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+  const rateLimitKey = `analyze:${ip}`;
+  const requests = await redis.incr(rateLimitKey);
+  if (requests === 1) {
+    await redis.expire(rateLimitKey, 3600);
+  }
+  if (requests > 10) {
+    return res.status(429).json({ error: 'Too many requests. Please try again in an hour.' });
+  }
+  
   try {
     const form = formidable({ maxFileSize: 10 * 1024 * 1024 });
 
