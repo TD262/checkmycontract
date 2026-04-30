@@ -211,6 +211,7 @@
   .finding-body p { font-size:13px; color:var(--text-muted); line-height:1.6; font-weight:300; }
   .clause-quote { margin-top:10px; padding:10px 14px; background:var(--cream); border-radius:8px; font-size:12px; color:var(--text-muted); font-style:italic; line-height:1.5; border-left:2px solid var(--border); }
   .negotiate-box { margin-top:10px; padding:10px 14px; background:rgba(13,158,142,0.06); border-radius:8px; font-size:12px; color:var(--teal); line-height:1.5; border-left:2px solid var(--teal); }
+  .copy-btn { margin-left:10px; padding:4px 10px; font-size:11px; font-weight:600; background:var(--teal); color:white; border:none; border-radius:6px; cursor:pointer; }
 
   .questions-section { background:var(--white); border-radius:16px; padding:28px 32px; border:1px solid var(--border); margin-bottom:24px; }
   .questions-section h2 { font-family:'Instrument Serif',serif; font-size:22px; color:var(--navy); margin-bottom:16px; }
@@ -664,7 +665,7 @@ function renderResults(data) {
       '<h4>'+(f.title||'Untitled finding')+'</h4>' +
       '<p>'+(f.description||'No description provided.')+'</p>' +
       (f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'') +
-      (f.negotiate?'<div class="negotiate-box">💬 <strong>Ask for:</strong> '+f.negotiate+'</div>':'') +
+      (f.negotiate?'<div class="negotiate-box">💬 <strong>Copy and send to your client:</strong> '+f.negotiate+'<button class="copy-btn" data-text="'+encodeURIComponent(f.negotiate)+'">Copy message</button></div>':'') +
       '</div></div>';
   }).join('');
 
@@ -915,6 +916,17 @@ function downloadPDF() {
     btn.disabled = false;
   }
 }
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('copy-btn')) {
+    const text = decodeURIComponent(e.target.getAttribute('data-text'));
+    navigator.clipboard.writeText(text).then(() => {
+      e.target.innerText = 'Copied!';
+      setTimeout(() => { e.target.innerText = 'Copy message'; }, 1500);
+    });
+  }
+});
+
 function resetApp() { removeFile(); resetLoadingSteps(); }
 
 // ── Waitlist ───────────────────────────────────────────
