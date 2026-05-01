@@ -421,6 +421,13 @@
       <h3>Plain English Summary</h3>
       <p id="summary-text">Loading...</p>
     </div>
+    
+    <div class="top-fixes-section" id="top-fixes-section" style="display:none;background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:24px;">
+      <h2 style="font-family:'Instrument Serif',serif;font-size:22px;color:var(--navy);margin-bottom:6px;">⚡ Fix These Before Signing</h2>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;font-weight:300;">The most important issues to address with your client.</p>
+      <div id="top-fixes-list"></div>
+    </div>
+
     <div class="findings-section">
       <h2>Detailed Findings</h2>
       <div style="background:rgba(13,158,142,0.06);border:1px solid rgba(13,158,142,0.15);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--teal);line-height:1.6;">
@@ -668,6 +675,20 @@ function renderResults(data) {
       (f.negotiate?'<div class="negotiate-box">💬 <strong>Copy and send to your client:</strong> '+f.negotiate+'<button class="copy-btn" data-text="'+encodeURIComponent(f.negotiate)+'">Copy message</button></div>':'') +
       '</div></div>';
   }).join('');
+
+  var topFixes = data.topFixes || [];
+  var topFixesSection = document.getElementById('top-fixes-section');
+  if (topFixes.length > 0) {
+    topFixesSection.style.display = 'block';
+    document.getElementById('top-fixes-list').innerHTML = topFixes.map(function(fix, i) {
+      return '<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream-dark);">' +
+        '<div style="width:26px;height:26px;background:var(--navy);color:white;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>' +
+        '<p style="font-size:14px;color:var(--text);font-weight:500;">'+fix+'</p>' +
+        '</div>';
+    }).join('');
+  } else {
+    topFixesSection.style.display = 'none';
+  }
 
   var questions = data.questions || [];
   window._lastQuestions = questions;
