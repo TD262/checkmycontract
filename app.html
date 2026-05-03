@@ -650,6 +650,8 @@ function renderResults(data) {
   data = data || {};
 
   var findings = data.findings || [];
+  var severityOrder = { critical: 1, warning: 2, positive: 3, info: 4 };
+  findings.sort(function(a, b) { return (severityOrder[(a.type || '').toLowerCase()] || 5) - (severityOrder[(b.type || '').toLowerCase()] || 5); });
   window._lastFindings = findings;
 
   document.getElementById('stat-critical').textContent = '🚨 ' + findings.filter(function(f){ return f && f.type === 'critical'; }).length + ' Critical';
