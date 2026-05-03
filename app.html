@@ -431,7 +431,7 @@
     <div class="findings-section">
       <h2>Detailed Findings</h2>
       <div style="background:rgba(13,158,142,0.06);border:1px solid rgba(13,158,142,0.15);border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:var(--teal);line-height:1.6;">
-        💡 <strong>How to use this report:</strong> Review the findings below, then use the "Copy message" buttons to confidently address issues with your client before signing.
+        💡 <strong>How to use this report:</strong> Use the "Copy message" buttons below to confidently address these issues with your client before signing.
       </div>
       <div class="findings-list" id="findings-list"></div>
     </div>
@@ -681,10 +681,11 @@ function renderResults(data) {
   if (topFixes.length > 0) {
     topFixesSection.style.display = 'block';
     document.getElementById('top-fixes-list').innerHTML = topFixes.map(function(fix, i) {
-      return '<div style="display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--cream-dark);">' +
-        '<div style="width:26px;height:26px;background:var(--navy);color:white;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+(i+1)+'</div>' +
-        '<p style="font-size:14px;color:var(--text);font-weight:500;">'+fix+'</p>' +
-        '</div>';
+      return '<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--cream-dark);">' +
+        '<div style="width:26px;height:26px;background:var(--navy);color:white;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">'+(i+1)+'</div>' +
+        '<div><p style="font-size:14px;color:var(--text);font-weight:600;margin:0;">'+(fix.fix||fix)+'</p>' +
+        (fix.why && fix.why.trim() !== ''?'<p style="font-size:12px;color:var(--text-muted);font-weight:400;margin:3px 0 0 0;">'+fix.why+'</p>':'') +
+        '</div></div>';
     }).join('');
   } else {
     topFixesSection.style.display = 'none';
