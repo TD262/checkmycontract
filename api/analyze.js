@@ -17,13 +17,13 @@ export const config = {
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', 'https://checkmycontract.co');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
   
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-  const rateLimitKey = `analyze:${ip}`;
+  const rateLimitKey = `analyze:ip:${ip}`;
   const requests = await redis.incr(rateLimitKey);
   if (requests === 1) {
     await redis.expire(rateLimitKey, 3600);
@@ -61,17 +61,18 @@ if (!sessionRes.ok) {
 
 const sessionData = await sessionRes.json();
 const email = sessionData.email;
+const userId = sessionData.id;
 
 if (!email) {
   return res.status(401).json({ error: 'Could not verify your identity. Please log in again.' });
 }
 
 const userCheck = await fetch(
-  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=email,approved&limit=1`,
   {
     headers: {
-      'apikey': process.env.SUPABASE_SERVICE_KEY,
-      'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
+      'apikey': process.env.SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${token}`
     }
   }
 );
@@ -81,6 +82,15 @@ if (!userRows || userRows.length === 0) {
 }
 if (!userRows[0].approved) {
   return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
+}
+
+const userRateLimitKey = `analyze:user:${userId}`;
+const userRequests = await redis.incr(userRateLimitKey);
+if (userRequests === 1) {
+  await redis.expire(userRateLimitKey, 3600);
+}
+if (userRequests > 20) {
+  return res.status(429).json({ error: 'Too many requests. Please try again in an hour.' });
 }
 
     let contractText = '';
@@ -111,6 +121,22 @@ if (!userRows[0].approved) {
     }
 
     const isProUser = false; // will be true when Stripe is set up
+
+// Check usage limit before calling Claude
+const usageLookup = await fetch(
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=checks_used&limit=1`,
+  {
+    headers: {
+      'apikey': process.env.SUPABASE_ANON_KEY,
+      'Authorization': `Bearer ${token}`
+    }
+  }
+);
+const usageRows = await usageLookup.json();
+const checksUsed = (usageRows[0] && usageRows[0].checks_used) ? usageRows[0].checks_used : 0;
+if (checksUsed >= 1) {
+  return res.status(403).json({ error: 'Free limit reached. Upgrade to continue.' });
+}
 const HARD_LIMIT = 50000;
 if (contractText.length > HARD_LIMIT) {
   return res.status(400).json({ error: 'This document is too large to analyze. Please upload a contract file, not a full document or book.' });
@@ -247,37 +273,26 @@ ${contractText}
     }
     
     if (email) {
-      // Check if user exists then insert or update
+      // Fetch current checks_used for this user (RLS ensures they can only see their own row)
       const lookupRes = await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used`,
+        `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=checks_used,period_start&limit=1`,
         {
           headers: {
-            'apikey': process.env.SUPABASE_SERVICE_KEY,
-            'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
+            'apikey': process.env.SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${token}`
           }
         }
       );
       const existingUsers = await lookupRes.json();
 
-      if (existingUsers.length === 0) {
-        await fetch(`${process.env.SUPABASE_URL}/rest/v1/user_profiles`, {
-          method: 'POST',
-          headers: {
-            'apikey': process.env.SUPABASE_SERVICE_KEY,
-            'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({ email: email, checks_used: 1, period_start: new Date().toISOString() })
-        });
-      } else {
-        const dbRes = await fetch(
-          `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}`,
+      if (existingUsers.length > 0) {
+        await fetch(
+          `${process.env.SUPABASE_URL}/rest/v1/user_profiles`,
           {
             method: 'PATCH',
             headers: {
-              'apikey': process.env.SUPABASE_SERVICE_KEY,
-              'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+              'apikey': process.env.SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
               'Prefer': 'return=minimal'
             },
