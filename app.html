@@ -596,17 +596,16 @@ async function analyzeContract() {
   resetLoadingSteps();
   startLoadingAnimation();
 
-  // Send the file AND the user's email to the backend
+  // Send the file with the verified Supabase session token
   if (!currentSession) { showPage('login'); return; }
   var formData = new FormData();
   formData.append('file', selectedFile);
-  formData.append('token', currentSession.access_token);
-  formData.append('email', currentSession.user.email);
 
   try {
     var response = await fetch('/api/analyze', {
       method: 'POST',
-      body: formData   // No Content-Type header — browser sets multipart automatically
+      headers: { 'Authorization': 'Bearer ' + currentSession.access_token },
+      body: formData
     });
 
     if (!response.ok) { var errText = await response.text(); throw new Error(errText); }

@@ -42,27 +42,46 @@ export default async function handler(req, res) {
       });
     });
 
-    const token = fields.token ? (Array.isArray(fields.token) ? fields.token[0] : fields.token) : null;
-    const email = fields.email ? (Array.isArray(fields.email) ? fields.email[0] : fields.email) : null;
-    if (!token || !email) {
-      return res.status(401).json({ error: 'Not authenticated.' });
+    const authHeader = req.headers['authorization'];
+if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  return res.status(401).json({ error: 'Not authenticated.' });
+}
+const token = authHeader.replace('Bearer ', '');
+
+const sessionRes = await fetch(`${process.env.SUPABASE_URL}/auth/v1/user`, {
+  headers: {
+    'apikey': process.env.SUPABASE_ANON_KEY,
+    'Authorization': `Bearer ${token}`
+  }
+});
+
+if (!sessionRes.ok) {
+  return res.status(401).json({ error: 'Invalid or expired session. Please log in again.' });
+}
+
+const sessionData = await sessionRes.json();
+const email = sessionData.email;
+
+if (!email) {
+  return res.status(401).json({ error: 'Could not verify your identity. Please log in again.' });
+}
+
+const userCheck = await fetch(
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
+  {
+    headers: {
+      'apikey': process.env.SUPABASE_SERVICE_KEY,
+      'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
     }
-    const userCheck = await fetch(
-      `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
-      {
-        headers: {
-          'apikey': process.env.SUPABASE_SERVICE_KEY,
-          'Authorization': `Bearer ${process.env.SUPABASE_SERVICE_KEY}`
-        }
-      }
-    );
-    const userRows = await userCheck.json();
-    if (!userRows || userRows.length === 0) {
-      return res.status(401).json({ error: 'Access not authorized.' });
-    }
-    if (!userRows[0].approved) {
-      return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
-    }
+  }
+);
+const userRows = await userCheck.json();
+if (!userRows || userRows.length === 0) {
+  return res.status(401).json({ error: 'Access not authorized.' });
+}
+if (!userRows[0].approved) {
+  return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
+}
 
     let contractText = '';
 
