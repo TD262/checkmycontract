@@ -77,6 +77,12 @@ const userCheck = await fetch(
   }
 );
 const userRows = await userCheck.json();
+if (!userRows || userRows.length === 0) {
+  return res.status(401).json({ error: 'Access not authorized.' });
+}
+if (!userRows[0].approved) {
+  return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
+}
 
 const userRateLimitKey = `analyze:user:${userId}`;
 const userRequests = await redis.incr(userRateLimitKey);
