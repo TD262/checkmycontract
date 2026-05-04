@@ -68,7 +68,7 @@ if (!email) {
 }
 
 const userCheck = await fetch(
-  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=email,approved&limit=1`,
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=email,approved&limit=1`,
   {
     headers: {
       'apikey': process.env.SUPABASE_ANON_KEY,
@@ -77,8 +77,6 @@ const userCheck = await fetch(
   }
 );
 const userRows = await userCheck.json();
-console.log('DEBUG userRows:', JSON.stringify(userRows));
-console.log('DEBUG email:', email);
 
 const userRateLimitKey = `analyze:user:${userId}`;
 const userRequests = await redis.incr(userRateLimitKey);
@@ -120,7 +118,7 @@ if (userRequests > 20) {
 
 // Check usage limit before calling Claude
 const usageLookup = await fetch(
-  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=checks_used&limit=1`,
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used&limit=1`,
   {
     headers: {
       'apikey': process.env.SUPABASE_ANON_KEY,
@@ -271,7 +269,7 @@ ${contractText}
     if (email) {
       // Fetch current checks_used for this user (RLS ensures they can only see their own row)
       const lookupRes = await fetch(
-        `${process.env.SUPABASE_URL}/rest/v1/user_profiles?select=checks_used,period_start&limit=1`,
+        `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used,period_start&limit=1`,
         {
           headers: {
             'apikey': process.env.SUPABASE_ANON_KEY,
