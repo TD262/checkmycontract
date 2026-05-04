@@ -77,6 +77,8 @@ const userCheck = await fetch(
   }
 );
 const userRows = await userCheck.json();
+console.log('DEBUG userRows:', JSON.stringify(userRows));
+console.log('DEBUG email:', email);
 if (!userRows || userRows.length === 0) {
   return res.status(401).json({ error: 'Access not authorized.' });
 }
