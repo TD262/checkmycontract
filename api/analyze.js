@@ -124,7 +124,7 @@ if (userRequests > 20) {
 
 // Check usage limit before calling Claude
 const usageLookup = await fetch(
-  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used&limit=1`,
+  `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}&select=checks_used,period_start&limit=1`,
   {
     headers: {
       'apikey': process.env.SUPABASE_ANON_KEY,
@@ -134,7 +134,10 @@ const usageLookup = await fetch(
 );
 const usageRows = await usageLookup.json();
 const checksUsed = (usageRows[0] && usageRows[0].checks_used) ? usageRows[0].checks_used : 0;
-if (checksUsed >= 1) {
+const periodStart = usageRows[0] && usageRows[0].period_start ? new Date(usageRows[0].period_start) : new Date(0);
+const daysSinceStart = (new Date() - periodStart) / (1000 * 60 * 60 * 24);
+const isNewPeriod = daysSinceStart >= 30;
+if (!isNewPeriod && checksUsed >= 1) {
   return res.status(403).json({ error: 'Free limit reached. Upgrade to continue.' });
 }
 const HARD_LIMIT = 50000;
@@ -286,8 +289,13 @@ ${contractText}
       const existingUsers = await lookupRes.json();
 
       if (existingUsers.length > 0) {
+        const periodStart = new Date(existingUsers[0].period_start);
+        const now = new Date();
+        const daysSincePeriodStart = (now - periodStart) / (1000 * 60 * 60 * 24);
+        const isNewPeriod = daysSincePeriodStart >= 30;
+
         await fetch(
-          `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}`,
+          `${process.env.SUPABASE_URL}/rest/v1/user_profiles`,
           {
             method: 'PATCH',
             headers: {
@@ -296,7 +304,10 @@ ${contractText}
               'Content-Type': 'application/json',
               'Prefer': 'return=minimal'
             },
-            body: JSON.stringify({ checks_used: existingUsers[0].checks_used + 1 })
+            body: JSON.stringify({
+              checks_used: isNewPeriod ? 1 : existingUsers[0].checks_used + 1,
+              period_start: isNewPeriod ? now.toISOString() : existingUsers[0].period_start
+            })
           }
         );
       }
