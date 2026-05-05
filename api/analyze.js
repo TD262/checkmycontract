@@ -61,7 +61,6 @@ if (!sessionRes.ok) {
 
 const sessionData = await sessionRes.json();
 const email = sessionData.email;
-const userId = sessionData.id;
 
 if (!email) {
   return res.status(401).json({ error: 'Could not verify your identity. Please log in again.' });
@@ -84,7 +83,8 @@ if (!userRows[0].approved) {
   return res.status(403).json({ error: 'Your account is pending approval. We will email you when you are approved.' });
 }
 
-const userRateLimitKey = `analyze:user:${userId}`;
+const normalizedEmail = (email || '').toLowerCase().trim();
+const userRateLimitKey = `analyze:user:${normalizedEmail}`;
 const userRequests = await redis.incr(userRateLimitKey);
 if (userRequests === 1) {
   await redis.expire(userRateLimitKey, 3600);
