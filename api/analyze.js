@@ -295,7 +295,7 @@ ${contractText}
         const isNewPeriod = daysSincePeriodStart >= 30;
 
         await fetch(
-          `${process.env.SUPABASE_URL}/rest/v1/user_profiles`,
+          `${process.env.SUPABASE_URL}/rest/v1/user_profiles?email=eq.${encodeURIComponent(email)}`,
           {
             method: 'PATCH',
             headers: {
