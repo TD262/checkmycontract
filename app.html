@@ -608,7 +608,12 @@ async function analyzeContract() {
       body: formData
     });
 
-    if (!response.ok) { var errText = await response.text(); throw new Error(errText); }
+    if (!response.ok) {
+      var errData = null;
+      try { errData = await response.json(); } catch(e) {}
+      var errMsg = (errData && errData.error) ? errData.error : 'Something went wrong. Please try again.';
+      throw new Error(errMsg);
+    }
 
     var result = await response.json();
     // PDF button — lock behind Pro
@@ -630,7 +635,7 @@ async function analyzeContract() {
   } catch(err) {
     clearInterval(loadingInterval);
     showPage('upload');
-    showError('Something went wrong. Please try again. Error: ' + err.message);
+    showError(err.message || 'Something went wrong. Please try again.');
   }
 }
 
