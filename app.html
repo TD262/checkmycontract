@@ -801,7 +801,7 @@ async function analyzeContract() {
       pdfBtn.onclick = function() { downloadPDF(); };
     } else {
       pdfBtn.onclick = function() {
-        showError('PDF export is a Pro feature. Upgrade to generate and download your full contract report.');
+        showProModal();
       };
     }
 
@@ -814,7 +814,11 @@ async function analyzeContract() {
   } catch(err) {
     clearInterval(loadingInterval);
     showPage('upload');
-    showError(err.message || 'Something went wrong. Please try again.');
+    if (err.message && err.message.includes('Free limit reached')) {
+      showProModal();
+    } else {
+      showError(err.message || 'Something went wrong. Please try again.');
+    }
   }
 }
 
