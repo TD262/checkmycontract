@@ -252,6 +252,11 @@ ${contractText}
       })
     });
 
+    if (!response.ok) {
+      console.log('Anthropic API error:', response.status);
+      return res.status(502).json({ error: 'The AI analysis service is temporarily unavailable. Please try again in a moment.' });
+    }
+
     const data = await response.json();
 
     // Always start with a safe default result
