@@ -97,21 +97,50 @@ if (userRequests > 20) {
 
     const uploadedFile = files.file ? files.file[0] : null;
 
-    if (uploadedFile) {
-      const ext = uploadedFile.originalFilename.split('.').pop().toLowerCase();
-      const buffer = fs.readFileSync(uploadedFile.filepath);
+    const ALLOWED_MIME_TYPES = [
+      'application/pdf',
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'text/plain'
+    ];
 
-      if (ext === 'pdf') {
-        const parsed = await pdfParse(buffer);
-        contractText = parsed.text;
-      } else if (ext === 'docx' || ext === 'doc') {
-        const result = await mammoth.extractRawText({ buffer });
-        contractText = result.value;
-      } else if (ext === 'txt') {
-        contractText = buffer.toString('utf-8');
-      } else {
-        return res.status(400).json({ error: 'Unsupported file type.' });
+    const MAX_TEXT_LENGTH = 50000;
+
+    if (uploadedFile) {
+      const ext = (uploadedFile.originalFilename || '').split('.').pop().toLowerCase();
+      const mime = uploadedFile.mimetype || '';
+
+      if (!ALLOWED_MIME_TYPES.includes(mime)) {
+        return res.status(400).json({ error: 'Invalid file type. Please upload a PDF, DOC, DOCX, or TXT file.' });
       }
+
+      let buffer;
+      try {
+        buffer = fs.readFileSync(uploadedFile.filepath);
+      } catch (e) {
+        return res.status(400).json({ error: 'Could not read the uploaded file. Please try again.' });
+      }
+
+      try {
+        if (ext === 'pdf') {
+          const parsed = await pdfParse(buffer);
+          contractText = parsed.text;
+        } else if (ext === 'docx' || ext === 'doc') {
+          const result = await mammoth.extractRawText({ buffer });
+          contractText = result.value;
+        } else if (ext === 'txt') {
+          contractText = buffer.toString('utf-8');
+        } else {
+          return res.status(400).json({ error: 'Unsupported file type.' });
+        }
+      } catch (e) {
+        return res.status(400).json({ error: 'Could not parse this file. Please try a different file.' });
+      }
+
+      if (contractText.length > MAX_TEXT_LENGTH) {
+        return res.status(400).json({ error: 'This document is too large to analyze. Please upload a shorter contract.' });
+      }
+
     } else if (fields.prompt) {
       contractText = Array.isArray(fields.prompt) ? fields.prompt[0] : fields.prompt;
     }
@@ -139,10 +168,6 @@ const daysSinceStart = (new Date() - periodStart) / (1000 * 60 * 60 * 24);
 const isNewPeriod = daysSinceStart >= 30;
 if (!isNewPeriod && checksUsed >= 1) {
   return res.status(403).json({ error: 'Free limit reached. Upgrade to continue.' });
-}
-const HARD_LIMIT = 50000;
-if (contractText.length > HARD_LIMIT) {
-  return res.status(400).json({ error: 'This document is too large to analyze. Please upload a contract file, not a full document or book.' });
 }
 
 const systemPrompt = `You are a contract analysis tool built specifically for freelancers. Your job is to help freelancers clearly understand what a contract says, what risks exist, and what they might want to negotiate — without overstating risk or making legal conclusions.
