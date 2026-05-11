@@ -283,6 +283,7 @@
     <p style="font-size:15px;color:var(--text-muted);line-height:1.7;margin-bottom:24px;">Get unlimited contract reviews, PDF exports, and deeper insights. Join the waitlist to get early access when Pro launches.</p>
     <input type="email" id="pro-waitlist-email" class="email-input" placeholder="you@example.com" style="margin-bottom:12px;"/>
     <textarea id="pro-waitlist-feedback" placeholder="What would make this worth paying for? (optional)" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;resize:vertical;min-height:80px;margin-bottom:12px;"></textarea>
+    <input type="text" id="pro-honeypot" name="website" style="display:none;" tabindex="-1" autocomplete="off"/>
     <div class="error-box" id="pro-modal-error" style="margin-bottom:12px;display:none;"></div>
     <div id="pro-modal-success" style="display:none;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--green);padding:14px 16px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:12px;">✓ You're on the list! We'll email you when Pro launches.</div>
     <button class="email-submit-btn" id="pro-waitlist-btn" onclick="submitProWaitlist()">
@@ -338,6 +339,7 @@
         <label class="login-label" for="signup-confirm">Confirm Password</label>
         <input type="password" class="email-input" id="signup-confirm" placeholder="Repeat your password"
           onkeydown="if(event.key==='Enter')signup()"/>
+        <input type="text" id="signup-honeypot" name="website" style="display:none;" tabindex="-1" autocomplete="off"/>
         <div class="error-box" id="signup-error-box" style="margin-bottom:12px;margin-top:0;display:none;"></div>
         <button class="email-submit-btn" id="signup-btn" onclick="signup()">
           <span id="signup-btn-text">Create Free Account →</span>
@@ -547,6 +549,8 @@ async function submitProWaitlist() {
     errorBox.style.display = 'block'; return;
   }
 
+  if (document.getElementById('pro-honeypot').value) return;
+
   btn.disabled = true;
   btnText.textContent = 'Joining…';
 
@@ -609,6 +613,11 @@ async function signup() {
   if (password !== confirm) {
     errorBox.textContent = 'Passwords do not match.';
     errorBox.style.display = 'block'; return;
+  }
+
+  if (document.getElementById('signup-honeypot').value) {
+    showPage('upload');
+    return;
   }
 
   btn.disabled = true;
