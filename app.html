@@ -387,6 +387,9 @@
       <button class="remove-file" onclick="removeFile()">✕</button>
     </div>
     <div class="error-box" id="error-box"></div>
+    <div style="text-align:center;margin-top:8px;">
+      <button id="retry-btn" onclick="analyzeContract()" style="display:none;background:none;border:1.5px solid var(--teal);color:var(--teal);padding:10px 24px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">↩ Try Again</button>
+    </div>
     <div class="analyze-btn-wrap" id="analyze-wrap">
       <button class="analyze-btn" onclick="analyzeContract()">🔍 Analyze My Contract</button>
     </div>
@@ -780,6 +783,7 @@ function resetLoadingSteps() {
 
 async function analyzeContract() {
   if (!selectedFile) return;
+  document.getElementById('retry-btn').style.display = 'none';
   showPage('loading');
   resetLoadingSteps();
   startLoadingAnimation();
@@ -827,6 +831,7 @@ async function analyzeContract() {
       showProModal();
     } else {
       showError(err.message || 'Something went wrong. Please try again.');
+      document.getElementById('retry-btn').style.display = 'inline-block';
     }
   }
 }
