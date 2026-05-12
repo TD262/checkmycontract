@@ -96,7 +96,6 @@ if (userRequests > 20) {
 
     const ALLOWED_MIME_TYPES = [
       'application/pdf',
-      'application/msword',
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       'text/plain'
     ];
@@ -108,7 +107,7 @@ if (userRequests > 20) {
       const mime = uploadedFile.mimetype || '';
 
       if (!ALLOWED_MIME_TYPES.includes(mime)) {
-        return res.status(400).json({ error: 'Invalid file type. Please upload a PDF, DOC, DOCX, or TXT file.' });
+        return res.status(400).json({ error: 'Invalid file type. Please upload a PDF, DOCX, or TXT file.' });
       }
 
       let buffer;
@@ -122,7 +121,7 @@ if (userRequests > 20) {
         if (ext === 'pdf') {
           const parsed = await pdfParse(buffer);
           contractText = parsed.text;
-        } else if (ext === 'docx' || ext === 'doc') {
+        } else if (ext === 'docx') {
           const result = await mammoth.extractRawText({ buffer });
           contractText = result.value;
         } else if (ext === 'txt') {
