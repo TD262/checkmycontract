@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
   :root {
     --navy: #0f1f3d;
@@ -284,6 +285,7 @@
     <input type="email" id="pro-waitlist-email" class="email-input" placeholder="you@example.com" style="margin-bottom:12px;"/>
     <textarea id="pro-waitlist-feedback" placeholder="What would make this worth paying for? (optional)" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;resize:vertical;min-height:80px;margin-bottom:12px;"></textarea>
     <input type="text" id="pro-honeypot" name="website" style="display:none;" tabindex="-1" autocomplete="off"/>
+    <div class="cf-turnstile" id="pro-turnstile" data-sitekey="0x4AAAAAADNsPbLSP5yiNH7g" data-theme="light" style="margin-bottom:12px;"></div>
     <div class="error-box" id="pro-modal-error" style="margin-bottom:12px;display:none;"></div>
     <div id="pro-modal-success" style="display:none;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);color:var(--green);padding:14px 16px;border-radius:10px;font-size:14px;font-weight:600;margin-bottom:12px;">✓ You're on the list! We'll email you when Pro launches.</div>
     <button class="email-submit-btn" id="pro-waitlist-btn" onclick="submitProWaitlist()">
@@ -340,6 +342,7 @@
         <input type="password" class="email-input" id="signup-confirm" placeholder="Repeat your password"
           onkeydown="if(event.key==='Enter')signup()"/>
         <input type="text" id="signup-honeypot" name="website" style="display:none;" tabindex="-1" autocomplete="off"/>
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADNsPbLSP5yiNH7g" data-theme="light" style="margin-bottom:12px;"></div>
         <div class="error-box" id="signup-error-box" style="margin-bottom:12px;margin-top:0;display:none;"></div>
         <button class="email-submit-btn" id="signup-btn" onclick="signup()">
           <span id="signup-btn-text">Create Free Account →</span>
@@ -558,10 +561,11 @@ async function submitProWaitlist() {
   btnText.textContent = 'Joining…';
 
   try {
+    var proTurnstileToken = document.querySelector('#pro-turnstile input[name="cf-turnstile-response"]');
     var res = await fetch('/api/pro-waitlist', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, feedback })
+      body: JSON.stringify({ email, feedback, turnstileToken: proTurnstileToken ? proTurnstileToken.value : '' })
     });
     var data = await res.json();
     if (!res.ok) {
@@ -623,6 +627,12 @@ async function signup() {
     return;
   }
 
+  var turnstileToken = document.querySelector('.cf-turnstile input[name="cf-turnstile-response"]');
+  if (!turnstileToken || !turnstileToken.value) {
+    errorBox.textContent = 'Please complete the security check.';
+    errorBox.style.display = 'block'; return;
+  }
+
   btn.disabled = true;
   btnText.textContent = 'Creating account…';
 
@@ -651,7 +661,7 @@ async function signup() {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + data.session.access_token
     },
-    body: JSON.stringify({})
+    body: JSON.stringify({ turnstileToken: turnstileToken.value })
   });
 
   if (!registerRes.ok) {
