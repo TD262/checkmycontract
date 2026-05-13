@@ -875,16 +875,28 @@ function renderResults(data) {
   document.querySelector('.findings-section').style.display = isParseFailed ? 'none' : 'block';
   document.querySelector('.questions-section').style.display = isParseFailed ? 'none' : 'block';
 
+  function escapeHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   document.getElementById('findings-list').innerHTML = findings.map(function(f,i) {
     f = f || {};
-    return '<div class="finding-card '+(f.type||'info')+'" style="animation-delay:'+(i*0.08)+'s">' +
-      '<div class="finding-icon-wrap">'+(f.icon||'📋')+'</div>' +
+    var safeType = ['critical','warning','positive','info'].includes((f.type||'').toLowerCase())
+      ? (f.type||'').toLowerCase() : 'info';
+    var safeIcon = escapeHtml(f.icon || '📋');
+    return '<div class="finding-card '+safeType+'" style="animation-delay:'+(i*0.08)+'s">' +
+      '<div class="finding-icon-wrap">'+safeIcon+'</div>' +
       '<div class="finding-body">' +
-      '<div class="finding-severity">'+(f.type||'info').toUpperCase()+'</div>' +
-      '<h4>'+(f.title||'Untitled finding')+'</h4>' +
-      '<p>'+(f.description||'No description provided.')+'</p>' +
-      (f.quote?'<div class="clause-quote">"'+f.quote+'"</div>':'') +
-      (f.negotiate?'<div class="negotiate-box">💬 <strong>Copy and send to your client:</strong> '+f.negotiate+'<button class="copy-btn" data-text="'+encodeURIComponent(f.negotiate)+'">Copy message</button></div>':'') +
+      '<div class="finding-severity">'+safeType.toUpperCase()+'</div>' +
+      '<h4>'+escapeHtml(f.title||'Untitled finding')+'</h4>' +
+      '<p>'+escapeHtml(f.description||'No description provided.')+'</p>' +
+      (f.quote?'<div class="clause-quote">&ldquo;'+escapeHtml(f.quote)+'&rdquo;</div>':'') +
+      (f.negotiate?'<div class="negotiate-box">💬 <strong>Copy and send to your client:</strong> '+escapeHtml(f.negotiate)+'<button class="copy-btn" data-text="'+encodeURIComponent(f.negotiate)+'">Copy message</button></div>':'') +
       '</div></div>';
   }).join('');
 
@@ -893,10 +905,12 @@ function renderResults(data) {
   if (topFixes.length > 0) {
     topFixesSection.style.display = 'block';
     document.getElementById('top-fixes-list').innerHTML = topFixes.map(function(fix, i) {
+      var fixText = typeof fix === 'object' ? fix.fix : fix;
+      var whyText = typeof fix === 'object' ? fix.why : '';
       return '<div style="display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--cream-dark);">' +
         '<div style="width:26px;height:26px;background:var(--navy);color:white;border-radius:50%;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">'+(i+1)+'</div>' +
-        '<div><p style="font-size:14px;color:var(--text);font-weight:600;margin:0;">'+(fix.fix||fix)+'</p>' +
-        (fix.why && fix.why.trim() !== ''?'<p style="font-size:12px;color:var(--text-muted);font-weight:400;margin:3px 0 0 0;">'+fix.why+'</p>':'') +
+        '<div><p style="font-size:14px;color:var(--text);font-weight:600;margin:0;">'+escapeHtml(fixText)+'</p>' +
+        (whyText && whyText.trim() !== ''?'<p style="font-size:12px;color:var(--text-muted);font-weight:400;margin:3px 0 0 0;">'+escapeHtml(whyText)+'</p>':'') +
         '</div></div>';
     }).join('');
   } else {
@@ -907,7 +921,7 @@ function renderResults(data) {
   window._lastQuestions = questions;
 
   document.getElementById('questions-list').innerHTML = questions.map(function(q,i) {
-    return '<div class="question-item"><div class="q-num">'+(i+1)+'</div><p>'+q+'</p></div>';
+    return '<div class="question-item"><div class="q-num">'+(i+1)+'</div><p>'+escapeHtml(q)+'</p></div>';
   }).join('');
   showPage('results');
 }
