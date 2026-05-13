@@ -32,6 +32,7 @@ export default async function handler(req, res) {
     return res.status(429).json({ error: 'Too many requests. Please try again in an hour.' });
   }
   
+  let uploadedFile = null;
   try {
     const form = formidable({ maxFileSize: 10 * 1024 * 1024 });
 
@@ -92,7 +93,7 @@ if (userRequests > 20) {
 
     let contractText = '';
 
-    const uploadedFile = files.file ? files.file[0] : null;
+    uploadedFile = files.file ? files.file[0] : null;
 
     const ALLOWED_MIME_TYPES = [
       'application/pdf',
@@ -461,5 +462,9 @@ ${contractText}
 
   } catch (err) {
     return res.status(500).json({ error: err.message });
+  } finally {
+    if (uploadedFile && uploadedFile.filepath) {
+      fs.unlink(uploadedFile.filepath, () => {});
+    }
   }
 }
